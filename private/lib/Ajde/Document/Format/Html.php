@@ -23,9 +23,16 @@ class Ajde_Document_Format_Html extends Ajde_Document
 	public function render()
 	{
 		Ajde::app()->getResponse()->addHeader('Content-type', 'text/html');
-		if (Config::get('compressHtml') == true)
-		{
-			Ajde_Event::register('Ajde_Layout', 'afterGetContents', 'Ajde_Document_Format_Html_Compressor::compress');
+		$documentProcessors = Config::get('documentProcessors');
+		if (is_array($documentProcessors) && isset($documentProcessors['html'])) {
+			foreach($documentProcessors['html'] as $processor) {
+				$processorClass = 'Ajde_Document_Format_Processor_Html_' . $processor;
+				if (!Ajde_Core_Autoloader::exists($processorClass)) {
+					// TODO:
+					throw new Ajde_Exception('Processor ' . $processorClass . ' not found', 90022);
+				}
+				Ajde_Event::register('Ajde_Layout', 'afterGetContents', $processorClass . '::process');
+			}
 		}
 		return parent::render();
 	}
