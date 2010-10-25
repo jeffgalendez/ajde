@@ -16,13 +16,14 @@ class Config_Base
 									"format" => "html"
 									);       
 	public $lang 				= "en";
+	public $timezone			= "Europe/Amsterdam";
 	public $layout 				= "default";
 	
 	// Performance
 	public $compressResources	= true;
-	public $compressHtml		= true;
 	public $debug 				= false;
 	public $useCache			= true;
+	public $documentProcessors	= array();
 	
 	// Database settings
 	public $db_host 			= "localhost";
@@ -42,6 +43,7 @@ class Config_Base
 		$this->site_domain = $_SERVER["SERVER_NAME"];
 		$this->site_path = str_replace('index.php', '', $_SERVER["PHP_SELF"]);
 		$this->site_root = $this->site_domain . $this->site_path;
+		date_default_timezone_set($this->timezone);
 	}
 	
 }

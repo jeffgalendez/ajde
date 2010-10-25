@@ -8,16 +8,16 @@ set_include_path(get_include_path() . PATH_SEPARATOR . $testPath . PATH_SEPARATO
 
 // Define paths
 define('PRIVATE_DIR', 		'private/');
-define('APP_DIR', 			'application/');
-define('CONFIG_DIR', 		'config/');
-define('LAYOUT_DIR', 		'layout/');
-define('TEMPLATE_DIR', 		'template/');
-define('MODULE_DIR', 		'modules/');
-define('LIB_DIR', 			'lib/');
-define('VAR_DIR', 			'var/');
-define('CACHE_DIR', 		'cache/');
-define('LOG_DIR', 			'log/');
 define('PUBLIC_DIR', 		'public/');
+define('TEMPLATE_DIR', 		'template/');
+define('APP_DIR', 			PRIVATE_DIR.'application/');
+define('LIB_DIR', 			PRIVATE_DIR.'lib/');
+define('VAR_DIR', 			PRIVATE_DIR.'var/');
+define('CACHE_DIR', 		VAR_DIR.'cache/');
+define('CONFIG_DIR', 		APP_DIR.'config/');
+define('LAYOUT_DIR', 		APP_DIR.'layout/');
+define('LOG_DIR', 			VAR_DIR.'log/');
+define('MODULE_DIR', 		APP_DIR.'modules/');
 
 // Configure the autoloader
 require_once('../' . PRIVATE_DIR.LIB_DIR."Ajde/Core/Autoloader.php");

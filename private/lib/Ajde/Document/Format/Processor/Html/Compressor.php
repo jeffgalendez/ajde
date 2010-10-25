@@ -1,8 +1,8 @@
 <?php
 
-class Ajde_Document_Format_Html_Compressor extends Ajde_Object_Static
+class Ajde_Document_Format_Processor_Html_Compressor extends Ajde_Object_Static
 {
-	public static function compress(Ajde_Layout $layout)
+	public static function process(Ajde_Layout $layout)
 	{
 		$layout->setContents(self::minifyHtml($layout->getContents()));
 	}

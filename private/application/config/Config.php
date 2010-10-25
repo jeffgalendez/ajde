@@ -3,6 +3,7 @@
 class Config {
 
 	// Redirect this class to the following config stage
+	// Defaults are 'live' and 'dev'
 	public static $stage			= "dev";
 
 	/**

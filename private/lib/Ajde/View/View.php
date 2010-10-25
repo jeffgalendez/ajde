@@ -8,7 +8,7 @@ class Ajde_View extends Ajde_Template
 	 * @return Ajde_View
 	 */
 	public static function fromController(Ajde_Controller $controller) {
-		$base = PRIVATE_DIR.APP_DIR.MODULE_DIR. $controller->getModule() . '/'; 
+		$base = MODULE_DIR. $controller->getModule() . '/'; 
 		$action = $controller->getAction();
 		$format = $controller->hasFormat() ? $controller->getFormat() : 'html';				
 		return new self($base, $action, $format);
@@ -24,7 +24,7 @@ class Ajde_View extends Ajde_Template
 		if (!$route instanceof Ajde_Core_Route) {
 			$route = new Ajde_Core_Route($route);
 		}
-		$base = PRIVATE_DIR.APP_DIR.MODULE_DIR. $route->getModule() . '/';
+		$base = MODULE_DIR. $route->getModule() . '/';
 		$action = $route->getAction();
 		$format = $route->getFormat();
 		return new self($base, $action, $format);

@@ -10,7 +10,7 @@ abstract class Ajde_Resource_Local_Compressor extends Ajde_Object_Standard
 
 	public function  __construct()
 	{
-		$this->setBase(PRIVATE_DIR.VAR_DIR.CACHE_DIR);
+		$this->setBase(CACHE_DIR);
 	}
 
 	public static function fromType($type)

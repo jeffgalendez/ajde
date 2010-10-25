@@ -31,9 +31,9 @@ class Ajde_Core_Autoloader
 		
 	    // Add libraries and config to include path
 		$dirs = array(
-			PRIVATE_DIR.LIB_DIR,
-			PRIVATE_DIR.APP_DIR.CONFIG_DIR,
-			PRIVATE_DIR.APP_DIR.MODULE_DIR
+			LIB_DIR,
+			CONFIG_DIR,
+			MODULE_DIR
 		);
 
 		$files = array();

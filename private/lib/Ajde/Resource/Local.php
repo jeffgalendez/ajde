@@ -89,16 +89,4 @@ class Ajde_Resource_Local extends Ajde_Resource
 		}
 		return $url;
 	}
-
-	public function getContents() {
-		ob_start();
-
-		Ajde_Cache::getInstance()->addFile($this->getFilename());
-		include $this->getFilename();
-		
-		$contents = ob_get_contents();
-		ob_end_clean();
-		return $contents;
-	}
-
 }

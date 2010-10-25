@@ -29,21 +29,36 @@ abstract class Ajde_Resource extends Ajde_Object_Standard
 		return self::getLinkTemplateFilename($this->getType(), $format);
 	}
 
-	public static function getLinkTemplateFilename($type, $format = null)
+	public static function getLinkTemplateFilename($type, $format = 'null')
 	{
 		$layout = Ajde::app()->getDocument()->getLayout();
 		$format = isset($format) ? $format : 'html';
-		return PRIVATE_DIR.APP_DIR.LAYOUT_DIR . $layout->getName() . '/link/' . $type . '.' . $format . '.php';
+		return LAYOUT_DIR . $layout->getName() . '/link/' . $type . '.' . $format . '.php';
 	}
 
-	public function getLinkCode() {
+	public function getLinkCode()
+	{
 		ob_start();
 
 		// variables for use in included link template
 		$url = $this->getLinkUrl();
-		
-		Ajde_Cache::getInstance()->addFile($this->_getLinkTemplateFilename());
-		include $this->_getLinkTemplateFilename();
+
+		// create temporary resource for link filename
+		$linkFilename = $this->_getLinkTemplateFilename();
+
+		Ajde_Cache::getInstance()->addFile($linkFilename);
+		include $linkFilename;
+
+		$contents = ob_get_contents();
+		ob_end_clean();
+		return $contents;
+	}
+	
+	public function getContents() {
+		ob_start();
+
+		Ajde_Cache::getInstance()->addFile($this->getFilename());
+		include $this->getFilename();
 		
 		$contents = ob_get_contents();
 		ob_end_clean();
