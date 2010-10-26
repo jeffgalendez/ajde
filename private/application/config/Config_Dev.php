@@ -8,7 +8,6 @@ class Config_Dev extends Config_Base {
 	public $useCache			= false;
 	public $documentProcessors	= array(
 									"html" => array(
-										"Compressor",
 										"Beautifier"
 									)
 								  );	

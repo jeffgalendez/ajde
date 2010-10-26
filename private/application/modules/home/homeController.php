@@ -7,6 +7,15 @@ class Home extends Ajde_Controller
 		return $this->render();
 	}
 	
+	function dbDefault()
+	{
+			
+		$db = AjdeExtension::load('db')->getConnection();
+		$result = $db->query("SELECT * FROM test");
+		$this->getView()->assign('test', $result);
+		return $this->render();	
+	}
+	
 	function zendDefault()
 	{
 		$date = new Zend_Date();

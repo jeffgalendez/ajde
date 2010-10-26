@@ -25,11 +25,14 @@ class Config_Base
 	public $useCache			= true;
 	public $documentProcessors	= array();
 	
-	// Database settings
-	public $db_host 			= "localhost";
-	public $db_user 			= "user";
-	public $db_password 		= "password";
-	public $db_db 				= "database";
+	// Extension settings
+	public $dbAdapter			= "mysql";
+	public $dbDsn				= array(
+									"host" 		=> "localhost",
+									"dbname"	=> "ajde"
+									);
+	public $dbUser 				= "ajde";
+	public $dbPassword 			= "ajde";	
 
 	// Which modules should we call on bootstrapping?
 	public $bootstrap			= array(

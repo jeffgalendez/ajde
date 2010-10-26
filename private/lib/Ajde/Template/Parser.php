@@ -17,6 +17,16 @@ class Ajde_Template_Parser extends Ajde_Object_Standard
 		$this->_template = $template;
 	}
 	
+	public function __get($name)
+	{
+		$template = $this->getTemplate();
+		if ($template->hasAssigned($name)) {
+			return $template->getAssigned($name);
+		} else {
+			throw new Ajde_Exception("No variable with name '" . $name . "' assigned to template.", 90019);
+		}
+	}
+	
 	/**
 	 * 
 	 * @return Ajde_Template
