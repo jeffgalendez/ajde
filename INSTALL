@@ -1,4 +1,6 @@
+______________________
 Ajde PHP Web Framework
+¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯
 
 Directories which have to be writable by the webserver:
 - private/shared/*

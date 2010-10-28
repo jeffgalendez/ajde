@@ -1,0 +1,6 @@
+______________________
+Ajde PHP Web Framework
+¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯
+
+The resource model is part of the core of Ajde as it provides front-end
+access to compressed and/or combined local css/js resources.
