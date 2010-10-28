@@ -50,8 +50,8 @@ class Ajde_Core_Autoloader
 		$head = implode("/", $classNameArray);
 		$files[] = $head . "/" . $tail . ".php";
 
-		// controller
-		$files[] = strtolower($className) . "/" . strtolower($className) . "Controller.php";
+		// ModuleController.php naming
+		$files[] = strtolower(str_replace('Controller', '', $className)) . "/" . $className . '.php';
 
 		foreach ($dirs as $dir)
 		{

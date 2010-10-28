@@ -1,6 +1,6 @@
 <?php
 
-class Resource extends Ajde_Controller
+class ResourceController extends Ajde_Controller
 {
 	function localDefault()
 	{

@@ -1,6 +1,6 @@
 <?php 
 
-class Test extends Ajde_Controller
+class TestController extends Ajde_Controller
 {	
 	function viewDefault() {
 		return $this->render();

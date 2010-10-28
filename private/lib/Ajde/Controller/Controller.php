@@ -10,7 +10,7 @@ class Ajde_Controller extends Ajde_Object_Standard
 		
 	public function  __construct($action = null, $format = null)
 	{
-		$this->setModule(strtolower(get_class($this)));
+		$this->setModule(strtolower(str_replace('Controller', '', get_class($this))));
 		if (!isset($action) || !isset($format)) {
 			$defaultParts = Config::get('defaultRouteParts');
 		}
@@ -26,12 +26,13 @@ class Ajde_Controller extends Ajde_Object_Standard
 	public static function fromRoute(Ajde_Core_Route $route)
 	{
 		$module = $route->getModule();
-		if (!Ajde_Core_Autoloader::exists($module)) {
+		$moduleController = ucfirst($module) . 'Controller';
+		if (!Ajde_Core_Autoloader::exists($moduleController)) {
 			$exception = new Ajde_Exception("Controller for module $module not found",
 					90008);
 			Ajde::routingError($exception);
 		}
-		return new $module($route->getAction(), $route->getFormat());
+		return new $moduleController($route->getAction(), $route->getFormat());
 	}
 
 	public function invoke($action = null, $format = null)
