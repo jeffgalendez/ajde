@@ -9,6 +9,10 @@ class WelcomeController extends Ajde_Controller
 	
 	function dbDefault()
 	{
+		AjdeExtension_Model::register($this);
+		
+		$model = $this->getModel('test');
+		
 		$db = AjdeExtension::load('db')->getConnection();
 		$result = $db->query("SELECT * FROM test");
 		$this->getView()->assign('test', $result);

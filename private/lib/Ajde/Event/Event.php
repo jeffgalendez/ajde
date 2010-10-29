@@ -28,8 +28,12 @@ class Ajde_Event extends Ajde_Object_Static
 			unset(self::$eventStack[self::className($object)][$event]);
 			return true;
 		}
-		return false;
-		
+		return false;		
+	}
+	
+	public static function has($object, $event)
+	{
+		return isset(self::$eventStack[self::className($object)][$event]);
 	}
 
 	public static function trigger($object, $event, array $parameters = array())
@@ -64,11 +68,17 @@ class Ajde_Event extends Ajde_Object_Static
 								// http://www.php.net/manual/en/function.call-user-func.php
 								// Note: Note that the parameters for call_user_func() are not passed by reference.
 								$parameterArray = array_merge(array(&$caller['object']), $parameters);
-								call_user_func_array($callback, $parameterArray);
+								return call_user_func_array($callback, $parameterArray);
+							}
+							elseif (isset($caller['class']) && isset($caller['function']) && $caller['type'] === '::')
+							{
+								// triggered from static context
+								// TODO: update exception 90015
+								return call_user_func_array($callback, $parameters);
 							}
 							elseif ($callback instanceof Closure)
 							{
-								$callback();
+								return $callback();
 							}
 							else
 							{

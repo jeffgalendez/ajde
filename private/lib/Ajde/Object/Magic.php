@@ -17,20 +17,24 @@ abstract class Ajde_Object_Magic extends Ajde_Object
 					return $this->get($key);
 				}
 				else
-				{
-					throw new Ajde_Exception("Parameter '$key' not set in class ".get_class($this)." when calling get('$key')", 90007);
+				{					
+					if (!method_exists($this, '__fallback')) {
+						throw new Ajde_Exception("Parameter '$key' not set in class ".get_class($this)." when calling get('$key')", 90007);
+					}					
 				}
+				break;
 			case "set":
 				return $this->set($key, $arguments[0]);
+				break;
 			case "has":
 				return $this->has($key);
+				break;
 		}
 		if (method_exists($this, '__fallback')) {
 			return call_user_func_array(array($this, '__fallback'), array($method, $arguments));
 		}
 		throw new Ajde_Exception("Call to undefined method ".get_class($this)."::$method()", 90006);
     }
-
 
 	/**
 	 *

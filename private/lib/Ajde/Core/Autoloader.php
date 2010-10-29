@@ -3,6 +3,8 @@
 class Ajde_Core_Autoloader
 {
 	protected static $dirPrepend = null;
+	public static $dirs = array();
+	public static $files = array();
 	 
 	public static function register($dirPrepend = null)
 	{
@@ -11,6 +13,9 @@ class Ajde_Core_Autoloader
 		
 		// Configure autoloading
 		spl_autoload_register(array("Ajde_Core_Autoloader", "autoload"));
+		
+		// Init dirs and files
+		self::initDirs();
 	}
 	
 	public static function getIncompatibleClasses()
@@ -21,7 +26,45 @@ class Ajde_Core_Autoloader
 			'Zend_Loader_Autoloader',
 			'Zend_Application_Bootstrap_Bootstrap'
 		);	
-	} 
+	}
+	
+	public static function addDir($dir)
+	{
+		self::$dirs[] = $dir;
+		self::$dirs = array_unique(self::$dirs);
+	}
+	
+	public static function addFile($file)
+	{
+		self::$files[] = $file;
+		self::$files = array_unique(self::$files);
+	}
+	
+	public static function initDirs()
+	{
+		// Add libraries and config to include path
+		self::addDir(LIB_DIR);
+		self::addDir(CONFIG_DIR);
+		self::addDir(MODULE_DIR);
+	}
+	
+	public static function initFiles($className)
+	{
+		// Namespace/Class.php naming
+		self::addFile(str_ireplace('_', '/', $className) . ".php");
+
+		// Namespace_Class.php naming
+		self::addFile($className . ".php");
+
+		// Namespace/Class/Class.php naming
+		$classNameArray = explode("_", $className);
+		$tail = end($classNameArray);
+		$head = implode("/", $classNameArray);
+		self::addFile($head . "/" . $tail . ".php");
+
+		// ModuleController.php naming
+		self::addFile(strtolower(str_replace('Controller', '', $className)) . "/" . $className . '.php');
+	}
 
 	public static function autoload($className)
 	{
@@ -29,45 +72,27 @@ class Ajde_Core_Autoloader
 			throw new Ajde_Exception('Could not create instance of incompatible class ' . $className . '.', 90018);
 		}
 		
-	    // Add libraries and config to include path
-		$dirs = array(
-			LIB_DIR,
-			CONFIG_DIR,
-			MODULE_DIR
-		);
-
-		$files = array();
-
-		// Namespace/Class.php naming
-		$files[] = str_ireplace('_', '/', $className) . ".php";
-
-		// Namespace_Class.php naming
-		$files[] = $className . ".php";
-
-		// Namespace/Class/Class.php naming
-		$classNameArray = explode("_", $className);
-		$tail = end($classNameArray);
-		$head = implode("/", $classNameArray);
-		$files[] = $head . "/" . $tail . ".php";
-
-		// ModuleController.php naming
-		$files[] = strtolower(str_replace('Controller', '', $className)) . "/" . $className . '.php';
-
-		foreach ($dirs as $dir)
-		{
-			foreach (array_unique($files) as $file)
-			{
-				$path = self::$dirPrepend.$dir.$file;
+		self::$files = array();
+		self::initFiles($className);
+		
+		/*// In order to use Ajde_Event here, require neccesary files statically :(
+		require_once(LIB_DIR.'Ajde/Object/Object.php');
+		require_once(LIB_DIR.'Ajde/Object/Static.php');
+		require_once(LIB_DIR.'Ajde/Event/Event.php');
+		require_once(LIB_DIR.'Ajde/Exception/Exception.php');
+		Ajde_Event::trigger('Ajde_Core_Autoloader', 'beforeSearch', array($className));*/
+		
+		foreach (self::$dirs as $dir) {
+			foreach (self::$files as $file) {						
+				$path = self::$dirPrepend.$dir.$file;		
 				if (file_exists($path)) {
-					if (class_exists('Ajde_Cache'))
-					{
+					if (class_exists('Ajde_Cache')) {
 						Ajde_Cache::getInstance()->addFile($path);
 					}
 					include_once $path;
 					return;
 				}
 			}
-
 		}
 
 		/*

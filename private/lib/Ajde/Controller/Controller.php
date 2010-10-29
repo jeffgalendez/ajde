@@ -17,6 +17,26 @@ class Ajde_Controller extends Ajde_Object_Standard
 		$this->setAction(isset($action) ? $action : $defaultParts['action']);
 		$this->setFormat(isset($format) ? $format : $defaultParts['format']);
 	}
+	
+	public function __fallback($method, $arguments)
+	{
+		return Ajde_Event::trigger('Ajde_Controller', 'call', array($method, $arguments));
+	}	
+		
+	public function getModule()
+	{
+		return $this->get('module');
+	}
+	
+	public function getAction()
+	{
+		return $this->get('action');
+	}
+	
+	public function getFormat()
+	{
+		return $this->get('format');
+	}
 
 	/**
 	 *
