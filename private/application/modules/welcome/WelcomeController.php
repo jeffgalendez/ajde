@@ -9,13 +9,20 @@ class WelcomeController extends Ajde_Controller
 	
 	function dbDefault()
 	{
-		AjdeExtension_Model::register($this);
+		AjdeExtension_Model::register($this);		
+		$model = $this->getModel('test');		
+		/* @var AjdeExtension_Model $model */
+		$model->loadByPK(1);		
+		$name = $model->name;		
+		$this->getView()->assign('name', $name );
 		
-		$model = $this->getModel('test');
+		AjdeExtension_Collection::register($this);		
+		$collection = $this->getCollection('test');		
+		/* @var AjdeExtension_Collection $collection */
+		$collection->addFilter(new AjdeExtension_Collection_Filter('name', AjdeExtension_Collection_Filter::FILTER_IS, 'ajde') );
+		$collection->load();			
+		$this->getView()->assign('ajdes', $collection);		
 		
-		$db = AjdeExtension::load('db')->getConnection();
-		$result = $db->query("SELECT * FROM test");
-		$this->getView()->assign('test', $result);
 		return $this->render();	
 	}
 	

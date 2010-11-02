@@ -66,4 +66,9 @@ abstract class Ajde_Object_Magic extends Ajde_Object
 	{
 		return isset($this->_data[$key]);
 	}
+	
+	public final function reset()
+	{
+		$this->_data = array();
+	}
 }

@@ -20,7 +20,10 @@ class Ajde_Controller extends Ajde_Object_Standard
 	
 	public function __fallback($method, $arguments)
 	{
-		return Ajde_Event::trigger('Ajde_Controller', 'call', array($method, $arguments));
+		if (Ajde_Event::has('Ajde_Controller', 'call')) {
+			return Ajde_Event::trigger('Ajde_Controller', 'call', array($method, $arguments));	
+		}
+		throw new Ajde_Exception("Call to undefined method ".get_class($this)."::$method()", 90006);		
 	}	
 		
 	public function getModule()

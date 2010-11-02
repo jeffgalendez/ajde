@@ -24,7 +24,16 @@ class Ajde_Exception_Handler extends Ajde_Object_Static
 		{	
 			if (Config::getInstance()->debug === true)
 			{
-				echo self::trace($exception);
+				if (
+						(get_class($exception) == 'Exception' || is_subclass_of($exception, 'Exception'))
+						||
+						((get_class($exception) == 'Ajde_Exception' || is_subclass_of($exception, 'Ajde_Exception')) && $exception->traceOnOutput())
+					) {
+					echo self::trace($exception);
+				} else {
+					Ajde_Exception_Log::logException($exception);				
+					Ajde_Http_Response::redirectServerError();
+				}
 			}
 			else
 			{

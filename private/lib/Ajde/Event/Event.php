@@ -31,9 +31,15 @@ class Ajde_Event extends Ajde_Object_Static
 		return false;		
 	}
 	
-	public static function has($object, $event)
+	public static function has($object, $event, $callback = null)
 	{
-		return isset(self::$eventStack[self::className($object)][$event]);
+		if (isset($callback)) {
+			return
+				isset(self::$eventStack[self::className($object)][$event]) &&
+				in_array($callback, self::$eventStack[self::className($object)][$event]);
+		} else {
+			return isset(self::$eventStack[self::className($object)][$event]);
+		}
 	}
 
 	public static function trigger($object, $event, array $parameters = array())
@@ -46,6 +52,7 @@ class Ajde_Event extends Ajde_Object_Static
 				if (isset($eventStack[$event])) {
 					foreach($eventStack[$event] as $eventCallback)
 					{
+						$retval = null;
 						$callback = null;
 						if (is_callable($eventCallback))
 						{
@@ -68,17 +75,29 @@ class Ajde_Event extends Ajde_Object_Static
 								// http://www.php.net/manual/en/function.call-user-func.php
 								// Note: Note that the parameters for call_user_func() are not passed by reference.
 								$parameterArray = array_merge(array(&$caller['object']), $parameters);
-								return call_user_func_array($callback, $parameterArray);
+								$retval = call_user_func_array($callback, $parameterArray);
+								if (isset($retval)) {
+									// TODO: Aborts execution of cueue!
+									return $retval;
+								}
 							}
 							elseif (isset($caller['class']) && isset($caller['function']) && $caller['type'] === '::')
 							{
 								// triggered from static context
-								// TODO: update exception 90015
-								return call_user_func_array($callback, $parameters);
+								// TODO: update exception 90015								
+								$retval = call_user_func_array($callback, $parameters);
+								if (isset($retval)) {
+									// TODO: Aborts execution of cueue!
+									return $retval;
+								}
 							}
 							elseif ($callback instanceof Closure)
 							{
-								return $callback();
+								$retval = $callback();
+								if (isset($retval)) {
+									// TODO: Aborts execution of cueue!
+									return $retval;
+								}
 							}
 							else
 							{
@@ -98,6 +117,16 @@ class Ajde_Event extends Ajde_Object_Static
 				}
 			}
 		}
+	}
+
+	public static function getCurrent()
+	{
+		return self::$current;
+	} 
+	
+	public static function getTotal()
+	{
+		return self::$total;
 	}
 
 	protected static function className($object)

@@ -18,7 +18,6 @@ class Ajde_Document_Format_Processor_Html_Beautifier extends Ajde_Object_Static
 	)
 	{
 		if (!Ajde_Core_Autoloader::exists('Tidy')) {
-			// TODO:
 			throw new Ajde_Exception('Class Tidy not found', 90023);
 		}
 		$tidy = new Tidy();
