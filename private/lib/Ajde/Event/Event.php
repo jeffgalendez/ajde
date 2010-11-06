@@ -119,16 +119,6 @@ class Ajde_Event extends Ajde_Object_Static
 		}
 	}
 
-	public static function getCurrent()
-	{
-		return self::$current;
-	} 
-	
-	public static function getTotal()
-	{
-		return self::$total;
-	}
-
 	protected static function className($object)
 	{
 		if (is_object($object))

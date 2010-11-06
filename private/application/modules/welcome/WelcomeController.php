@@ -20,6 +20,8 @@ class WelcomeController extends Ajde_Controller
 		$collection = $this->getCollection('test');		
 		/* @var AjdeExtension_Collection $collection */
 		$collection->addFilter(new AjdeExtension_Collection_Filter('name', AjdeExtension_Collection_Filter::FILTER_IS, 'ajde') );
+		$collection->limit(2);
+		$collection->order('date', 'asc');
 		$collection->load();			
 		$this->getView()->assign('ajdes', $collection);		
 		
