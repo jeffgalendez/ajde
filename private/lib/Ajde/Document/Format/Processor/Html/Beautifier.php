@@ -13,6 +13,7 @@ class Ajde_Document_Format_Processor_Html_Beautifier extends Ajde_Object_Static 
 		// @see http://tidy.sourceforge.net/docs/quickref.html
 		$config = array(
 			"output-xhtml" 	=> true,
+			"char-encoding"	=> "utf8",
 			"indent" 		=> true,
 			"indent-spaces"	=> 4,
 			"wrap"			=> 0
@@ -23,7 +24,8 @@ class Ajde_Document_Format_Processor_Html_Beautifier extends Ajde_Object_Static 
 			throw new Ajde_Exception('Class Tidy not found', 90023);
 		}
 		$tidy = new Tidy();
-		return $tidy->repairString($html, $config);
+		// http://bugs.php.net/bug.php?id=35647
+		return $tidy->repairString($html, $config, 'utf8');
 	}
 	
 }
