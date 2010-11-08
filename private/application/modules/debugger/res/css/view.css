@@ -1,4 +1,7 @@
 #ajdeDebugger {
+	position: absolute;
+	width: 100%;
+	background-color: white;
 	border-top: 1px solid #9a0092;
 	margin: 10px 0;
 	padding: 10px;
@@ -27,6 +30,7 @@
 #ajdeDebugger dl dd {
 	margin: 2px 0;
 	padding: 5px 0;
+	color: black;
 }
 
 #ajdeDebuggerQueries table {
@@ -35,4 +39,5 @@
 
 	#ajdeDebuggerQueries table td, #ajdeDebuggerQueries table th {
 		padding: 2px;
+		color: black;
 	}
