@@ -64,6 +64,7 @@ abstract class Ajde_Object_Magic extends Ajde_Object
 
 	public final function has($key)
 	{
+		Ajde_Event::trigger($this, 'beforeHas', array($key));
 		return isset($this->_data[$key]);
 	}
 	
