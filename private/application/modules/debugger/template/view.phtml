@@ -1,0 +1,40 @@
+<?php $this->requireJsLibrary('jquery', '1.4'); ?>
+
+<div id="ajdeDebugger">
+	<h4>Ajde Debugger</h4>
+	<dl>
+		<dt>Request</dt>
+		<dd><a href='javascript:void(0)' onclick='$("#ajdeDebuggerRequest").slideToggle();'><?php echo $this->request->get('_route'); ?></a>
+			<div id='ajdeDebuggerRequest' style='display: none;'>
+				<?php var_dump($this->request->_data); ?>
+			</div>
+		</dd>
+				
+		<dt>Config stage</dt>
+		<dd><?php echo $this->configstage; ?></dd>		
+		
+		<dt>Timer</dt>
+		<dd><?php echo $this->timer; ?> ms</dd>
+		
+		<?php if (isset($this->database)) { ?>
+		<dt>Database</dt>
+		<dd>		
+			<?php
+			$totalTime = 0;
+	        $table = '<table border=1><tr><th>Query</th><th>Time (ms)</th></tr>';  
+	        foreach($this->database as $entry) {  
+	            $totalTime += $entry['time'];  
+	            $table .= '<tr><td>' . $entry['query'] . '</td><td style=\'text-align: right;\'>' . $entry['time'] . '</td></tr>';  
+	        }          
+	        $table .= '</table>';
+			echo '<a href=\'javascript:void(0)\' onclick=\'$("#ajdeDebuggerQueries").slideToggle();\'>Queries: '. count($this->database) . ', time: ' . $totalTime . ' ms</a>';
+			?>
+		
+			<div id='ajdeDebuggerQueries' style='display: none;'>
+				<?php echo $table; ?>
+			</div>		
+		</dd>
+		<?php } ?>
+		
+	</dl>
+</div>

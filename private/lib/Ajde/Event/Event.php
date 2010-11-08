@@ -51,7 +51,7 @@ class Ajde_Event extends Ajde_Object_Static
 			{
 				if (isset($eventStack[$event])) {
 					foreach($eventStack[$event] as $eventCallback)
-					{
+					{						
 						$retval = null;
 						$callback = null;
 						if (is_callable($eventCallback))

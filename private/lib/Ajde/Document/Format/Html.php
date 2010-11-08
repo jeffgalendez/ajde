@@ -31,7 +31,8 @@ class Ajde_Document_Format_Html extends Ajde_Document
 					// TODO:
 					throw new Ajde_Exception('Processor ' . $processorClass . ' not found', 90022);
 				}
-				Ajde_Event::register('Ajde_Layout', 'afterGetContents', $processorClass . '::process');
+				Ajde_Event::register('Ajde_Layout', 'beforeGetContents', $processorClass . '::preProcess');
+				Ajde_Event::register('Ajde_Layout', 'afterGetContents', $processorClass . '::postProcess');
 			}
 		}
 		return parent::render();

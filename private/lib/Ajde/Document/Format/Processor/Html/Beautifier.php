@@ -1,8 +1,10 @@
 <?php
 
-class Ajde_Document_Format_Processor_Html_Beautifier extends Ajde_Object_Static
+class Ajde_Document_Format_Processor_Html_Beautifier extends Ajde_Object_Static implements Ajde_Document_Format_Processor
 {
-	public static function process(Ajde_Layout $layout)
+	public static function preProcess(Ajde_Layout $layout) {}
+		
+	public static function postProcess(Ajde_Layout $layout)
 	{
 		$layout->setContents(self::beautifyHtml($layout->getContents()));
 	}

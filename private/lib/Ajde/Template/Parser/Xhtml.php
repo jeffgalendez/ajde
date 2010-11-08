@@ -18,6 +18,7 @@ class Ajde_Template_Parser_Xhtml extends Ajde_Template_Parser
 			$doc->loadXML($xhtml);
 		} catch (ErrorException $e) {
 			// TODO:
+			return false;
 			throw new Ajde_Exception('Xhtml Parser error: ' . $e->getMessage());
 		}
 		

@@ -2,6 +2,8 @@
 
 class Ajde_Application extends Ajde_Object_Singleton
 {
+	protected $_timer = null;
+	
 	/**
 	 *
 	 * @staticvar Ajde_Application $instance
@@ -30,9 +32,29 @@ class Ajde_Application extends Ajde_Object_Singleton
 	{
 		return self::getInstance();
 	}
+	
+	public function startTimer()
+	{
+		$mtime = microtime();
+		$mtime = explode(' ', $mtime);
+		$mtime = $mtime[1] + $mtime[0];
+		$this->_timer = $mtime;
+	}
+	
+	public function getTimer()
+	{
+		$mtime = microtime();
+		$mtime = explode(" ", $mtime);
+		$mtime = $mtime[1] + $mtime[0];
+		$endtime = $mtime;
+		return $endtime - $this->_timer;
+	}	
 
 	public function run()
 	{
+		// For debugger
+		$this->startTimer();
+		
 		// Bootstrap init
 		$bootstrap = new Ajde_Core_Bootstrap();
 		$bootstrap->run();

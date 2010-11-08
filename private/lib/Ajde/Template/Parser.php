@@ -17,6 +17,12 @@ class Ajde_Template_Parser extends Ajde_Object_Standard
 		$this->_template = $template;
 	}
 	
+	public function __isset($name)
+	{
+		$template = $this->getTemplate();
+		return $template->hasAssigned($name);
+	}
+	
 	public function __get($name)
 	{
 		$template = $this->getTemplate();
