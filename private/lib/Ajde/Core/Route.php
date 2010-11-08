@@ -40,11 +40,13 @@ class Ajde_Core_Route extends Ajde_Object_Standard
 		$matches = array();
 		$rules = array(
 			array('%^([^/\.]+)/?$%' => array('module')),
-			array('%^([^\?/\.]+)/([^\?/\.]+)/?$%' => array('module', 'action')),
+			array('%^([^\?/\.]+)/([0-9]+)/?$%' => array('module', 'id')),
+			array('%^([^\?/\.]+)/([^\?/\.]+)/?$%' => array('module', 'action')),			
 			array('%^([^/\.]+)/([^/\.]+)/([^/\.]+)/?$%' => array('module', 'action', 'format')),
 			array('%^([^/\.]+)/([^/\.]+)/([^/\.]+)/([^/\.]+)/?$%' => array('module', 'action', 'format', 'id')),
 			
 			array('%^([^/\.]+)\.([^/\.]+)$%' => array('module', 'format')),
+			array('%^([^\?/\.]+)/([0-9]+)\.([^/\.]+)$%' => array('module', 'id', 'format')),
 			array('%^([^\?/\.]+)/([^\?/\.]+)\.([^/\.]+)$%' => array('module', 'action', 'format')),
 			array('%^([^\?/\.]+)/([^\?/\.]+)/([^\?/\.]+)\.([^/\.]+)$%' => array('module', 'action', 'id', 'format')),
 		);

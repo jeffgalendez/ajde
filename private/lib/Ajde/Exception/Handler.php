@@ -5,7 +5,6 @@ class Ajde_Exception_Handler extends Ajde_Object_Static
 	public static function __bootstrap()
 	{
 		// TODO: why is this defined here? also in index.php!
-		// error_reporting(E_ALL);
 		set_error_handler(array('Ajde_Exception_Handler', 'errorHandler'));
 		set_exception_handler(array('Ajde_Exception_Handler', 'handler'));
 		return true;

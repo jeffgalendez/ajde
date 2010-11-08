@@ -130,7 +130,7 @@ abstract class Ajde_Resource_Local_Compressor extends Ajde_Object_Standard
 		switch ($cacheStatus['status'])
 		{
 			case self::CACHE_STATUS_UPDATE:
-				unlink($this->getBase() . $cacheStatus['fileName']);
+				unlink($cacheStatus['fileName']);
 			case self::CACHE_STATUS_NOT_EXIST:
 				$this->saveCache();
 				break;
