@@ -24,6 +24,16 @@ class Ajde_Template extends Ajde_Object_Standard
 		$this->setParser($parser);
 	}
 	
+	public function __fallback($method, $arguments)
+	{
+		$helper = $this->getParser()->getHelper();
+		if (method_exists($helper, $method)) {
+			return call_user_func_array(array($helper, $method), $arguments);
+		} else {
+			throw new Ajde_Exception("Call to undefined method ".get_class($this)."::$method()", 90006);
+		}
+    }
+	
 	protected function _getFileInfo()
 	{
 		// go see what templates are available

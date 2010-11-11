@@ -23,6 +23,11 @@ class Ajde_Core_Route extends Ajde_Object_Standard
 		}
 	}
 	
+	public function __toString()
+	{
+		return $this->_route;
+	}
+	
 	public function getModule($default = null) {
 		return $this->get("module", $default);
 	}

@@ -22,6 +22,16 @@ class Ajde_Session extends Ajde_Object_Standard
 		Ajde_Event::register($this, 'afterSet', array($this, 'onSetParam'));
 	}
 	
+	public function setModel($name, $object)
+	{
+		$this->set($name, serialize($object));	
+	}
+	
+	public function getModel($name)
+	{
+		return unserialize($this->get($name));
+	}
+	
 	public function onHasParam(Ajde_Session $caller, $key)
 	{
 		if (!isset($caller->_data[$key]) && isset($_SESSION[$caller->_namespace][$key])) {
