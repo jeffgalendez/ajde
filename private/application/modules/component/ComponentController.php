@@ -45,6 +45,7 @@ class ComponentController extends Ajde_Controller
 	{
 		$this->setAction('form/ajax');
 		$this->getView()->assign('formAction', $this->getFormAction());
+		$this->getView()->assign('formId', $this->getFormId());
 		return $this->render();
 	}
 }

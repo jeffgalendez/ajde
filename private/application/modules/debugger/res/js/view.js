@@ -7,5 +7,5 @@ $(document).ready(function() {
 			lowest = bottom;
 		}
 	};
-	$('#ajdeDebugger').animate({top: lowest + 'px'});
+	$('#ajdeDebugger').hide().css({top: lowest + 'px'}).fadeIn('slow');	
 })
