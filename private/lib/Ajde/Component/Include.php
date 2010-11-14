@@ -11,6 +11,7 @@ class Ajde_Component_Include extends Ajde_Component
 	public function process()
 	{
 		if (!array_key_exists('route', $this->attributes)) {
+			// TODO:
 			throw new Ajde_Component_Exception();
 		}
 		return Ajde_Controller::fromRoute(new Ajde_Core_Route($this->attributes['route']))->invoke();

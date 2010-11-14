@@ -15,11 +15,8 @@ class Ajde_Core_Route extends Ajde_Object_Standard
 		}
 		$defaultParts = Config::get('defaultRouteParts');
 		$parts = array_merge($defaultParts, $routeParts);
-		$request = Ajde::app()->getRequest();
-		foreach($parts as $part => $value)
-		{
+		foreach($parts as $part => $value) {
 			$this->set($part, $value);
-			$request->set($part, $value);
 		}
 	}
 	

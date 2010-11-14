@@ -22,6 +22,12 @@ class Ajde_Session extends Ajde_Object_Standard
 		Ajde_Event::register($this, 'afterSet', array($this, 'onSetParam'));
 	}
 	
+	public function destroy()
+	{
+		$_SESSION[$caller->_namespace] = null;
+		$this->reset(); 
+	}
+	
 	public function setModel($name, $object)
 	{
 		$this->set($name, serialize($object));	
@@ -43,7 +49,7 @@ class Ajde_Session extends Ajde_Object_Standard
 	{
 		if ($value instanceof AjdeExtension_Model) {
 			// TODO:
-			throw new Ajde_Exception('It is not allowed to store a Model in the session, use Model::getValues() instead.');
+			throw new Ajde_Exception('It is not allowed to store a Model directly in the session, use Ajde_Session::setModel() instead.');
 		}
 		$_SESSION[$caller->_namespace][$key] = $value;
 	}

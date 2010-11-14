@@ -130,4 +130,18 @@ class Ajde_Template_Parser_Phtml_Helper extends Ajde_Object_Standard
 	{
 		return Ajde_Component_Include::processStatic($this->getParser(), array('route' => $route));
 	}
+	
+	/************************
+	 * Ajde_Component_Form
+	 ************************/
+
+	/**
+	 *
+	 * @param string $route
+	 * @return string
+	 */
+	public function ajaxForm($route)
+	{
+		return Ajde_Component_Form::processStatic($this->getParser(), array('route' => $route));
+	}
 }

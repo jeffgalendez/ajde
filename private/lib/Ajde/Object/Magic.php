@@ -9,6 +9,10 @@ abstract class Ajde_Object_Magic extends Ajde_Object
 		$prefix = strtolower(substr($method, 0, 3));
 		$key = substr($method, 3);
 		$key = strtolower(substr($key, 0, 1)).substr($key, 1);
+		if (strtolower($key) === 'data') {
+			// TODO:
+			throw new Ajde_Exception("Use of property 'data' restricted in subclasses of Ajde_Object_Magic");
+		}
 		switch ($prefix)
 		{
 			case "get":
@@ -19,7 +23,7 @@ abstract class Ajde_Object_Magic extends Ajde_Object
 				else
 				{					
 					if (!method_exists($this, '__fallback')) {
-						throw new Ajde_Exception("Parameter '$key' not set in class ".get_class($this)." when calling get('$key')", 90007);
+						throw new Ajde_Exception("Property '$key' not set in class ".get_class($this)." when calling get('$key')", 90007);
 					}					
 				}
 				break;
@@ -71,5 +75,10 @@ abstract class Ajde_Object_Magic extends Ajde_Object
 	public final function reset()
 	{
 		$this->_data = array();
+	}
+	
+	public final function getData()
+	{
+		return $this->_data;
 	}
 }

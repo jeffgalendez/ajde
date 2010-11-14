@@ -92,6 +92,7 @@ class Ajde_Exception_Handler extends Ajde_Object_Static
 				}
 
 				$message .= '<ol reversed="reversed">';
+				self::$firstApplicationFileExpanded = false; 
 				foreach($exception->getTrace() as $item) {
 					$arguments = null;
 					if (!empty($item['args'])) {
@@ -149,6 +150,8 @@ class Ajde_Exception_Handler extends Ajde_Object_Static
 		}
 	}
 
+	static $firstApplicationFileExpanded = false;
+	 
 	protected static function embedScript($filename = null, $line = null, $arguments = null, $expand = false)
 	{
 		$lineOffset = 3;
@@ -167,6 +170,14 @@ class Ajde_Exception_Handler extends Ajde_Object_Static
 					$file .= htmlentities($lines[$i]);
 				}
 			}
+		}
+		
+		if (substr_count($filename, str_replace('/', DIRECTORY_SEPARATOR, APP_DIR))) {
+			$filename = '<span style="color: red;">' . $filename . '</span>';
+			if (self::$firstApplicationFileExpanded === false) {
+				$expand = true;
+			}
+			self::$firstApplicationFileExpanded = true; 
 		}
 
 		$id = md5(microtime());

@@ -20,9 +20,9 @@ class Ajde_Component_Js extends Ajde_Component_Resource
 			$this->requireResource(
 				Ajde_Resource_Local::TYPE_JAVASCRIPT,
 				$this->attributes['action'],
-				isset($this->attributes['format']) ?: null,
-				isset($this->attributes['base']) ?: null,
-				isset($this->attributes['position']) ?: null
+				issetor($this->attributes['format'], null),
+				issetor($this->attributes['base'], null),
+				issetor($this->attributes['position'], null)
 			);
 		} elseif (array_key_exists('filename', $this->attributes)) {
 			$this->requirePublicResource(
