@@ -18,8 +18,6 @@ class Ajde_Session extends Ajde_Object_Standard
 	public function __construct($namespace = 'default')
 	{
 		$this->_namespace = $namespace;
-		Ajde_Event::register($this, 'beforeHas', array($this, 'onHasParam'));
-		Ajde_Event::register($this, 'afterSet', array($this, 'onSetParam'));
 	}
 	
 	public function destroy()
@@ -38,19 +36,21 @@ class Ajde_Session extends Ajde_Object_Standard
 		return unserialize($this->get($name));
 	}
 	
-	public function onHasParam(Ajde_Session $caller, $key)
+	public function has($key)
 	{
-		if (!isset($caller->_data[$key]) && isset($_SESSION[$caller->_namespace][$key])) {
-			$caller->set($key, $_SESSION[$caller->_namespace][$key]);
+		if (!isset($this->_data[$key]) && isset($_SESSION[$this->_namespace][$key])) {
+			$this->set($key, $_SESSION[$this->_namespace][$key]);
 		}
+		return parent::has($key);
 	}
 	
-	public function onSetParam(Ajde_Session $caller, $key, $value)
+	public function set($key, $value)
 	{
+		parent::set($key, $value);
 		if ($value instanceof AjdeExtension_Model) {
 			// TODO:
 			throw new Ajde_Exception('It is not allowed to store a Model directly in the session, use Ajde_Session::setModel() instead.');
 		}
-		$_SESSION[$caller->_namespace][$key] = $value;
+		$_SESSION[$this->_namespace][$key] = $value;
 	}
 }

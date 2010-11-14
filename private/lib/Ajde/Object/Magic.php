@@ -9,10 +9,6 @@ abstract class Ajde_Object_Magic extends Ajde_Object
 		$prefix = strtolower(substr($method, 0, 3));
 		$key = substr($method, 3);
 		$key = strtolower(substr($key, 0, 1)).substr($key, 1);
-		if (strtolower($key) === 'data') {
-			// TODO:
-			throw new Ajde_Exception("Use of property 'data' restricted in subclasses of Ajde_Object_Magic");
-		}
 		switch ($prefix)
 		{
 			case "get":
@@ -46,16 +42,13 @@ abstract class Ajde_Object_Magic extends Ajde_Object
 	 * @param mixed $value
 	 * @return mixed
 	 */
-	public final function set($key, $value)
+	public function set($key, $value)
 	{
 		$this->_data[$key] = $value;
-		Ajde_Event::trigger($this, 'afterSet', array($key, $value));
-		return true;
 	}
 
-	public final function get($key)
+	public function get($key)
 	{
-		Ajde_Event::trigger($this, 'beforeGet', array($key));
 		if ($this->has($key))
 		{
 			return $this->_data[$key];
@@ -66,9 +59,8 @@ abstract class Ajde_Object_Magic extends Ajde_Object
 		}		
 	}
 
-	public final function has($key)
+	public function has($key)
 	{
-		Ajde_Event::trigger($this, 'beforeHas', array($key));
 		return isset($this->_data[$key]);
 	}
 	
@@ -77,7 +69,7 @@ abstract class Ajde_Object_Magic extends Ajde_Object
 		$this->_data = array();
 	}
 	
-	public final function getData()
+	public final function values()
 	{
 		return $this->_data;
 	}

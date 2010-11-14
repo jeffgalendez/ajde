@@ -140,8 +140,8 @@ class Ajde_Template_Parser_Phtml_Helper extends Ajde_Object_Standard
 	 * @param string $route
 	 * @return string
 	 */
-	public function ajaxForm($route)
+	public function ajaxForm($route, $id = null)
 	{
-		return Ajde_Component_Form::processStatic($this->getParser(), array('route' => $route));
+		return Ajde_Component_Form::processStatic($this->getParser(), array('route' => $route, 'id' => $id));
 	}
 }

@@ -7,6 +7,12 @@ class Ajde_Controller extends Ajde_Object_Standard
 	 * @var Ajde_View
 	 */
 	protected $_view = null;
+	
+	/**
+	 * 
+	 * @var Ajde_Core_Route
+	 */
+	protected $_route = null;
 		
 	public function  __construct($action = null, $format = null)
 	{
@@ -16,6 +22,10 @@ class Ajde_Controller extends Ajde_Object_Standard
 		}
 		$this->setAction(isset($action) ? $action : $defaultParts['action']);
 		$this->setFormat(isset($format) ? $format : $defaultParts['format']);
+		
+		$route = new Ajde_Core_Route($this->getAction());
+		$route->getFormat($this->getFormat());
+		$this->_route = $route;
 	}
 	
 	public function __fallback($method, $arguments)
@@ -40,6 +50,11 @@ class Ajde_Controller extends Ajde_Object_Standard
 	{
 		return $this->get('format');
 	}
+	
+	public function getId()
+	{
+		return $this->get('id');
+	}
 
 	/**
 	 *
@@ -55,7 +70,12 @@ class Ajde_Controller extends Ajde_Object_Standard
 					90008);
 			Ajde::routingError($exception);
 		}
-		return new $moduleController($route->getAction(), $route->getFormat());
+		$controller = new $moduleController($route->getAction(), $route->getFormat());
+		$controller->_route = $route;
+		foreach ($route->values() as $part => $value) {
+			$controller->set($part, $value);
+		}		
+		return $controller;
 	}
 
 	public function invoke($action = null, $format = null)

@@ -22,7 +22,16 @@ class Ajde_Core_Route extends Ajde_Object_Standard
 	
 	public function __toString()
 	{
-		return $this->_route;
+		return $this->_route = $this->buildRoute();
+	}
+	
+	public function buildRoute()
+	{
+		$route = $this->getModule() . '/' . $this->getAction() . '/' . $this->getFormat();
+		if ($this->has('id')) {
+			$route .= '/' . $this->getId();
+		}
+		return $route;
 	}
 	
 	public function getModule($default = null) {

@@ -41,7 +41,7 @@ class Ajde_Http_Request extends Ajde_Object_Standard
 				$this->set($routeKey, Config::get("homepageRoute"));
 			}
 			$this->_route = new Ajde_Core_Route($this->get($routeKey));
-			foreach ($this->_route->getData() as $part => $value) {
+			foreach ($this->_route->values() as $part => $value) {
 				$this->set($part, $value);
 			}
 		}
