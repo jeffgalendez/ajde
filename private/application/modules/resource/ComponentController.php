@@ -1,13 +1,17 @@
 <?php
 
-class ResourceController extends Ajde_Controller
+class ComponentController extends Ajde_Controller
 {
-	function localDefault()
+	/************************
+	 * Ajde_Component_Resource
+	 ************************/
+	
+	function resourceLocalDefault()
 	{
 		return $this->_getLocalResource();
 	}
 
-	function compressedDefault()
+	function resourceCompressedDefault()
 	{
 		return $this->_getCompressedResource();
 	}
@@ -32,5 +36,15 @@ class ResourceController extends Ajde_Controller
 		$resource = call_user_func_array(array($className,"fromHash"), array($hash));
 		return $resource->getContents();
 	}
+	
+	/************************
+	 * Ajde_Component_Form
+	 ************************/
 
+	public function formAjaxDefault()
+	{
+		$this->setAction('form/ajax');
+		$this->getView()->assign('formAction', $this->getFormAction());
+		return $this->render();
+	}
 }
