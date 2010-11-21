@@ -138,10 +138,31 @@ class Ajde_Template_Parser_Phtml_Helper extends Ajde_Object_Standard
 	/**
 	 *
 	 * @param string $route
+	 * @param mixed $id
 	 * @return string
 	 */
-	public function ajaxForm($route, $id = null)
+	public function ajaxForm($route, $id = null, $class = null)
 	{
-		return Ajde_Component_Form::processStatic($this->getParser(), array('route' => $route, 'id' => $id));
+		return Ajde_Component_Form::processStatic($this->getParser(), array('route' => $route, 'id' => $id, 'class' => $class));
+	}
+	
+	/************************
+	 * Ajde_Component_Crud
+	 ************************/
+
+	/**
+	 *
+	 * @param mixed $model
+	 * @return string
+	 */
+	public function crudList($model, $options = array())
+	{
+		return Ajde_Component_Crud::processStatic($this->getParser(),
+			array(
+				'view' => 'list',
+				'model' => $model,
+				'options' => $options
+			)
+		);
 	}
 }

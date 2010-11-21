@@ -14,17 +14,38 @@
 		<dd><?php echo $this->configstage; ?></dd>		
 		
 		<dt>Timer</dt>
-		<dd><?php echo $this->timer; ?> ms</dd>
+		<dd>
+			<?php
+	        $table = '<table border=1><tr><th>Description</th><th>Time (ms)</th></tr>';  
+	        foreach($this->timers as $entry) {
+	        	if ($entry['level'] >= 0) {
+	        		$table .= '<tr><td>';
+	        		if ($entry['level'] > 0) {
+	        			$table .= str_repeat('&nbsp;&nbsp;&nbsp;', $entry['level']) . '<span style="color: gray;">└</span>&nbsp;';
+					}   
+	            	$table .= $entry['description'] . '</td><td style=\'text-align: right;\'>' . $entry['total'] . '</td></tr>';
+				}  
+	        }          
+	        $table .= '</table>';
+			echo '<a href=\'javascript:void(0)\' onclick=\'$("#ajdeDebuggerTimers").slideToggle();\'>'. $this->timers[0]['total'] . ' ms</a>';
+			?>
+		
+			<div id='ajdeDebuggerTimers' style='display: none;'>
+				<?php echo $table; ?>
+			</div>		
+		</dd>
 		
 		<?php if (isset($this->database)) { ?>
 		<dt>Database</dt>
 		<dd>		
 			<?php
 			$totalTime = 0;
-	        $table = '<table border=1><tr><th>Query</th><th>Time (ms)</th></tr>';  
+	        $table = '<table border=1><tr><th>Query</th><!--<th>Cache</th>--><th>Time (ms)</th></tr>';  
 	        foreach($this->database as $entry) {  
 	            $totalTime += $entry['time'];  
-	            $table .= '<tr><td>' . $entry['query'] . '</td><td style=\'text-align: right;\'>' . $entry['time'] . '</td></tr>';  
+	            $table .= '<tr><td>' . $entry['query'] . '</td>';
+				//$table .= '<td>' . ($entry['cache'] ? 'yes' : 'no') . '</td></tr>';
+	            $table .= '<td style=\'text-align: right;\'>' . $entry['time'] . '</td></tr>';  
 	        }          
 	        $table .= '</table>';
 			echo '<a href=\'javascript:void(0)\' onclick=\'$("#ajdeDebuggerQueries").slideToggle();\'>Queries: '. count($this->database) . ', time: ' . $totalTime . ' ms</a>';

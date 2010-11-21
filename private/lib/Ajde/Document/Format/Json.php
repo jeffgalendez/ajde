@@ -2,6 +2,8 @@
 
 class Ajde_Document_Format_Json extends Ajde_Document
 {
+	protected $_cacheControl = 'private';
+	
 	public function render()
 	{
 		Ajde::app()->getDocument()->setLayout(new Ajde_Layout('empty'));

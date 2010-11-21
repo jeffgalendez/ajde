@@ -2,6 +2,8 @@
 
 abstract class Ajde_Document extends Ajde_Object_Standard
 {
+	protected $_cacheControl = 'public';
+	
 	public function  __construct()
 	{
 		
@@ -47,12 +49,21 @@ abstract class Ajde_Document extends Ajde_Object_Standard
 	 */
 	public function getBody()
 	{
-		return $this->get('body');
+		if ($this->has('body')) {
+			return $this->get('body');
+		} else {
+			return '';
+		}
 	}
 
 	public function render()
 	{
 		return $this->getLayout()->getContents();
+	}
+	
+	public function getCacheControl()
+	{
+		return $this->_cacheControl;
 	}
 
 	/**

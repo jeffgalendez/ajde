@@ -2,7 +2,8 @@
 
 class Ajde_Application extends Ajde_Object_Singleton
 {
-	protected $_timer = null;
+	protected $_timers = array();
+	protected $_timerLevel = 0;
 	
 	/**
 	 *
@@ -33,27 +34,35 @@ class Ajde_Application extends Ajde_Object_Singleton
 		return self::getInstance();
 	}
 	
-	public function startTimer()
-	{
-		$mtime = microtime();
-		$mtime = explode(' ', $mtime);
-		$mtime = $mtime[1] + $mtime[0];
-		$this->_timer = $mtime;
+	public function addTimer($description)
+	{		
+		$this->_timers[] = array('description' => $description, 'level' => $this->_timerLevel, 'start' => microtime(true));
+		$this->_timerLevel++;		
+		return $this->getLastTimerKey();
 	}
 	
-	public function getTimer()
+	public function getLastTimerKey()
 	{
-		$mtime = microtime();
-		$mtime = explode(" ", $mtime);
-		$mtime = $mtime[1] + $mtime[0];
-		$endtime = $mtime;
-		return $endtime - $this->_timer;
-	}	
+		end($this->_timers);		
+		return key($this->_timers);
+	}
+	
+	public function endTimer($key)
+	{
+		$this->_timerLevel--;
+		$this->_timers[$key]['end'] = $end = microtime(true);
+		$this->_timers[$key]['total'] = round(($end - $this->_timers[$key]['start']) * 1000, 0);
+	}
+	
+	public function getTimers()
+	{
+		return $this->_timers;
+	}
 
 	public function run()
 	{
 		// For debugger
-		$this->startTimer();
+		$timer = $this->addTimer('Application');
 		
 		// Bootstrap init
 		$bootstrap = new Ajde_Core_Bootstrap();
@@ -70,14 +79,14 @@ class Ajde_Application extends Ajde_Object_Singleton
 		// Load document
 		$document = Ajde_Document::fromRoute($route);
 		$this->setDocument($document);
+		
+		// Create fresh response
+		$response = new Ajde_Http_Response();
+		$this->setResponse($response);
 
 		// Load controller
 		$controller = Ajde_Controller::fromRoute($route);
 		$this->setController($controller);
-
-		// Create fresh response
-		$response = new Ajde_Http_Response();
-		$this->setResponse($response);
 
 		// Invoke controller action
 		$actionResult = $controller->invoke();

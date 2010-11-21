@@ -46,6 +46,109 @@ class ComponentController extends Ajde_Controller
 		$this->setAction('form/ajax');
 		$this->getView()->assign('formAction', $this->getFormAction());
 		$this->getView()->assign('formId', $this->getFormId());
+		$this->getView()->assign('extraClass', $this->getExtraClass());
 		return $this->render();
+	}
+	
+	/************************
+	 * Ajde_Component_Crud
+	 ************************/
+	
+	public function crudListDefault()
+	{
+		if (Ajde::app()->getRequest()->has('edit')) {
+			return $this->crudEditDefault();			
+		} elseif (Ajde::app()->getRequest()->has('new')) {
+			return $this->crudNewDefault();
+		}
+		$this->setAction('crud/list');
+		
+		$crud = $this->getCrudInstance();
+		$crudId = spl_object_hash($crud);
+		$options = $this->getCrudOptions();
+		
+		$items = $crud->getItems();
+		$fields = $crud->getFields();
+		
+		$items->loadParents();
+		
+		$session = new Ajde_Session('AC.Crud');
+		$session->set($crudId, get_class($crud->getModel()));
+		
+		$this->getView()->assign('id', $crudId);
+		$this->getView()->assign('items', $items);
+		$this->getView()->assign('fields', $fields);
+		return $this->render();
+	}
+	
+	public function crudEditDefault()
+	{
+		$this->setAction('crud/edit');
+		
+		$crud = $this->getCrudInstance();
+		$crudId = spl_object_hash($crud);
+		$options = $this->getCrudOptions();
+		
+		$id = Ajde::app()->getRequest()->getParam('edit');
+		
+		$item = $crud->getItem($id);
+		$fields = $crud->getFields();
+		
+		$item->loadParents();
+		
+		$session = new Ajde_Session('AC.Crud');
+		$session->set($crudId, get_class($crud->getModel()));
+		
+		$this->getView()->assign('id', $crudId);
+		$this->getView()->assign('item', $item);
+		$this->getView()->assign('fields', $fields);
+		return $this->render();
+	}
+	
+	public function crudCommitJson()
+	{		
+		$operation = Ajde::app()->getRequest()->getParam('operation');
+		$crudId = Ajde::app()->getRequest()->getParam('crudId');
+		$id = Ajde::app()->getRequest()->getParam('id');
+		
+		switch ($operation) {
+			case 'edit':
+				return $this->crudEdit($crudId, $id);
+				break;
+			case 'delete':
+				return $this->crudDelete($crudId, $id);
+				break;
+			default:
+				return array('operation' => $operation, 'success' => false);
+				break;
+		}
+	}
+	
+	public function crudEdit($crudId, $id)
+	{
+		$session = new Ajde_Session('AC.Crud');
+		$modelName = $session->get($crudId);
+		
+		AjdeExtension_Model::register('*');
+		
+		$model = new $modelName();
+		$model->loadByPK($id);
+		//$success = $model->delete();
+		
+		return array('operation' => 'edit', 'success' => $success);
+	}
+	
+	public function crudDelete($crudId, $id)
+	{
+		$session = new Ajde_Session('AC.Crud');
+		$modelName = $session->get($crudId);
+		
+		AjdeExtension_Model::register('*');
+		
+		$model = new $modelName();
+		$model->loadByPK($id);
+		$success = $model->delete();
+		
+		return array('operation' => 'delete', 'success' => $success);
 	}
 }

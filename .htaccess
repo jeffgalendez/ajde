@@ -27,8 +27,8 @@ RewriteRule \.(php|css|jpe?g|gif|png|js|pdf|ico)$ - [L]
 RewriteRule ^public\/.*$ - [L]
 
 # Add a trailing slash if needed
-RewriteCond %{REQUEST_URI} ^/[^\.]+[^/]$
-RewriteRule ^(.*)$ http://%{HTTP_HOST}/$1/ [R=301,L]
+#RewriteCond %{REQUEST_URI} ^/[^\.]+[^/]$
+#RewriteRule ^(.*)$ http://%{HTTP_HOST}/$1/ [R=301,L]
 
 # Rewrite all traffic to index.php
 RewriteRule ^(.+)$ index.php?_route=$1 [QSA,L]

@@ -1,6 +1,6 @@
 <?php 
 
-class Ajde_Component_Form extends Ajde_Component_Resource
+class Ajde_Component_Form extends Ajde_Component
 {
 	public static function processStatic(Ajde_Template_Parser $parser, $attributes)
 	{
@@ -25,6 +25,7 @@ class Ajde_Component_Form extends Ajde_Component_Resource
 			
 			$controller->setFormAction($formAction->__toString());
 			$controller->setFormId(issetor($this->attributes['id'], spl_object_hash($this)));
+			$controller->setExtraClass(issetor($this->attributes['class'], ''));
 			
 			return $controller->invoke();
 			break;

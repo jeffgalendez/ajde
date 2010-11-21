@@ -80,6 +80,7 @@ class Ajde_Controller extends Ajde_Object_Standard
 
 	public function invoke($action = null, $format = null)
 	{
+		$timerKey = Ajde::app()->addTimer((string) $this->_route);
 		$action = isset($action) ? $action : $this->getAction();
 		$format = isset($format) ? $format : $this->getFormat();
 		$defaultFunction = $action . "Default";
@@ -100,7 +101,9 @@ class Ajde_Controller extends Ajde_Object_Standard
 					), 90011);
 			Ajde::routingError($exception);
 		}
-		return $this->$actionFunction();
+		$return = $this->$actionFunction();
+		Ajde::app()->endTimer($timerKey);
+		return $return;
 
 	}
 
@@ -140,8 +143,13 @@ class Ajde_Controller extends Ajde_Object_Standard
 		return $view->getContents();
 	}
 
-	public function redirect()
+	public function redirect($route)
 	{
-		
+		Ajde::app()->getResponse()->setRedirect($route);
+	}
+	
+	public function updateCache()
+	{
+		Ajde_Cache::getInstance()->updateHash(time());
 	}
 }

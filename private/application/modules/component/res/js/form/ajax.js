@@ -20,4 +20,6 @@ AC.Form.Ajax = function() {
 	};
 }();
 
-AC.Form.Ajax.init();
+$(document).ready(function() {
+	AC.Form.Ajax.init();
+})

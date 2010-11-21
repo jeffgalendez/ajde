@@ -22,7 +22,7 @@ class Ajde_Session extends Ajde_Object_Standard
 	
 	public function destroy()
 	{
-		$_SESSION[$caller->_namespace] = null;
+		$_SESSION[$this->_namespace] = null;
 		$this->reset(); 
 	}
 	

@@ -84,16 +84,14 @@ class Ajde_Cache extends Ajde_Object_Singleton
 	public function saveResponse()
 	{
 		$response = Ajde::app()->getResponse();
-		if ($this->ETagMatch() && Config::get('useCache'))
-		{
+		if ($this->ETagMatch() && Config::get('useCache')) {			
 			$response->setResponseType(Ajde_Http_Response::RESPONSE_TYPE_NOT_MODIFIED);
 			$response->addHeader('Content-Length', '0');
 			$response->setData(false);
-		}
-		else
-		{
+		} else {
 			$response->addHeader('Last-Modified', gmdate('D, d M Y H:i:s', $this->getLastModified()) . ' GMT');
 			$response->addHeader('Etag', $this->getHash());
+			$response->addHeader('Cache-Control', Ajde::app()->getDocument()->getCacheControl());
 			$response->setData($this->hasContents() ? $this->getContents() : false);
 		}
 	}

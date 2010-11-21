@@ -53,16 +53,16 @@ class Ajde_Http_Response extends Ajde_Object_Standard
 	function setRedirect($url = null)
 	{
 		if ($url === true || $url === self::REDIRECT_HOMEPAGE) {
-			$this->addHeader("Location", Config::get('site_path'));
+			$this->addHeader("Location", 'http://' . Config::get('site_root'));
 		} elseif ($url === self::REDIRECT_REFFERER) {
 			$this->addHeader("Location", Ajde_Http_Request::getRefferer());
 		} elseif (substr($url, 0, 7) == "http://") {
 			$this->addHeader("Location", $url);
 		} elseif ($url) {
-			$this->addHeader("Location", Config::get('site_path') . $url);
+			$this->addHeader("Location", 'http://' . Config::get('site_root') . $url);
 		} else {
 			$self = $_SERVER["PHP_SELF"].($_SERVER["QUERY_STRING"] ? "?" : "").$_SERVER["QUERY_STRING"];
-			$this->addHeader("Location", $self);
+			$this->addHeader("Location", 'http://' . $self);
 		}
 	}
 
@@ -92,7 +92,9 @@ class Ajde_Http_Response extends Ajde_Object_Standard
 			}
 		}
 
-		echo $this->getData();
+		if (!array_key_exists('Location', $this->get("headers"))) {
+			echo $this->getData();
+		}
 	}
 
 }

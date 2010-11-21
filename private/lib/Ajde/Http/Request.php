@@ -13,7 +13,8 @@ class Ajde_Http_Request extends Ajde_Object_Standard
 	public static function fromGlobal()
 	{
 		$instance = new self();
-		foreach($_GET as $key => $value)
+		$global = array_merge($_GET, $_POST);
+		foreach($global as $key => $value)
 		{
 			$instance->set($key, $value);
 		}

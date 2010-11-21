@@ -6,6 +6,8 @@ class Ajde_Document_Format_Html extends Ajde_Document
 	const RESOURCE_POSITION_FIRST = 1;
 	const RESOURCE_POSITION_LAST = 2;
 	
+	protected $_cacheControl = 'private';
+	
 	protected $_resources = array();
 	protected $_compressors = array();
 	protected $_meta = array();

@@ -5,6 +5,7 @@
 	border-top: 1px solid #9a0092;
 	margin: 10px 0;
 	padding: 10px;
+	display: none;
 }
 
 #ajdeDebugger h4 {
@@ -33,11 +34,11 @@
 	color: black;
 }
 
-#ajdeDebuggerQueries table {
+#ajdeDebugger table {
 	border: 1px solid silver;
 }
 
-	#ajdeDebuggerQueries table td, #ajdeDebuggerQueries table th {
+	#ajdeDebugger table td, #ajdeDebugger table th {
 		padding: 2px;
 		color: black;
 	}
