@@ -46,7 +46,8 @@ abstract class Ajde_Resource extends Ajde_Object_Standard
 		// create temporary resource for link filename
 		$linkFilename = $this->_getLinkTemplateFilename();
 
-		Ajde_Cache::getInstance()->addFile($linkFilename);
+		// TODO: performance gain?
+		// Ajde_Cache::getInstance()->addFile($linkFilename);
 		include $linkFilename;
 
 		$contents = ob_get_contents();
