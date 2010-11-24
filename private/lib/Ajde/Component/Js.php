@@ -28,7 +28,7 @@ class Ajde_Component_Js extends Ajde_Component_Resource
 			$this->requirePublicResource(
 				Ajde_Resource_Local::TYPE_JAVASCRIPT,
 				$this->attributes['filename'],
-				isset($this->attributes['position']) ?: null
+				issetor($this->attributes['position'], null)
 			);
 		}
 	}
