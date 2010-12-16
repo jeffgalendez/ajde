@@ -12,9 +12,26 @@ AC.Form.Ajax = function() {
 			var url = $(this).attr('action');
 			var data = $(this).serialize();
 			var form = this;
-			var success = function(data) { $(form).trigger('result', [data]); };
+			var success = function(data) {
+				$('body').removeClass('loading');
+				$(form).trigger('result', [data]);
+			};
 			var dataType = 'json';
+			$('body').addClass('loading');
 			$.post(url, data, success, dataType);
+			return false;	
+		},
+		
+		linkHandler: function() {
+			var href = $(this).attr('href');
+			var link = this;
+			var success = function(data) {
+				$('body').removeClass('loading');
+				$(link).trigger('result', [data]);
+			};
+			var dataType = 'json';
+			$('body').addClass('loading');
+			$.post(href, {}, success, dataType);
 			return false;	
 		}
 	};

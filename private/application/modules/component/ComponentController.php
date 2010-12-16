@@ -47,6 +47,7 @@ class ComponentController extends Ajde_Controller
 		$this->getView()->assign('formAction', $this->getFormAction());
 		$this->getView()->assign('formId', $this->getFormId());
 		$this->getView()->assign('extraClass', $this->getExtraClass());
+		$this->getView()->assign('innerXml', $this->getInnerXml());
 		return $this->render();
 	}
 	
