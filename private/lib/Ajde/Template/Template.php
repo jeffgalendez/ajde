@@ -3,7 +3,7 @@
 class Ajde_Template extends Ajde_Object_Standard
 {
 	protected $_contents = null;
-	protected $_table = null;
+	protected $_table = array();
 	
 	public function  __construct($base, $action, $format = 'html')
 	{
@@ -108,7 +108,7 @@ class Ajde_Template extends Ajde_Object_Standard
 	
 	public function hasAssigned($key)
 	{
-		return isset($this->_table[$key]);	
+		return array_key_exists($key, $this->_table);	
 	}
 	
 	public function getAssigned($key)

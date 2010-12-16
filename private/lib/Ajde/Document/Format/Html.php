@@ -2,13 +2,14 @@
 
 class Ajde_Document_Format_Html extends Ajde_Document
 {
-	const RESOURCE_POSITION_DEFAULT = 0;
+	const RESOURCE_POSITION_TOP = 0;
 	const RESOURCE_POSITION_FIRST = 1;
-	const RESOURCE_POSITION_LAST = 2;
+	const RESOURCE_POSITION_DEFAULT = 2;
+	const RESOURCE_POSITION_LAST = 3;
 	
 	protected $_cacheControl = 'private';
 	
-	protected $_resources = array();
+	protected $_resources = array(1 => array(), 2 => array(), 3 => array());
 	protected $_compressors = array();
 	protected $_meta = array();
 
@@ -76,7 +77,7 @@ class Ajde_Document_Format_Html extends Ajde_Document
 	public function renderAllResources(array $types = array('*'))
 	{
 		$code = '';
-		foreach ($this->_resources as $resource)
+		foreach ($this->getResources() as $resource)
 		{
 			/* @var $resource Ajde_Resource */
 			if (current($types) == '*' || in_array($resource->getType(), $types))
@@ -92,7 +93,7 @@ class Ajde_Document_Format_Html extends Ajde_Document
 		// Reset compressors
 		$this->_compressors = array();
 		$code = '';
-		foreach ($this->_resources as $resource)
+		foreach ($this->getResources() as $resource)
 		{
 			/* @var $resource Ajde_Resource */
 			if (current($types) == '*' || in_array($resource->getType(), $types))
@@ -138,22 +139,28 @@ class Ajde_Document_Format_Html extends Ajde_Document
 	public function addResource(Ajde_Resource $resource, $position = self::RESOURCE_POSITION_DEFAULT)
 	{
 		// Check for duplicates
-		foreach($this->_resources as $item) {
-			if ((string) $item == (string) $resource) {
-				return false;
+		foreach($this->_resources as $positionArray) {
+			foreach($positionArray as $item) {
+				if ((string) $item == (string) $resource) {
+					return false;
+				}
 			}
 		}
-		switch ($position)
-		{
-			case self::RESOURCE_POSITION_DEFAULT:
-			case self::RESOURCE_POSITION_LAST:
-				$this->_resources[] = $resource;
-				break;
-			case self::RESOURCE_POSITION_FIRST:
-				array_unshift($this->_resources, $resource);
-				break;
+		if ($position === self::RESOURCE_POSITION_TOP) {
+			array_unshift($this->_resources[self::RESOURCE_POSITION_FIRST], $resource);
+		} else {
+			$this->_resources[$position][] = $resource;
 		}
 		return true;	
+	}
+	
+	public function getResources()
+	{
+		$return = array();
+		foreach($this->_resources as $positionArray) {
+			$return = array_merge($return, $positionArray);
+		}
+		return $return;
 	}
 
 	public function autoAddResources(Ajde_Template $template)

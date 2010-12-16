@@ -6,6 +6,8 @@ abstract class Ajde_Component extends Ajde_Object_Standard
 	const AV_XMLNS = 'av';
 	
 	public $attributes = array();
+	public $innerXml = null;
+	
 	protected $_parseRules = array();
 	
 	/**
@@ -19,9 +21,10 @@ abstract class Ajde_Component extends Ajde_Object_Standard
 	 * @param Ajde_Template_Parser $parser
 	 * @param array $attributes
 	 */
-	public function __construct(Ajde_Template_Parser $parser, $attributes)
+	public function __construct(Ajde_Template_Parser $parser, $attributes, $innerXml = null)
 	{
 		$this->attributes = $attributes;
+		$this->innerXml = $innerXml;
 		$this->_parser = $parser;
 		$this->_parseRules = $this->_init();
 	} 
@@ -45,11 +48,12 @@ abstract class Ajde_Component extends Ajde_Object_Standard
 		$componentName = ucfirst(str_replace(self::AC_XMLNS . ':', '', $node->nodeName));
 		$className = 'Ajde_Component_' . $componentName;
 		$nodeAttributes = $node->attributes;
+		$innerXml = $parser->innerXml($node);
 		$attributes = array();
 		foreach ($nodeAttributes as $attribute) {
 			$attributes[$attribute->name] = $attribute->value;
 		}
-		return new $className($parser, $attributes);
+		return new $className($parser, $attributes, $innerXml);
 	}
 	
 	abstract public function process();

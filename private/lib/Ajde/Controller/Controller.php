@@ -85,23 +85,24 @@ class Ajde_Controller extends Ajde_Object_Standard
 		$format = isset($format) ? $format : $this->getFormat();
 		$defaultFunction = $action . "Default";
 		$formatFunction = $action . ucfirst($format);
-		if (method_exists($this, $formatFunction))
-		{
+		if (method_exists($this, $formatFunction)) {
 			$actionFunction = $formatFunction;
-		}
-		elseif (method_exists($this, $defaultFunction))
-		{
+		} elseif (method_exists($this, $defaultFunction)) {
 			$actionFunction = $defaultFunction;
-		}
-		else
-		{
+		} else {
 			$exception = new Ajde_Exception(sprintf("Action %s for module %s not found",
 						$this->getAction(),
 						$this->getModule()
 					), 90011);
 			Ajde::routingError($exception);
 		}
-		$return = $this->$actionFunction();
+		$return = true;
+		if (method_exists($this, 'beforeInvoke')) {
+			$return = $this->beforeInvoke();
+		}
+		if ($return === true) {
+			$return = $this->$actionFunction();
+		}
 		Ajde::app()->endTimer($timerKey);
 		return $return;
 

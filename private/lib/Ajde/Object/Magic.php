@@ -61,10 +61,10 @@ abstract class Ajde_Object_Magic extends Ajde_Object
 
 	public function has($key)
 	{
-		return isset($this->_data[$key]);
+		return array_key_exists($key, $this->_data);
 	}
 	
-	public final function reset()
+	public function reset()
 	{
 		$this->_data = array();
 	}

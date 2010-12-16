@@ -18,7 +18,7 @@ class Ajde_Template_Parser_Xhtml extends Ajde_Template_Parser
 			$doc->loadXML($xhtml);
 		} catch (ErrorException $e) {
 			// TODO:
-			return false;
+			//return false;
 			throw new Ajde_Exception('Xhtml Parser error: ' . $e->getMessage());
 		}
 		
@@ -33,7 +33,7 @@ class Ajde_Template_Parser_Xhtml extends Ajde_Template_Parser
 		$processed = $this->_process($root);
 		
 		// Return the inner XML of root element (exclusive)
-		$xml = $this->_innerXml($processed);
+		$xml = $this->innerXml($processed);
 		
 		// Break out the CDATA
 		$return = $this->_breakOutCdata($xml);
@@ -64,7 +64,7 @@ class Ajde_Template_Parser_Xhtml extends Ajde_Template_Parser
 		return $return ;
 	}
 	
-	protected function _innerXml(DOMElement $node)
+	public function innerXml(DOMElement $node)
 	{
 		$return = '';
 		foreach ($node->childNodes as $element) { 

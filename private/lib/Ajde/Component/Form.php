@@ -26,6 +26,7 @@ class Ajde_Component_Form extends Ajde_Component
 			$controller->setFormAction($formAction->__toString());
 			$controller->setFormId(issetor($this->attributes['id'], spl_object_hash($this)));
 			$controller->setExtraClass(issetor($this->attributes['class'], ''));
+			$controller->setInnerXml($this->innerXml);
 			
 			return $controller->invoke();
 			break;
