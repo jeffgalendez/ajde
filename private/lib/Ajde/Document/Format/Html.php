@@ -9,7 +9,11 @@ class Ajde_Document_Format_Html extends Ajde_Document
 	
 	protected $_cacheControl = 'private';
 	
-	protected $_resources = array(1 => array(), 2 => array(), 3 => array());
+	protected $_resources = array(
+		self::RESOURCE_POSITION_FIRST => array(),
+		self::RESOURCE_POSITION_DEFAULT => array(),
+		self::RESOURCE_POSITION_LAST => array()
+	);
 	protected $_compressors = array();
 	protected $_meta = array();
 
