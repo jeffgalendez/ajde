@@ -15,6 +15,9 @@ class Config_Base
 									"action" => "view",
 									"format" => "html"
 									);       
+									
+	public $routes				= array(
+									);
 	public $lang 				= "en";
 	public $timezone			= "Europe/Amsterdam";
 	public $layout 				= "default";

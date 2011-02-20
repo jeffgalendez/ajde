@@ -49,7 +49,7 @@ class Ajde_Core_Route extends Ajde_Object_Standard
 	protected function _extractRouteParts()
 	{
 		$matches = array();
-		$rules = array(
+		$defaultRules = array(
 			array('%^([^/\.]+)/?$%' => array('module')),
 			array('%^([^\?/\.]+)/([0-9]+)/?$%' => array('module', 'id')),
 			array('%^([^\?/\.]+)/([^\?/\.]+)/?$%' => array('module', 'action')),			
@@ -61,6 +61,9 @@ class Ajde_Core_Route extends Ajde_Object_Standard
 			array('%^([^\?/\.]+)/([^\?/\.]+)\.([^/\.]+)$%' => array('module', 'action', 'format')),
 			array('%^([^\?/\.]+)/([^\?/\.]+)/([^\?/\.]+)\.([^/\.]+)$%' => array('module', 'action', 'id', 'format')),
 		);
+		
+		$configRules = Config::get('routes');
+		$rules = array_merge($defaultRules, $configRules);
 		
 		foreach($rules as $rule)
 		{
