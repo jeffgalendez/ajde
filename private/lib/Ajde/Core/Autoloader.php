@@ -69,8 +69,21 @@ class Ajde_Core_Autoloader
 		
 		self::$files = array();
 		
-		// TODO: breaks i.e. Zend_Foo_Bar naming in LIB folder
-		if (substr($className, 0, 4) != 'Ajde') {
+		$supportedLibNameSpace = array('Ajde', 'Zend');
+		$isNameSpace = false;
+		
+		foreach($supportedLibNameSpace as $nameSpace) {
+			if (substr($className, 0, strlen($nameSpace)) == $nameSpace) {
+				$isNameSpace = true;
+				break;
+			}
+		}
+		
+		if ($isNameSpace) {
+			// LIB class
+			$dirs = array(LIB_DIR);
+			self::initFiles($className);
+		} else {			
 			// Non LIB related classes
 			if (substr_count($className, 'Controller') > 0) {
 				$dirs = array(MODULE_DIR);
@@ -85,10 +98,6 @@ class Ajde_Core_Autoloader
 				// FooModel.php, BarCollection.php, etc. naming
 				self::addFile($className . '.php');
 			}
-		} else {
-			// Ajde LIB cases
-			$dirs = array(LIB_DIR);
-			self::initFiles($className);
 		}
 		
 		/*// In order to use Ajde_Event here, require neccesary files statically :(
