@@ -20,16 +20,18 @@ define('LOG_DIR', 			VAR_DIR.'log/');
 define('MODULE_DIR', 		APP_DIR.'modules/');
 
 // Configure the autoloader
-require_once('../' . PRIVATE_DIR.LIB_DIR."Ajde/Core/Autoloader.php");
+require_once('../' . LIB_DIR . 'Ajde/Core/Autoloader.php');
 $dirPrepend = $_SERVER['DOCUMENT_ROOT'] . '/';
 Ajde_Core_Autoloader::register($dirPrepend);
 
 class AllTests extends TestSuite {
 	
     function __construct() {
-    	$this->TestSuite('All tests');
-        $this->addFile('core.php');
-        $this->addFile('xhtml.php');
+    	$this->TestSuite('Ajde test suite');
+        $this->addFile('testCore.php');
+        $this->addFile('testXhtml.php');
+		$this->addFile('testPhtml.php');
+		$this->addFile('testZend.php');
     }
     
 }
