@@ -9,7 +9,14 @@ class Config_Dev extends Config_Base {
 	public $documentProcessors	= array(
 									"html" => array(
 										"Debugger",
-										"Beautifier"										
+										/*
+										 * Disable Beautifier processor by default
+										 * as Tidy class is not included in quite
+										 * some PHP builds
+										 * @see https://code.google.com/p/ajde/wiki/Exception90023
+										 * 
+										 */
+										// "Beautifier"										
 									)
 								  );	
 
