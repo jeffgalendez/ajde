@@ -4,17 +4,20 @@
 	<h4>Ajde Debugger</h4>
 	<dl>
 		<dt>Request</dt>
-		<dd><a href='javascript:void(0)' onclick='$("#ajdeDebuggerRequest").slideToggle();'><?php echo $this->request->get('_route'); ?></a>
-			<div id='ajdeDebuggerRequest' style='display: none;'>
-				<?php var_dump($this->request->_data); ?>
-			</div>
+		<dd class='summary'><a href='javascript:void(0)' onclick='$("#ajdeDebuggerRequest").slideToggle();'><?php echo $this->request->get('_route'); ?></a></dd>
+		<dd id='ajdeDebuggerRequest' class='details'>
+			<table border=1>
+				<tr>
+					<td><?php var_dump($this->request->_data); ?></td>
+				</tr>
+			</table>			
 		</dd>
 				
 		<dt>Config stage</dt>
-		<dd><?php echo $this->configstage; ?></dd>		
+		<dd class='summary'><?php echo $this->configstage; ?></dd>		
 		
 		<dt>Timer</dt>
-		<dd>
+		<dd class='summary'>
 			<?php
 	        $table = '<table border=1><tr><th>Description</th><th>Time (ms)</th></tr>';  
 	        foreach($this->timers as $entry) {
@@ -29,15 +32,14 @@
 	        $table .= '</table>';
 			echo '<a href=\'javascript:void(0)\' onclick=\'$("#ajdeDebuggerTimers").slideToggle();\'>'. $this->timers[0]['total'] . ' ms</a>';
 			?>
-		
-			<div id='ajdeDebuggerTimers' style='display: none;'>
-				<?php echo $table; ?>
-			</div>		
+		</dd>
+		<dd id='ajdeDebuggerTimers' class='details'>
+			<?php echo $table; ?>		
 		</dd>
 		
 		<?php if (isset($this->database)) { ?>
 		<dt>Database</dt>
-		<dd>		
+		<dd class='summary'>		
 			<?php
 			$totalTime = 0;
 	        $table = '<table border=1><tr><th>Query</th><!--<th>Cache</th>--><th>Time (ms)</th></tr>';  
@@ -48,12 +50,11 @@
 	            $table .= '<td style=\'text-align: right;\'>' . $entry['time'] . '</td></tr>';  
 	        }          
 	        $table .= '</table>';
-			echo '<a href=\'javascript:void(0)\' onclick=\'$("#ajdeDebuggerQueries").slideToggle();\'>Queries: '. count($this->database) . ', time: ' . $totalTime . ' ms</a>';
+			echo '<a href=\'javascript:void(0)\' onclick=\'$("#ajdeDebuggerQueries").slideToggle();\'>' . count($this->database) . ' queries (' . $totalTime . ' ms)</a>';
 			?>
-		
-			<div id='ajdeDebuggerQueries' style='display: none;'>
-				<?php echo $table; ?>
-			</div>		
+		</dd>
+		<dd id='ajdeDebuggerQueries' class='details'>
+			<?php echo $table; ?>		
 		</dd>
 		<?php } ?>
 		

@@ -34,6 +34,10 @@
 	color: black;
 }
 
+#ajdeDebugger dl dd.details {
+	display: none;
+}
+
 #ajdeDebugger table {
 	border: 1px solid silver;
 }
