@@ -4,7 +4,7 @@
 	<h4>Ajde Debugger</h4>
 	<dl>
 		<dt>Request</dt>
-		<dd class='summary'><a href='javascript:void(0)' onclick='$("#ajdeDebuggerRequest").slideToggle();'><?php echo $this->request->get('_route'); ?></a></dd>
+		<dd class='summary'><a href='javascript:void(0)' onclick='$("#ajdeDebuggerRequest").slideToggle("fast");'><?php echo $this->request->get('_route'); ?></a></dd>
 		<dd id='ajdeDebuggerRequest' class='details'>
 			<table border=1>
 				<tr>
@@ -30,7 +30,7 @@
 				}  
 	        }          
 	        $table .= '</table>';
-			echo '<a href=\'javascript:void(0)\' onclick=\'$("#ajdeDebuggerTimers").slideToggle();\'>'. $this->timers[0]['total'] . ' ms</a>';
+			echo '<a href=\'javascript:void(0)\' onclick=\'$("#ajdeDebuggerTimers").slideToggle("fast");\'>'. $this->timers[0]['total'] . ' ms</a>';
 			?>
 		</dd>
 		<dd id='ajdeDebuggerTimers' class='details'>
@@ -50,7 +50,7 @@
 	            $table .= '<td style=\'text-align: right;\'>' . $entry['time'] . '</td></tr>';  
 	        }          
 	        $table .= '</table>';
-			echo '<a href=\'javascript:void(0)\' onclick=\'$("#ajdeDebuggerQueries").slideToggle();\'>' . count($this->database) . ' queries (' . $totalTime . ' ms)</a>';
+			echo '<a href=\'javascript:void(0)\' onclick=\'$("#ajdeDebuggerQueries").slideToggle("fast");\'>' . count($this->database) . ' queries (' . $totalTime . ' ms)</a>';
 			?>
 		</dd>
 		<dd id='ajdeDebuggerQueries' class='details'>
