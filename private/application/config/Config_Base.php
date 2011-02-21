@@ -36,6 +36,8 @@ class Config_Base
 									);
 	public $dbUser 				= "ajde";
 	public $dbPassword 			= "ajde";	
+	public $registerNamespaces	= array(
+									);
 
 	// Which modules should we call on bootstrapping?
 	public $bootstrap			= array(

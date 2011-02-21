@@ -69,17 +69,20 @@ class Ajde_Core_Autoloader
 		
 		self::$files = array();
 		
-		$supportedLibNameSpace = array('Ajde', 'Zend');
-		$isNameSpace = false;
+		$defaultNamespaces = array('Ajde', 'Zend');
+		$configNamespaces = Config::get('registerNamespaces');
+		$namespaces = array_merge($defaultNamespaces, $configNamespaces);
 		
-		foreach($supportedLibNameSpace as $nameSpace) {
-			if (substr($className, 0, strlen($nameSpace)) == $nameSpace) {
-				$isNameSpace = true;
+		$isNamespace = false;
+		
+		foreach($namespaces as $namespace) {
+			if (substr($className, 0, strlen($namespace)) == $namespace) {
+				$isNamespace = true;
 				break;
 			}
 		}
 		
-		if ($isNameSpace) {
+		if ($isNamespace) {
 			// LIB class
 			$dirs = array(LIB_DIR);
 			self::initFiles($className);
