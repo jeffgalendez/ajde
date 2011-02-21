@@ -70,6 +70,9 @@ class Ajde_Core_Autoloader
 		self::$files = array();
 		
 		$defaultNamespaces = array('Ajde', 'Zend');
+		foreach (glob(CONFIG_DIR .'*.php') as $filename) { 
+			require_once($filename); 
+		}		
 		$configNamespaces = Config::get('registerNamespaces');
 		$namespaces = array_merge($defaultNamespaces, $configNamespaces);
 		
@@ -118,7 +121,7 @@ class Ajde_Core_Autoloader
 					// if (class_exists('Ajde_Cache')) {
 					// 	Ajde_Cache::getInstance()->addFile($path);
 					// }
-					include_once $path;
+					require_once $path;
 					return;
 				}
 			}
