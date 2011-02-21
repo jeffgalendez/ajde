@@ -36,11 +36,11 @@ define('TEMPLATE_DIR', 		'template/');
 define('APP_DIR', 			PRIVATE_DIR.'application/');
 define('LIB_DIR', 			PRIVATE_DIR.'lib/');
 define('VAR_DIR', 			PRIVATE_DIR.'var/');
-define('CACHE_DIR', 		VAR_DIR.'cache/');
 define('CONFIG_DIR', 		APP_DIR.'config/');
 define('LAYOUT_DIR', 		APP_DIR.'layout/');
-define('LOG_DIR', 			VAR_DIR.'log/');
 define('MODULE_DIR', 		APP_DIR.'modules/');
+define('CACHE_DIR', 		VAR_DIR.'cache/');
+define('LOG_DIR', 			VAR_DIR.'log/');
 
 // Configure the autoloader
 require_once(LIB_DIR."Ajde/Core/Autoloader.php");

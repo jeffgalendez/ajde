@@ -2,6 +2,7 @@
 /**
  * To be removed
  */
+$absRoot = 'ajde.local';
 
 if (isset($_GET['c'])) {
 	
@@ -36,7 +37,7 @@ if (isset($_GET['c'])) {
 		$mtime = $mtime[1] + $mtime[0];
 		$starttime = $mtime;
 		
-		$temp = file_get_contents('http://ajde.local/home.html');
+		$temp = file_get_contents('http://'.$absRoot.'/static.html');
 		
 		$mtime = microtime();
 		$mtime = explode(" ", $mtime);

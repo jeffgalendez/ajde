@@ -66,32 +66,8 @@ class Ajde_Exception_Handler extends Ajde_Object_Static
 				if (ob_get_level()) {
 					ob_clean();
 				}
-				$arguments = null;
-				if (!empty($item['args'])) {
-					ob_start();
-					var_dump($item['args']);
-					$dump = ob_get_clean();
-					$arguments = sprintf(' with arguments: %s', $dump);
-				}
-				$message = sprintf("<h3>%s:</h3><h2>%s</h2> in %s\n",
-						$type,
-						$exception->getMessage(),
-						self::embedScript(
-								$exception->getFile(),
-								$exception->getLine(),
-								$arguments,
-								true
-						)						
-				);
-
-				if ($exception instanceof Ajde_Exception && $exception->getCode()) {
-					$message .= sprintf('<span style="border:1px solid black;display:inline-block;"><strong style="border-right:1px solid #aaa;padding:1px 8px;display:inline-block;background-color:yellow;">i</strong> <a href="%s">Ajde documentation on error %s</a>&nbsp;</span>',
-						Ajde_Core_Documentation::getUrl($exception->getCode()),
-						$exception->getCode()
-					);
-				}
-
-				$message .= '<ol reversed="reversed">';
+				
+				$traceMessage = '<ol reversed="reversed">';
 				self::$firstApplicationFileExpanded = false; 
 				foreach($exception->getTrace() as $item) {
 					$arguments = null;
@@ -101,7 +77,7 @@ class Ajde_Exception_Handler extends Ajde_Object_Static
 						$dump = ob_get_clean();
 						$arguments = sprintf(' with arguments: %s', $dump);
 					}
-					$message .= sprintf("<li><em>%s</em>%s<strong>%s</strong><br/>in %s<br/>&nbsp;\n",							
+					$traceMessage .= sprintf("<li><em>%s</em>%s<strong>%s</strong><br/>in %s<br/>&nbsp;\n",							
 							!empty($item['class']) ? $item['class'] : '&lt;unknown class&gt;',
 							!empty($item['type']) ? $item['type'] : '::',
 							!empty($item['function']) ? $item['function'] : '&lt;unknown function&gt;',
@@ -111,9 +87,29 @@ class Ajde_Exception_Handler extends Ajde_Object_Static
 									$arguments,
 									false									
 							));					
-					$message .= '</li>';
+					$traceMessage .= '</li>';
 				}
-				$message .= '</ol>';
+				$traceMessage .= '</ol>';
+				
+				$exceptionMessage = sprintf("<h3>%s:</h3><h2>%s</h2> in %s\n",
+						$type,
+						$exception->getMessage(),
+						self::embedScript(
+								$exception->getFile(),
+								$exception->getLine(),
+								$arguments,
+								!self::$firstApplicationFileExpanded
+						)						
+				);
+
+				if ($exception instanceof Ajde_Exception && $exception->getCode()) {
+					$exceptionMessage .= sprintf('<span style="border:1px solid black;display:inline-block;"><strong style="border-right:1px solid #aaa;padding:1px 8px;display:inline-block;background-color:yellow;">i</strong> <a href="%s">Ajde documentation on error %s</a>&nbsp;</span>',
+						Ajde_Core_Documentation::getUrl($exception->getCode()),
+						$exception->getCode()
+					);
+				}
+				
+				$message = $exceptionMessage . $traceMessage;
 				break;
 			case self::EXCEPTION_TRACE_LOG:
 				$message = sprintf("%s: %s in %s on line %s",
@@ -185,7 +181,7 @@ class Ajde_Exception_Handler extends Ajde_Object_Static
 				"<a
 					onclick='document.getElementById(\"$id\").style.display = document.getElementById(\"$id\").style.display == \"block\" ? \"none\" : \"block\";'
 					href='javascript:void(0);'
-				><i>%s</i> on line <b>%s</b></a><div id='$id' style='display:%s;'><pre style='border:1px solid gray;background-color:#eee;'>%s</pre>%s</div>",
+				><i>%s</i> on line <b>%s</b></a>&nbsp;<div id='$id' style='display:%s;'><pre style='border:1px solid gray;background-color:#eee;'>%s</pre>%s</div>",
 				$filename,
 				$line,
 				$expand ? "block" : "none",
