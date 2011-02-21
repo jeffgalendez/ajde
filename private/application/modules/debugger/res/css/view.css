@@ -46,3 +46,7 @@
 		padding: 2px;
 		color: black;
 	}
+	
+#ajdeDebuggerDump pre {
+	white-space: pre;
+} 

@@ -46,6 +46,11 @@ define('LOG_DIR', 			VAR_DIR.'log/');
 require_once(LIB_DIR."Ajde/Core/Autoloader.php");
 Ajde_Core_Autoloader::register();
 
+// Global dump function for debugging
+function dump($var) {
+	Ajde_Dump::dump($var);
+}
+
 // Run the main application
 $app = Ajde::create();
 

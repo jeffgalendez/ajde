@@ -3,6 +3,25 @@
 <div id="ajdeDebugger">
 	<h4>Ajde Debugger</h4>
 	<dl>
+		<?php if (isset($this->dump)) { ?>
+			<dt>Variables</dt>
+			<dd class='summary'><a href='javascript:void(0)' onclick='$("#ajdeDebuggerDump div").slideToggle("fast");'>toggle all</a></dd>
+			<dd id='ajdeDebuggerDump' class='details' style='display: block'>
+				<table border=1>
+					<?php foreach($this->dump as $source => $var) { ?>
+					<tr>
+						<td>
+							<a href='javascript:void(0)' onclick='$("#dump<?php echo md5($source); ?>").slideToggle("fast");'><?php echo $source; ?></a>
+							<div id='dump<?php echo md5($source); ?>' style='display: none;'>
+								<?php var_dump($var); ?>
+							</div>
+						</td>
+					</tr>
+					<?php } ?>
+				</table>			
+			</dd>
+		<?php } ?>
+		
 		<dt>Request</dt>
 		<dd class='summary'><a href='javascript:void(0)' onclick='$("#ajdeDebuggerRequest").slideToggle("fast");'><?php echo $this->request->get('_route'); ?></a></dd>
 		<dd id='ajdeDebuggerRequest' class='details'>
