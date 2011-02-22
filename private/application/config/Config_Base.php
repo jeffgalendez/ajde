@@ -4,7 +4,7 @@ class Config_Base
 {	
 	// Site parameters
 	public $ident				= "project";
-	public $sitename 			= "Project Name";	
+	public $sitename 			= "Ajde Samples";	
 	public $version 			= array(
 									"number" => "0",
 									"name" => "alpha"
