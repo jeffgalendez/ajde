@@ -83,12 +83,15 @@ class Ajde_Controller extends Ajde_Object_Standard
 		$timerKey = Ajde::app()->addTimer((string) $this->_route);
 		$action = isset($action) ? $action : $this->getAction();
 		$format = isset($format) ? $format : $this->getFormat();
+		$emptyFunction = $action;
 		$defaultFunction = $action . "Default";
 		$formatFunction = $action . ucfirst($format);
 		if (method_exists($this, $formatFunction)) {
 			$actionFunction = $formatFunction;
 		} elseif (method_exists($this, $defaultFunction)) {
 			$actionFunction = $defaultFunction;
+		} elseif (method_exists($this, $emptyFunction)) {
+			$actionFunction = $emptyFunction;
 		} else {
 			$exception = new Ajde_Exception(sprintf("Action %s for module %s not found",
 						$this->getAction(),
