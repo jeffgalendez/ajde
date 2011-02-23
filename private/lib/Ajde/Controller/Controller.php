@@ -102,7 +102,11 @@ class Ajde_Controller extends Ajde_Object_Standard
 		$return = true;
 		if (method_exists($this, 'beforeInvoke')) {
 			$return = $this->beforeInvoke();
-		}
+			if ($return !== true && $return !== false) {
+				// TODO:
+				throw new Ajde_Exception(sprintf("beforeInvoke() must return either TRUE or FALSE"));
+			}
+		}		
 		if ($return === true) {
 			$return = $this->$actionFunction();
 		}

@@ -42,6 +42,9 @@ define('MODULE_DIR', 		APP_DIR.'modules/');
 define('CACHE_DIR', 		VAR_DIR.'cache/');
 define('LOG_DIR', 			VAR_DIR.'log/');
 
+// Zend requires include path to be set to the LIB directory
+set_include_path(get_include_path() . PATH_SEPARATOR . LIB_DIR);
+
 // Configure the autoloader
 require_once(LIB_DIR."Ajde/Core/Autoloader.php");
 Ajde_Core_Autoloader::register();
