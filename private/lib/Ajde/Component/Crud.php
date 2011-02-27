@@ -21,7 +21,7 @@ class Ajde_Component_Crud extends Ajde_Component
 		case 'view':
 			switch($this->attributes['view']) {
 			case 'list':				
-				$crud = new AjdeExtension_Crud($this->attributes['model']);
+				$crud = new AjdeX_Crud($this->attributes['model']);
 				$options = issetor($this->attributes['options'], array());
 				$controller = Ajde_Controller::fromRoute(new Ajde_Core_Route('component/crudList'));
 				$controller->setCrudInstance($crud);
