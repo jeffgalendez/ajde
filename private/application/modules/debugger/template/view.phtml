@@ -12,8 +12,8 @@
 					<tr>
 						<td>
 							<a href='javascript:void(0)' onclick='$("#dump<?php echo md5($source); ?>").slideToggle("fast");'><?php echo $source; ?></a>
-							<div id='dump<?php echo md5($source); ?>' style='display: none;'>
-								<?php var_dump($var); ?>
+							<div id='dump<?php echo md5($source); ?>' <?php if ($var[1] === false) { ?>style='display: none;'<?php } ?>>
+								<?php var_dump($var[0]); ?>
 							</div>
 						</td>
 					</tr>

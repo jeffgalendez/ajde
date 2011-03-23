@@ -6,7 +6,7 @@
 			<?php
 			$value = $this->item->get($fieldName);
 			// Linked Model
-			if ($value instanceof AjdeExtension_Model) { ?>
+			if ($value instanceof AjdeX_Model) { ?>
 				<dd><?php echo $value->get($value->getDisplayField()); ?></dd>
 			<?php
 			// Text value

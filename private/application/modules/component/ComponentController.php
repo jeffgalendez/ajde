@@ -130,7 +130,7 @@ class ComponentController extends Ajde_Controller
 		$session = new Ajde_Session('AC.Crud');
 		$modelName = $session->get($crudId);
 		
-		AjdeExtension_Model::register('*');
+		AjdeX_Model::register('*');
 		
 		$model = new $modelName();
 		$model->loadByPK($id);
@@ -144,7 +144,7 @@ class ComponentController extends Ajde_Controller
 		$session = new Ajde_Session('AC.Crud');
 		$modelName = $session->get($crudId);
 		
-		AjdeExtension_Model::register('*');
+		AjdeX_Model::register('*');
 		
 		$model = new $modelName();
 		$model->loadByPK($id);

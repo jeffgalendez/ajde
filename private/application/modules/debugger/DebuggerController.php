@@ -12,8 +12,8 @@ class DebuggerController extends Ajde_Controller
 		$view->assign('request', Ajde::app()->getRequest());
 		$view->assign('configstage', Config::$stage);
 		
-		if (Ajde_Core_Autoloader::exists('AjdeExtension_Db_PDO')) {
-			$view->assign('database', AjdeExtension_Db_PDO::getLog());
+		if (Ajde_Core_Autoloader::exists('AjdeX_Db_PDO')) {
+			$view->assign('database', AjdeX_Db_PDO::getLog());
 		}
 		
 		Ajde::app()->endTimer(0);

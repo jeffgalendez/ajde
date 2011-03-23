@@ -19,7 +19,7 @@
 			<?php foreach($model->values() as $value) { ?>
 				<?php
 				// Linked Model
-				if ($value instanceof AjdeExtension_Model) { ?>
+				if ($value instanceof AjdeX_Model) { ?>
 					<td class="linkedModel" title="<?php echo $value->get($value->getDisplayField()); ?>"><?php echo $value->get($value->getDisplayField()); ?></td>
 				<?php
 				// Text value

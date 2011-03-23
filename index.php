@@ -24,7 +24,7 @@ function shutdown()
 register_shutdown_function('shutdown');
 
 // The only thing missing in PHP < 5.3
-function issetor(&$what, $else)
+function issetor(&$what, $else = null)
 {
 	return isset($what) ? $what : $else;
 }
@@ -50,8 +50,8 @@ require_once(LIB_DIR."Ajde/Core/Autoloader.php");
 Ajde_Core_Autoloader::register();
 
 // Global dump function for debugging
-function dump($var) {
-	Ajde_Dump::dump($var);
+function dump($var, $collapse = false) {
+	Ajde_Dump::dump($var, $collapse);
 }
 
 // Run the main application
