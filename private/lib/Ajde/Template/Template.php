@@ -10,7 +10,6 @@ class Ajde_Template extends Ajde_Object_Standard
 		$this->setBase($base);
 		$this->setAction($action);
 		$this->setFormat($format);
-		
 		if (($fileInfo = $this->_getFileInfo()) === false) {
 			$exception = new Ajde_Exception(sprintf("Template file in %s,
 					for action %s with format %s not found",
