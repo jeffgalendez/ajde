@@ -63,7 +63,7 @@ class Ajde_Core_Route extends Ajde_Object_Standard
 		);
 		
 		$configRules = Config::get('routes');
-		$rules = array_merge($defaultRules, $configRules);
+		$rules = array_merge($configRules, $defaultRules);
 		
 		foreach($rules as $rule)
 		{
