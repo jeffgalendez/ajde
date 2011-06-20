@@ -1,0 +1,23 @@
+dl.crudEdit {
+	margin-bottom:50px;
+}
+
+dl.crudEdit dt {
+	background: #005d9a;
+	color: #fff;
+	float: left;
+	clear: left;
+	font-weight: bold;
+	margin-right: 10px;
+	padding: 5px;
+	width: 100px;
+	height: 25px;
+}
+
+dl.crudEdit dd {
+	margin: 2px 0;
+	padding: 5px 0;
+	color: black;
+	float: left;
+	height: 25px;
+}
