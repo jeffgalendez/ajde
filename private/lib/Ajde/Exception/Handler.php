@@ -119,7 +119,11 @@ class Ajde_Exception_Handler extends Ajde_Object_Static
 					}			
 				} 
 				
-				$message = $exceptionDump . $exceptionMessage . $traceMessage;
+				$style = '<style>';
+				$style .= file_get_contents(MODULE_DIR . '_core/res/css/debugger/handler.css');
+				$style .= '</style>';
+				
+				$message = $style . $exceptionDump . $exceptionMessage . $traceMessage;
 				break;
 			case self::EXCEPTION_TRACE_LOG:
 				$message = sprintf("%s: %s in %s on line %s",
@@ -167,13 +171,14 @@ class Ajde_Exception_Handler extends Ajde_Object_Static
 			$lines = file($filename);
 			for ($i = max(0, $line - $lineOffset - 1); $i < min($line + $lineOffset, count($lines)); $i++)
 			{
+				$lineNumber = str_repeat(" ", 4 - strlen($i + 1)) . ($i + 1);
 				if ($i == $line - 1)
 				{
-					$file .= "<span style='background-color: yellow;'>" . htmlentities($lines[$i]) . "</span>";
+					$file .= "<span style='background-color: yellow;'>" . $lineNumber . htmlentities($lines[$i]) . "</span>";
 				}
 				else
 				{
-					$file .= htmlentities($lines[$i]);
+					$file .= $lineNumber . htmlentities($lines[$i]);
 				}
 			}
 		}
