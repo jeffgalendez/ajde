@@ -18,4 +18,5 @@ Remove these files and directories to cleanup your Ajde install for production:
 
 Those libraries are not included nor required for Ajde to work, but provide additional functionalities:
 - ./private/lib/Zend - Zend Framework (http://framework.zend.com/)
+- ./private/lib/AjdeX - Ajde extensions (http://code.google.com/p/ajde/)
 - ./test/simpletest - SimpleTest (http://simpletest.org/en/download.html)

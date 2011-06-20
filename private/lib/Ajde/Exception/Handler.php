@@ -109,7 +109,17 @@ class Ajde_Exception_Handler extends Ajde_Object_Static
 					);
 				}
 				
-				$message = $exceptionMessage . $traceMessage;
+				$exceptionDump = '';
+				if ($dumps = Ajde_Dump::getAll()) {
+					$exceptionDump .= '<h2>Dumps</h2>';
+					foreach($dumps as $dump) {
+						ob_start();
+						var_dump($dump);
+						$exceptionDump  .= ob_get_clean();
+					}			
+				} 
+				
+				$message = $exceptionDump . $exceptionMessage . $traceMessage;
 				break;
 			case self::EXCEPTION_TRACE_LOG:
 				$message = sprintf("%s: %s in %s on line %s",

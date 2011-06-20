@@ -55,6 +55,11 @@ class Ajde_Controller extends Ajde_Object_Standard
 	{
 		return $this->get('id');
 	}
+	
+	public function getRoute()
+	{
+		return $this->_route;
+	}
 
 	/**
 	 *
@@ -63,10 +68,14 @@ class Ajde_Controller extends Ajde_Object_Standard
 	 */
 	public static function fromRoute(Ajde_Core_Route $route)
 	{
-		$module = $route->getModule();
-		$moduleController = ucfirst($module) . 'Controller';
+		
+		if ($controller = $route->getController()) {
+			$moduleController = ucfirst($route->getModule()) . ucfirst($controller) . 'Controller';
+		} else {
+			$moduleController = ucfirst($route->getModule()) . 'Controller';
+		}
 		if (!Ajde_Core_Autoloader::exists($moduleController)) {
-			$exception = new Ajde_Exception("Controller for module $module not found",
+			$exception = new Ajde_Exception("Controller $moduleController for module {$route->getModule()} not found",
 					90008);
 			Ajde::routingError($exception);
 		}

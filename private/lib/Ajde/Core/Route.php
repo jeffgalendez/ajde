@@ -27,7 +27,11 @@ class Ajde_Core_Route extends Ajde_Object_Standard
 	
 	public function buildRoute()
 	{
-		$route = $this->getModule() . '/' . $this->getAction() . '/' . $this->getFormat();
+		$route = $this->getModule() . '/';
+		if ($this->getController()) {
+			$route .= $this->getController() . ':';
+		}
+		$route .= $this->getAction() . '/' . $this->getFormat();
 		if ($this->has('id')) {
 			$route .= '/' . $this->getId();
 		}
@@ -38,6 +42,10 @@ class Ajde_Core_Route extends Ajde_Object_Standard
 		return $this->get("module", $default);
 	}
 
+	public function getController($default = null) {
+		return $this->get("controller", $default);
+	}
+	
 	public function getAction($default = null) {
 		return $this->get("action", $default);
 	}
@@ -50,6 +58,12 @@ class Ajde_Core_Route extends Ajde_Object_Standard
 	{
 		$matches = array();
 		$defaultRules = array(
+			array('%^([^\?/\.]+)/([^\?/\.]+):([^\?/\.]+)/?$%' => array('module', 'controller', 'action')),
+			array('%^([^/\.]+)/([^/\.]+):([^/\.]+)/([^/\.]+)/?$%' => array('module', 'controller', 'action', 'format')),
+			array('%^([^/\.]+)/([^/\.]+):([^/\.]+)/([^/\.]+)/([^/\.]+)/?$%' => array('module', 'controller', 'action', 'format', 'id')),
+			array('%^([^\?/\.]+)/([^\?/\.]+):([^\?/\.]+)\.([^/\.]+)$%' => array('module', 'controller', 'action', 'format')),
+			array('%^([^\?/\.]+)/([^\?/\.]+):([^\?/\.]+)/([^\?/\.]+)\.([^/\.]+)$%' => array('module', 'controller', 'action', 'id', 'format')),
+		
 			array('%^([^/\.]+)/?$%' => array('module')),
 			array('%^([^\?/\.]+)/([0-9]+)/?$%' => array('module', 'id')),
 			array('%^([^\?/\.]+)/([^\?/\.]+)/?$%' => array('module', 'action')),			

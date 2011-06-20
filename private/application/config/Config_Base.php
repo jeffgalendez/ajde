@@ -9,9 +9,10 @@ class Config_Base
 									"number" => "0",
 									"name" => "alpha"
 									);
-	public $homepageRoute		= "static.html";
+	public $homepageRoute		= "main.html";
 	public $defaultRouteParts	= array(
-									"module" => "welcome",
+									"module" => "main",
+									"controller" => null,
 									"action" => "view",
 									"format" => "html"
 									);       

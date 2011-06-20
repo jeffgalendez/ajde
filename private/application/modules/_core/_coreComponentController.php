@@ -1,6 +1,6 @@
 <?php
 
-class ComponentController extends Ajde_Controller
+class _coreComponentController extends Ajde_Controller
 {
 	/************************
 	 * Ajde_Component_Resource

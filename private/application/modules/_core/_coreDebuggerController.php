@@ -1,8 +1,8 @@
 <?php
 
-class DebuggerController extends Ajde_Controller
+class _coreDebuggerController extends Ajde_Controller
 {
-	function viewDefault()
+	function view()
 	{
 		$view = $this->getView();
 		if (Ajde_Dump::getAll()) {

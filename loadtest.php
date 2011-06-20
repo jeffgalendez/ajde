@@ -1,8 +1,10 @@
 <?php
 /**
- * To be removed
+ * To be removed in production environment
  */
-$absRoot = 'ajde.local';
+
+$absRoot = $_SERVER["SERVER_NAME"] . str_replace('loadtest.php', '', $_SERVER["PHP_SELF"]);
+$interval = 500000;
 
 if (isset($_GET['c'])) {
 	
@@ -30,6 +32,8 @@ if (isset($_GET['c'])) {
     ob_implicit_flush(1);
 	
     $sum = array();
+	
+	echo "<pre>";
     
 	for ($i = 0; $i < $_GET['c']; $i++) {
 		$mtime = microtime();
@@ -37,7 +41,7 @@ if (isset($_GET['c'])) {
 		$mtime = $mtime[1] + $mtime[0];
 		$starttime = $mtime;
 		
-		$temp = file_get_contents('http://'.$absRoot.'/static.html');
+		$temp = file_get_contents('http://'.$absRoot);
 		
 		$mtime = microtime();
 		$mtime = explode(" ", $mtime);
@@ -45,16 +49,27 @@ if (isset($_GET['c'])) {
 		$endtime = $mtime;
 		$totaltime = ($endtime - $starttime);
 		
-		echo "attempt ".($i+1).": <em>" . round($totaltime, 5). "</em> seconds.";
-		echo "<br/>";
-		
+		echo "attempt ".($i+1).": <em>" . round($totaltime, 5). "</em> seconds ";
+	
 		$sum[] = round($totaltime, 5);
 		
 		// give apache some rest
-		usleep(100000);
+		for ($j = 0; $j < 10; $j++) {
+			echo ".";
+			ob_implicit_flush(1);
+			usleep($interval / 10);
+		}
+		
+		echo "<br/>";		
 		ob_implicit_flush(1);
 	}
-	echo '<strong>average: <em>' . round(array_sum($sum) / $i, 5) . '</em> seconds.</strong>';
+	
+	if ($i > 0) {
+		echo '<strong>average  : <em>' . round(array_sum($sum) / $i, 5) . '</em> seconds</strong>';
+	} else {
+		echo 'Click start testing';
+	}
+	
 	return;
 }
 
