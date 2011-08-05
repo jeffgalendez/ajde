@@ -16,7 +16,9 @@ class Config_Base
 									"action" => "view",
 									"format" => "html"
 									);       
-									
+	public $aliases				= array(
+									"home.html" => "main.html"
+									);											
 	public $routes				= array(
 									);
 	public $lang 				= "en";

@@ -6,7 +6,12 @@ class Ajde_Core_Route extends Ajde_Object_Standard
 
 	public function __construct($route)
 	{
-		$this->_route = $route;
+		$aliases = Config::get("aliases");
+		if (array_key_exists($route, $aliases)) {
+			$this->_route = $aliases[$route];
+		} else {
+			$this->_route = $route;
+		}		
 		$routeParts = $this->_extractRouteParts();
 		if (empty($routeParts)) {
 			$exception = new Ajde_Exception(sprintf("Invalid route: %s",
