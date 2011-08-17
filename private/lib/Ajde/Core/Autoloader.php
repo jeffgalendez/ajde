@@ -71,9 +71,13 @@ class Ajde_Core_Autoloader
 		
 		// Get namespaces from Config
 		$defaultNamespaces = array('Ajde', 'Zend');
-		foreach (glob(CONFIG_DIR . '*.php') as $filename) { 
-			require_once($filename); 
-		}		
+		if (!self::exists('Config')) {
+			require_once(array_shift(glob(CONFIG_DIR . 'Config_Default.php'))); 
+			require_once(array_shift(glob(CONFIG_DIR . 'Config_Application.php')));			
+			foreach (glob(CONFIG_DIR . '*.php') as $filename) {
+				require_once($filename); 
+			}		
+		}
 		$configNamespaces = Config::get('registerNamespaces');
 		$namespaces = array_merge($defaultNamespaces, $configNamespaces);
 		

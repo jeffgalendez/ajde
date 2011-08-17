@@ -1,14 +1,22 @@
 <?php
 
-class Config_Base
-{	
-	// Site parameters
-	public $ident				= "project";
-	public $sitename 			= "Project Name";	
+class Config_Default
+{
+	/**
+	 * Please do not edit this configuration file, this makes it easier
+	 * to upgrade when defaults are changed or new values are introduced.
+	 * Instead, use Config_Application to override default values. 
+	 */
+		
+	// Site parameters, defined in Config_Application
+	public $ident				= null;
+	public $sitename 			= null;	
 	public $version 			= array(
-									"number" => "0",
-									"name" => "alpha"
+									"number" => null,
+									"name" => null
 									);
+									
+	// Routing
 	public $homepageRoute		= "main.html";
 	public $defaultRouteParts	= array(
 									"module" => "main",
@@ -21,6 +29,8 @@ class Config_Base
 									);											
 	public $routes				= array(
 									);
+									
+	// Presentation
 	public $lang 				= "en";
 	public $timezone			= "Europe/Amsterdam";
 	public $layout 				= "default";
