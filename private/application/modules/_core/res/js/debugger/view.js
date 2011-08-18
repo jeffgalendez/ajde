@@ -1,11 +1,15 @@
 $(document).ready(function() {
-	elements = $('body *:not(#ajdeDebugger)');
-	var lowest = 0;
-	for (var i = 0; i < elements.length; i++) {
-		bottom = $(elements[i]).offset().top + $(elements[i]).outerHeight();
-		if (bottom > lowest) {
-			lowest = bottom;
+	var height = 400;
+	$('#ajdeDebuggerHeader').mouseover(function() {
+		if (parseInt($('#ajdeDebuggerContent').css('height')) < height) {
+			$('#ajdeDebuggerContent').animate({height: height + 'px'}, 'fast', function() {
+				$('#ajdeDebuggerContent').css({overflowY: 'scroll'});
+			});
 		}
-	};
-	$('#ajdeDebugger').hide().css({top: lowest + 'px'}).fadeIn('slow');	
+	});
+	$('#ajdeDebuggerHeader').click(function() {
+		if (parseInt($('#ajdeDebuggerContent').css('height')) == height) {
+			$('#ajdeDebuggerContent').animate({height: '0'}, 'fast');
+		}
+	});
 })
