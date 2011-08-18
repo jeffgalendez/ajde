@@ -7,9 +7,12 @@ $(document).ready(function() {
 			});
 		}
 	});
-	$('#ajdeDebuggerHeader').click(function() {
+	$('#ajdeDebuggerHeader').click(hideDebugger);
+	$('#ajdeDebugger').dblclick(hideDebugger);
+	
+	function hideDebugger() {
 		if (parseInt($('#ajdeDebuggerContent').css('height')) == height) {
 			$('#ajdeDebuggerContent').animate({height: '0'}, 'fast');
 		}
-	});
+	}
 })
