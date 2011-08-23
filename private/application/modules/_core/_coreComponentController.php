@@ -60,7 +60,7 @@ class _coreComponentController extends Ajde_Controller
 		if (Ajde::app()->getRequest()->has('edit')) {
 			return $this->crudEditDefault();			
 		} elseif (Ajde::app()->getRequest()->has('new')) {
-			return $this->crudNewDefault();
+			return $this->crudEditDefault();
 		}
 		$this->setAction('crud/list');
 		
@@ -95,7 +95,9 @@ class _coreComponentController extends Ajde_Controller
 		$item = $crud->getItem($id);
 		$fields = $crud->getFields();
 		
-		$item->loadParents();
+		if (!empty($id)) {
+			$item->loadParents();
+		}
 		
 		$session = new Ajde_Session('AC.Crud');
 		$session->set($crudId, get_class($crud->getModel()));
@@ -119,25 +121,28 @@ class _coreComponentController extends Ajde_Controller
 			case 'delete':
 				return $this->crudDelete($crudId, $id);
 				break;
+			case 'save':
+				return $this->crudSave($crudId, $id);
+				break;
 			default:
 				return array('operation' => $operation, 'success' => false);
 				break;
 		}
 	}
 	
-	public function crudEdit($crudId, $id)
-	{
-		$session = new Ajde_Session('AC.Crud');
-		$modelName = $session->get($crudId);
-		
-		AjdeX_Model::register('*');
-		
-		$model = new $modelName();
-		$model->loadByPK($id);
-		//$success = $model->delete();
-		
-		return array('operation' => 'edit', 'success' => $success);
-	}
+	// public function crudEdit($crudId, $id)
+	// {
+		// $session = new Ajde_Session('AC.Crud');
+		// $modelName = $session->get($crudId);
+// 		
+		// AjdeX_Model::register('*');
+// 		
+		// $model = new $modelName();
+		// $model->loadByPK($id);
+		// //$success = $model->delete();
+// 		
+		// return array('operation' => 'edit', 'success' => $success);
+	// }
 	
 	public function crudDelete($crudId, $id)
 	{
@@ -151,5 +156,35 @@ class _coreComponentController extends Ajde_Controller
 		$success = $model->delete();
 		
 		return array('operation' => 'delete', 'success' => $success);
+	}
+	
+	public function crudSave($crudId, $id)
+	{
+		$session = new Ajde_Session('AC.Crud');
+		$modelName = $session->get($crudId);
+		
+		AjdeX_Model::register('*');
+		
+		$model = new $modelName();
+		
+		// Get POST params
+		$post = $_POST;
+		foreach($post as $key => $value) {
+			if (empty($value)) {
+				unset($post[$key]);
+			}
+		}
+		$id = issetor($post["id"]);
+		
+		if (!empty($id)) {
+			$model->loadByPK($id);
+			$model->populate($post);
+			$success = $model->save();
+			return array('operation' => 'update', 'success' => $success);
+		} else {
+			$model->populate($post);
+			$success = $model->insert();
+			return array('operation' => 'insert', 'success' => $success);
+		}
 	}
 }

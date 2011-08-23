@@ -1,10 +1,14 @@
-<?php echo $this->ajaxForm('component/crudCommit', $this->id, 'ACCrudEdit'); ?>
+<?php echo $this->ajaxForm('_core/component:crudCommit', $this->id, 'ACCrudEdit'); ?>
 	
 	<dl class='crudEdit'>
 		<?php foreach($this->fields as $fieldName => $fieldLabel) { ?>
 			<dt><?php echo !empty($fieldLabel) ? $fieldLabel : $fieldName; ?></dt>
 			<?php
-			$value = $this->item->get($fieldName);
+			if ($this->item->has($fieldName)) {
+				$value = $this->item->get($fieldName);
+			} else {
+				$value = "";
+			}
 			// Linked Model
 			if ($value instanceof AjdeX_Model) { ?>
 				<dd><?php echo $value->get($value->getDisplayField()); ?></dd>
@@ -19,7 +23,7 @@
 		
 		<dt>&nbsp;</dt>
 		<dd>
-			<button class="save">Save</button>
+			<input type="button" class="save" value="Save" />
 			<a href="javascript:void(null);" class='cancel'>Cancel</a>
 		</dd>
 	</dl>

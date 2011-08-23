@@ -1,5 +1,5 @@
 <?php
 
-class TestModel extends AjdeExtension_Model
+class TestModel extends AjdeX_Model
 {
 }

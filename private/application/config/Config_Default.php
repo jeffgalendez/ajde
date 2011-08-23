@@ -31,7 +31,7 @@ class Config_Default
 									);
 									
 	// Presentation
-	public $lang 				= "en";
+	public $lang 				= "en_US";
 	public $timezone			= "Europe/Amsterdam";
 	public $layout 				= "default";
 	

@@ -6,30 +6,42 @@ AC.Crud.Edit = function() {
 		
 		init: function() {
 			$('form.ACCrudEdit a.cancel').click(AC.Crud.Edit.cancelHandler);
-			$('form.ACCrudEdit button.save').click(AC.Crud.Edit.saveHandler);
+			$('form.ACCrudEdit input.save').click(AC.Crud.Edit.saveHandler);
 		},
 		
 		cancelHandler: function() {			
 			window.location.href = window.location.pathname;
 		},
 		
-		saveHandler: function() {
-			var row = $(this).parents('tr');
-			var id = row.find('input[type=checkbox]').attr('value');			
+		saveHandler: function() {			
 			var form = $(this).parents('form');
 			
 			var options = {
 				operation	: 'save',
-				crudId		: form.attr('id'), 
-				id			: id					
+				crudId		: form.attr('id')					
 			};
-			$.getJSON(form.attr('action'), options, function(data) {
-				if (data.operation === 'save' && data.success === true) {
-					row.css({backgroundColor:'red'}).fadeOut();
+			
+			var url = $(form).attr('action') + "?" + $.param(options);
+			var data = $(form).serialize();
+			
+			$.post(url, data, function(data) {
+				if (data.success === false) {
+					alert('Something went wrong...');
+				} else {
+					if (data.operation === 'update') {
+						$('dl.crudEdit > *').css({backgroundColor:'orange'}).fadeOut(function() {
+							window.location.href = window.location.pathname + '?list';
+						});
+					} else {
+						$('dl.crudEdit > *').css({backgroundColor:'green'}).fadeOut(function() {
+							window.location.href = window.location.pathname + '?list';
+						});
+					}
 				}
-			});
+			}, 'json');
+			
+			return false;
 		}
-		
 	};
 }();
 

@@ -44,6 +44,7 @@ define('VAR_DIR', 			PRIVATE_DIR.'var/');
 define('CONFIG_DIR', 		APP_DIR.'config/');
 define('LAYOUT_DIR', 		APP_DIR.'layout/');
 define('MODULE_DIR', 		APP_DIR.'modules/');
+define('LANG_DIR', 			APP_DIR.'lang/');
 define('CACHE_DIR', 		VAR_DIR.'cache/');
 define('LOG_DIR', 			VAR_DIR.'log/');
 

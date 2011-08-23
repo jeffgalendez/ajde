@@ -110,14 +110,16 @@ class Ajde_Exception_Handler extends Ajde_Object_Static
 				}
 				
 				$exceptionDump = '';
-				if ($dumps = Ajde_Dump::getAll()) {
-					$exceptionDump .= '<h2>Dumps</h2>';
-					foreach($dumps as $dump) {
-						ob_start();
-						var_dump($dump);
-						$exceptionDump  .= ob_get_clean();
-					}			
-				} 
+				if (class_exists("Ajde_Dump")) {
+					if ($dumps = Ajde_Dump::getAll()) {
+						$exceptionDump .= '<h2>Dumps</h2>';
+						foreach($dumps as $dump) {
+							ob_start();
+							var_dump($dump);
+							$exceptionDump  .= ob_get_clean();
+						}			
+					} 
+				}
 				
 				$style = '<style>';
 				$style .= file_get_contents(MODULE_DIR . '_core/res/css/debugger/handler.css');
