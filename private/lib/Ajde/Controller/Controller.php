@@ -119,6 +119,9 @@ class Ajde_Controller extends Ajde_Object_Standard
 		if ($return === true) {
 			$return = $this->$actionFunction();
 		}
+		if (method_exists($this, 'afterInvoke')) {
+			$this->afterInvoke();
+		}		
 		Ajde::app()->endTimer($timerKey);
 		return $return;
 

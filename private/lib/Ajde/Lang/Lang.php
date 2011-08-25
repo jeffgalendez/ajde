@@ -34,6 +34,22 @@ class Ajde_Lang extends Ajde_Object_Singleton
 	{
 		$this->_lang = $lang;
 	}
+
+	public function getAvailableLang($langCode)
+	{
+		$availableLangs = $this->getAvailable();
+		$availableShortLangs = array();
+		foreach($availableLangs as $availableLang) {
+			$availableShortLangs[substr($availableLang, 0, 2)] = $availableLang;
+		}
+		if (in_array($langCode, $availableLangs)) {
+			return $langCode;
+		}
+		if (array_key_exists($langCode, $availableShortLangs)) {
+			return $availableShortLangs[$langCode];
+		}
+		return false;
+	}
 	 
 	public static function _($ident, $module = null)
 	{
@@ -67,28 +83,16 @@ class Ajde_Lang extends Ajde_Object_Singleton
 	}
 	
 	protected function detect()
-	{
-		$defaultLang = Config::get("lang");
-		$useLang = $defaultLang;
+	{		
 		if (Config::get("langAutodetect")) {
 			$acceptedLangs = $this->getLanguagesFromHeader();
-			$availableLangs = $this->getAvailable();
-			$availableShortLangs = array();
-			foreach($availableLangs as $availableLang) {
-				$availableShortLangs[substr($availableLang, 0, 2)] = $availableLang;
-			}
 			foreach($acceptedLangs as $acceptedLang => $priority) {
-				if (in_array($acceptedLang, $availableLangs)) {
-					$useLang = $acceptedLang;
-					break;
-				}
-				if (array_key_exists(substr($acceptedLang, 0, 2), $availableShortLangs)) {
-					$useLang = $availableShortLangs[substr($acceptedLang, 0, 2)];
-					break;
+				if ($langMatch = $this->getAvailableLang($acceptedLang)) {
+					return $langMatch;
 				}
 			}
 		}
-		return $useLang;
+		return $defaultLang = Config::get("lang");
 	}
 	
 	protected function getLanguagesFromHeader()

@@ -6,12 +6,28 @@ class Ajde_Core_Route extends Ajde_Object_Standard
 
 	public function __construct($route)
 	{
+		// See if first part is language code (i.e. first part is exactly
+		// two characters in length)
+		if (strlen($route) === 2 || substr($route, 2, 1) === '/') {
+			$shortLang = substr($route, 0, 2);
+			$langInstance = Ajde_Lang::getInstance();
+			if ($lang = $langInstance->getAvailableLang($shortLang)) {
+				Ajde_Lang::getInstance()->setLang($lang);
+				Config::getInstance()->site_root = Config::getInstance()->site_root . $shortLang . '/';
+				$route = substr($route, 3); 
+			}
+		}		
+		if (!$route) {
+			$route = Config::get('homepageRoute');
+		}
+		// Check for route aliases
 		$aliases = Config::get("aliases");
 		if (array_key_exists($route, $aliases)) {
 			$this->_route = $aliases[$route];
 		} else {
 			$this->_route = $route;
-		}		
+		}
+		// Get route parts
 		$routeParts = $this->_extractRouteParts();
 		if (empty($routeParts)) {
 			$exception = new Ajde_Exception(sprintf("Invalid route: %s",
