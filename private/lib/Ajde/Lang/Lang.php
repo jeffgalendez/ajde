@@ -93,6 +93,7 @@ class Ajde_Lang extends Ajde_Object_Singleton
 	
 	protected function getLanguagesFromHeader()
 	{
+		// @source http://www.thefutureoftheweb.com/blog/use-accept-language-header 
 		$langs = false;
 		if (isset($_SERVER['HTTP_ACCEPT_LANGUAGE'])) {
 			// break up string into pieces (languages and q factors)
