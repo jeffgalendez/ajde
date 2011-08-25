@@ -15,7 +15,9 @@ class Config_Application extends Config_Default
 	//public $defaultRouteParts;
 	//public $aliases;
 	//public $routes;
+	
 	//public $lang;
+	//public $langAutodetect;
 	//public $timezone;
 	//public $layout;
 	
@@ -25,8 +27,7 @@ class Config_Application extends Config_Default
 	//public $documentProcessors;
 	
 	//public $dbAdapter;
-	//public $dbDsn;
-	
+	//public $dbDsn;	
 	//public $dbUser;
 	//public $dbPassword;	
 	//public $registerNamespaces;

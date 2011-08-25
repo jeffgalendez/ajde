@@ -31,8 +31,9 @@ class Config_Default
 									);
 									
 	// Presentation
-	public $lang 				= "en_US";
-	public $timezone			= "Europe/Amsterdam";
+	public $lang 				= "en-GB";
+	public $langAutodetect		= true;
+	public $timezone			= "UTC";
 	public $layout 				= "default";
 	
 	// Performance
