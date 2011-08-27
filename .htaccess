@@ -20,11 +20,11 @@ php_value display_startup_errors 1
 RewriteEngine on
 #RewriteBase /ajde
 
+# Do not rewrite traffic to the public/ directory
+RewriteRule ^[a-zA-Z]{2}?\/public\/(.*)$ public/$1 [L]
+
 # Do not rewrite images, JS, PHP or CSS files
 RewriteRule \.(php|css|jpe?g|gif|png|js|pdf|ico)$ - [L]
-
-# Do not rewrite traffic to the public/ directory
-RewriteRule ^public\/.*$ - [L]
 
 # Add a trailing slash if needed
 #RewriteCond %{REQUEST_URI} ^/[^\.]+[^/]$

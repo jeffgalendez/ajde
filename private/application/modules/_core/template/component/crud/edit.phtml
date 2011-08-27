@@ -16,7 +16,7 @@
 			// Text value
 			} else { ?>
 				<dd>
-					<input type="text" name="<?php echo $fieldName; ?>" value="<?php echo $value; ?>" />
+					<input type="text" name="<?php echo $fieldName; ?>" value="<?php echo htmlentities($value); ?>" />
 				</dd>
 			<?php } ?>			
 		<?php } ?>

@@ -2,19 +2,18 @@
 
 class Ajde_Lang extends Ajde_Object_Singleton
 {
+	protected $_adapter = null;
 	protected $_lang;
 	
 	/**
-	 *
-	 * @staticvar Ajde_Lang $instance
 	 * @return Ajde_Lang
 	 */
 	public static function getInstance()
 	{
-		static $instance;
-		return $instance === null ? $instance = new self : $instance;
+    	static $instance;
+    	return $instance === null ? $instance = new self : $instance;
 	}
-	
+		
 	public function __construct()
 	{
 		$this->setLang($this->detect());
@@ -51,37 +50,6 @@ class Ajde_Lang extends Ajde_Object_Singleton
 		return false;
 	}
 	 
-	public static function _($ident, $module = null)
-	{
-		return self::getInstance()->get($ident, $module);
-	}
-	
-	public function get($ident, $module = null)
-	{
-		if (!$module) {	
-			foreach(debug_backtrace() as $item) {			
-				if (!empty($item['class'])) {
-					if (is_subclass_of($item['class'], "Ajde_Controller")) {
-						$module = strtolower(str_replace("Controller", "", $item['class']));
-						break;
-					}
-				}
-			}
-		}
-		
-		if ($module) {
-			$lang = $this->getLang();
-			$iniFilename = LANG_DIR . $lang . '/' . $module . '.ini';
-			if (file_exists($iniFilename)) {
-				$book = parse_ini_file($iniFilename);
-				if (array_key_exists($ident, $book)) {
-					return $book[$ident];
-				}
-			}
-		}
-		return $ident;
-	}
-	
 	protected function detect()
 	{		
 		if (Config::get("langAutodetect")) {
@@ -126,5 +94,27 @@ class Ajde_Lang extends Ajde_Object_Singleton
 			$return[] = basename($lang);
 		}
 		return $return;
+	}
+	
+	/**
+	 * @return Ajde_Lang_Adapter_Abstract
+	 */
+	public function getAdapter()
+	{
+		if ($this->_adapter === null) {
+			$adapterName = 'Ajde_Lang_Adapter_' . ucfirst(Config::get('langAdapter'));
+			$this->_adapter = new $adapterName();
+		}
+		return $this->_adapter;
+	}
+	
+	public static function _($ident, $module = null)
+	{
+		return self::getInstance()->get($ident, $module);
+	}
+	
+	public function get($ident, $module = null)
+	{
+		return $this->getAdapter()->get($ident, $module);
 	}
 }
