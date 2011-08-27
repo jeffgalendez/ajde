@@ -18,6 +18,7 @@ class Config_Application extends Config_Default
 	
 	//public $lang;
 	//public $langAutodetect;
+	//public $langAdapter;
 	//public $timezone;
 	//public $layout;
 	
