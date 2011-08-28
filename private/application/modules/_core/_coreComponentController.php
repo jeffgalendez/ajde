@@ -79,6 +79,7 @@ class _coreComponentController extends Ajde_Controller
 		$this->getView()->assign('id', $crudId);
 		$this->getView()->assign('items', $items);
 		$this->getView()->assign('fields', $fields);
+		$this->getView()->assign('options', $options);
 		return $this->render();
 	}
 	

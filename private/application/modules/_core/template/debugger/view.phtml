@@ -1,3 +1,5 @@
+<?php $this->requireJs('component/shortcut'); ?>
+
 <?php $this->requireJsLibrary('jquery', '1'); ?>
 
 <div id="ajdeDebugger">
@@ -5,8 +7,8 @@
 	<div id="ajdeDebuggerContent">
 		<h4>Ajde Debugger</h4>
 		<dl>
+			<dt>1. Variables</dt>
 			<?php if (isset($this->dump)) { ?>
-				<dt>Variables</dt>
 				<dd class='summary'><a href='javascript:void(0)' onclick='$("#ajdeDebuggerDump div").slideToggle("fast");'>toggle all</a></dd>
 				<dd id='ajdeDebuggerDump' class='details' style='display: block'>
 					<table border=1>
@@ -22,9 +24,11 @@
 						<?php } ?>
 					</table>			
 				</dd>
+			<?php } else { ?>
+				<dd class='summary'>(none)</dd>
 			<?php } ?>
 			
-			<dt>Request</dt>
+			<dt>2. Request</dt>
 			<dd class='summary'>
 				<a href='javascript:void(0)' onclick='$("#ajdeDebuggerRequest").slideToggle("fast");'>
 					<?php if (!$this->request->get('_route')) {
@@ -45,13 +49,13 @@
 				</table>			
 			</dd>
 					
-			<dt>Config stage</dt>
+			<dt>3. Stage</dt>
 			<dd class='summary'><?php echo $this->configstage; ?></dd>		
 			
-			<dt>Language</dt>
+			<dt>4. Language</dt>
 			<dd class='summary'><?php echo $this->lang; ?></dd>		
 			
-			<dt>Timer</dt>
+			<dt>5. Timer</dt>
 			<dd class='summary'>
 				<?php
 		        $table = '<table border=1><tr><th>Description</th><th>Time (ms)</th></tr>';  
@@ -73,7 +77,7 @@
 			</dd>
 			
 			<?php if (isset($this->database)) { ?>
-			<dt>Database</dt>
+			<dt>6. Database</dt>
 			<dd class='summary'>		
 				<?php
 				$totalTime = 0;

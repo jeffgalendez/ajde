@@ -11,14 +11,10 @@ AC.Crud.List = function() {
 			
 			$('form.ACCrudList').bind('result', function(events, data) {
 				console.log(data);
-			})
+			});			
 		},
 		
-		newHandler: function() {
-			var row = $(this).parents('tr');
-			var id = row.find('input[type=checkbox]').attr('value');			
-			var form = $(this).parents('form');
-			
+		newHandler: function() {		
 			window.location.href = window.location.pathname + '?new';
 		},
 		

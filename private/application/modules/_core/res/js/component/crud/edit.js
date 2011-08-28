@@ -6,7 +6,9 @@ AC.Crud.Edit = function() {
 		
 		init: function() {
 			$('form.ACCrudEdit a.cancel').click(AC.Crud.Edit.cancelHandler);
-			$('form.ACCrudEdit input.save').click(AC.Crud.Edit.saveHandler);
+			$('form.ACCrudEdit button.save').click(AC.Crud.Edit.saveHandler);
+			
+			AC.Shortcut.add('Ctrl+S', AC.Crud.Edit.saveHandler);
 		},
 		
 		cancelHandler: function() {			
@@ -15,6 +17,9 @@ AC.Crud.Edit = function() {
 		
 		saveHandler: function() {			
 			var form = $(this).parents('form');
+			if (!form.length) {
+				form = $('form:eq(0)');
+			}
 			
 			var options = {
 				operation	: 'save',
