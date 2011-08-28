@@ -31,7 +31,7 @@ class Config_Default
 									);
 									
 	// Presentation
-	public $lang 				= "en-GB";
+	public $lang 				= "en_GB";
 	public $langAutodetect		= true;
 	public $langAdapter			= "ini";
 	public $timezone			= "UTC";
