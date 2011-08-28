@@ -81,7 +81,7 @@ class Ajde_Resource_Local extends Ajde_Resource
 		$session = new Ajde_Session('_ajde');
 		$session->set($hash, $this);
 		
-		$url = 'component/resourceLocal/' . $this->getType() . '/' . $hash . '/';
+		$url = '_core/component:resourceLocal/' . $this->getType() . '/' . $hash . '/';
 
 		if (Config::get('debug') === true)
 		{

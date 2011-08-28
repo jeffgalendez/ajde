@@ -26,7 +26,7 @@ class Ajde_Resource_Local_Compressed extends Ajde_Resource
 		$session = new Ajde_Session('_ajde');
 		$session->set($hash, $this);
 		
-		$url = 'component/resourceCompressed/' . $this->getType() . '/' . $hash . '/';
+		$url = '_core/component:resourceCompressed/' . $this->getType() . '/' . $hash . '/';
 		
 		if (Config::get('debug') === true)
 		{

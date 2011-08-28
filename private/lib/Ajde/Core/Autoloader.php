@@ -8,8 +8,8 @@ class Ajde_Core_Autoloader
 	
 	// These (ZF) classes could pose problems to the Ajde MVC mechanisms (?)
 	public static $incompatibleClasses = array(
-		'Zend_Application',
 		'Zend_Loader_Autoloader',
+		'Zend_Application',		
 		'Zend_Application_Bootstrap_Bootstrap'
 	);
 	
@@ -69,10 +69,15 @@ class Ajde_Core_Autoloader
 		
 		self::$files = array();
 		
+		// Get namespaces from Config
 		$defaultNamespaces = array('Ajde', 'Zend');
-		foreach (glob(CONFIG_DIR .'*.php') as $filename) { 
-			require_once($filename); 
-		}		
+		if (!self::exists('Config')) {
+			require_once(array_shift(glob(CONFIG_DIR . 'Config_Default.php'))); 
+			require_once(array_shift(glob(CONFIG_DIR . 'Config_Application.php')));			
+			foreach (glob(CONFIG_DIR . '*.php') as $filename) {
+				require_once($filename); 
+			}		
+		}
 		$configNamespaces = Config::get('registerNamespaces');
 		$namespaces = array_merge($defaultNamespaces, $configNamespaces);
 		
@@ -93,8 +98,17 @@ class Ajde_Core_Autoloader
 			// Non LIB related classes
 			if (substr_count($className, 'Controller') > 0) {
 				$dirs = array(MODULE_DIR);
-				// ModuleController.php naming
-				self::addFile(strtolower(str_replace('Controller', '', $className)) . "/" . $className . '.php');
+				
+				$controllerName = str_replace('Controller', '', $className);
+				if (strtolower(substr($controllerName, 1)) != substr($controllerName, 1)) { // See if we got more capitals
+					// ModuleSubcontrollerController.php naming
+					$combinedName = substr($controllerName, 0, 1) . preg_replace('/([A-Z])/', ':\1', substr($controllerName, 1));
+					list($moduleName, $controllerName) = explode(":", $combinedName);
+					self::addFile(strtolower($moduleName) . "/" . $moduleName . $controllerName . 'Controller.php');
+				} else {
+					// ModuleController.php naming
+					self::addFile(strtolower(str_replace('Controller', '', $className)) . "/" . $className . '.php');
+				}
 			} elseif (substr_count($className, 'Config') > 0) {
 				$dirs = array(CONFIG_DIR);
 				// Namespace_Class.php naming

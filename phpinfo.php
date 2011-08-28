@@ -1,6 +1,6 @@
 <?php
 /**
- * To be removed
- */ 
+ * To be removed in production environment
+ */
 
 phpinfo();

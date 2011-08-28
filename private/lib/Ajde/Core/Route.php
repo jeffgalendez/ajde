@@ -6,7 +6,28 @@ class Ajde_Core_Route extends Ajde_Object_Standard
 
 	public function __construct($route)
 	{
-		$this->_route = $route;
+		// See if first part is language code (i.e. first part is exactly
+		// two characters in length)
+		if (strlen($route) === 2 || substr($route, 2, 1) === '/') {
+			$shortLang = substr($route, 0, 2);
+			$langInstance = Ajde_Lang::getInstance();
+			if ($lang = $langInstance->getAvailableLang($shortLang)) {
+				Ajde_Lang::getInstance()->setLang($lang);
+				Config::getInstance()->site_root = Config::getInstance()->site_root . $shortLang . '/';
+				$route = substr($route, 3); 
+			}
+		}		
+		if (!$route) {
+			$route = Config::get('homepageRoute');
+		}
+		// Check for route aliases
+		$aliases = Config::get("aliases");
+		if (array_key_exists($route, $aliases)) {
+			$this->_route = $aliases[$route];
+		} else {
+			$this->_route = $route;
+		}
+		// Get route parts
 		$routeParts = $this->_extractRouteParts();
 		if (empty($routeParts)) {
 			$exception = new Ajde_Exception(sprintf("Invalid route: %s",
@@ -27,7 +48,11 @@ class Ajde_Core_Route extends Ajde_Object_Standard
 	
 	public function buildRoute()
 	{
-		$route = $this->getModule() . '/' . $this->getAction() . '/' . $this->getFormat();
+		$route = $this->getModule() . '/';
+		if ($this->getController()) {
+			$route .= $this->getController() . ':';
+		}
+		$route .= $this->getAction() . '/' . $this->getFormat();
 		if ($this->has('id')) {
 			$route .= '/' . $this->getId();
 		}
@@ -38,6 +63,10 @@ class Ajde_Core_Route extends Ajde_Object_Standard
 		return $this->get("module", $default);
 	}
 
+	public function getController($default = null) {
+		return $this->get("controller", $default);
+	}
+	
 	public function getAction($default = null) {
 		return $this->get("action", $default);
 	}
@@ -50,6 +79,12 @@ class Ajde_Core_Route extends Ajde_Object_Standard
 	{
 		$matches = array();
 		$defaultRules = array(
+			array('%^([^\?/\.]+)/([^\?/\.]+):([^\?/\.]+)/?$%' => array('module', 'controller', 'action')),
+			array('%^([^/\.]+)/([^/\.]+):([^/\.]+)/([^/\.]+)/?$%' => array('module', 'controller', 'action', 'format')),
+			array('%^([^/\.]+)/([^/\.]+):([^/\.]+)/([^/\.]+)/([^/\.]+)/?$%' => array('module', 'controller', 'action', 'format', 'id')),
+			array('%^([^\?/\.]+)/([^\?/\.]+):([^\?/\.]+)\.([^/\.]+)$%' => array('module', 'controller', 'action', 'format')),
+			array('%^([^\?/\.]+)/([^\?/\.]+):([^\?/\.]+)/([^\?/\.]+)\.([^/\.]+)$%' => array('module', 'controller', 'action', 'id', 'format')),
+		
 			array('%^([^/\.]+)/?$%' => array('module')),
 			array('%^([^\?/\.]+)/([0-9]+)/?$%' => array('module', 'id')),
 			array('%^([^\?/\.]+)/([^\?/\.]+)/?$%' => array('module', 'action')),			
@@ -63,7 +98,7 @@ class Ajde_Core_Route extends Ajde_Object_Standard
 		);
 		
 		$configRules = Config::get('routes');
-		$rules = array_merge($defaultRules, $configRules);
+		$rules = array_merge($configRules, $defaultRules);
 		
 		foreach($rules as $rule)
 		{

@@ -1,25 +1,40 @@
 <?php
 
-class Config_Base
-{	
-	// Site parameters
-	public $ident				= "project";
-	public $sitename 			= "Ajde Samples";	
+class Config_Default
+{
+	/**
+	 * Please do not edit this configuration file, this makes it easier
+	 * to upgrade when defaults are changed or new values are introduced.
+	 * Instead, use Config_Application to override default values. 
+	 */
+		
+	// Site parameters, defined in Config_Application
+	public $ident				= null;
+	public $sitename 			= null;	
 	public $version 			= array(
-									"number" => "0",
-									"name" => "alpha"
+									"number" => null,
+									"name" => null
 									);
-	public $homepageRoute		= "static.html";
+									
+	// Routing
+	public $homepageRoute		= "main.html";
 	public $defaultRouteParts	= array(
-									"module" => "welcome",
+									"module" => "main",
+									"controller" => null,
 									"action" => "view",
 									"format" => "html"
 									);       
-									
+	public $aliases				= array(
+									"home.html" => "main.html"
+									);											
 	public $routes				= array(
 									);
-	public $lang 				= "en";
-	public $timezone			= "Europe/Amsterdam";
+									
+	// Presentation
+	public $lang 				= "en_GB";
+	public $langAutodetect		= true;
+	public $langAdapter			= "ini";
+	public $timezone			= "UTC";
 	public $layout 				= "default";
 	
 	// Performance
@@ -47,7 +62,7 @@ class Config_Base
 
 	function __construct()
 	{
-		$this->local_root = $_SERVER["DOCUMENT_ROOT"].str_replace("/index.php", "", $_SERVER["PHP_SELF"]);
+		$this->local_root = $_SERVER["DOCUMENT_ROOT"] . str_replace("/index.php", "", $_SERVER["PHP_SELF"]);
 		$this->site_domain = $_SERVER["SERVER_NAME"];
 		$this->site_path = str_replace('index.php', '', $_SERVER["PHP_SELF"]);
 		$this->site_root = $this->site_domain . $this->site_path;

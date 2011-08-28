@@ -20,11 +20,11 @@ php_value display_startup_errors 1
 RewriteEngine on
 #RewriteBase /ajde
 
+# Do not rewrite traffic to the public/ directory
+RewriteRule ^[a-zA-Z]{2}?\/public\/(.*)$ public/$1 [L]
+
 # Do not rewrite images, JS, PHP or CSS files
 RewriteRule \.(php|css|jpe?g|gif|png|js|pdf|ico)$ - [L]
-
-# Do not rewrite traffic to the public/ directory
-RewriteRule ^public\/.*$ - [L]
 
 # Add a trailing slash if needed
 #RewriteCond %{REQUEST_URI} ^/[^\.]+[^/]$
@@ -83,7 +83,12 @@ SetEnvIfNoCase Request_URI  \
 	ExpiresDefault                          "access plus 1 month"
 	ExpiresByType text/cache-manifest       "access plus 0 seconds" 
 	ExpiresByType text/html                 "access"
+	ExpiresByType application/xhtml+xml	"access"
+	ExpiresByType application/json		"access"
+	ExpiresByType application/xml		"access"
+	ExpiresByType text/xml			"access"
 	ExpiresByType application/rss+xml       "access plus 1 hour"
+	ExpiresByType application/atom+xml      "access plus 1 hour"
 	ExpiresByType image/vnd.microsoft.icon  "access plus 1 week" 
 	ExpiresByType image/png                 "access plus 1 month"
 	ExpiresByType image/jpg                 "access plus 1 month"

@@ -1,6 +1,6 @@
 <?php
 
-class Config_Dev extends Config_Base {
+class Config_Dev extends Config_Application {
 	
 	// Performance
 	public $compressResources	= false;

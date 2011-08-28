@@ -55,6 +55,11 @@ class Ajde_Controller extends Ajde_Object_Standard
 	{
 		return $this->get('id');
 	}
+	
+	public function getRoute()
+	{
+		return $this->_route;
+	}
 
 	/**
 	 *
@@ -63,10 +68,14 @@ class Ajde_Controller extends Ajde_Object_Standard
 	 */
 	public static function fromRoute(Ajde_Core_Route $route)
 	{
-		$module = $route->getModule();
-		$moduleController = ucfirst($module) . 'Controller';
+		
+		if ($controller = $route->getController()) {
+			$moduleController = ucfirst($route->getModule()) . ucfirst($controller) . 'Controller';
+		} else {
+			$moduleController = ucfirst($route->getModule()) . 'Controller';
+		}
 		if (!Ajde_Core_Autoloader::exists($moduleController)) {
-			$exception = new Ajde_Exception("Controller for module $module not found",
+			$exception = new Ajde_Exception("Controller $moduleController for module {$route->getModule()} not found",
 					90008);
 			Ajde::routingError($exception);
 		}
@@ -83,12 +92,15 @@ class Ajde_Controller extends Ajde_Object_Standard
 		$timerKey = Ajde::app()->addTimer((string) $this->_route);
 		$action = isset($action) ? $action : $this->getAction();
 		$format = isset($format) ? $format : $this->getFormat();
+		$emptyFunction = $action;
 		$defaultFunction = $action . "Default";
 		$formatFunction = $action . ucfirst($format);
 		if (method_exists($this, $formatFunction)) {
 			$actionFunction = $formatFunction;
 		} elseif (method_exists($this, $defaultFunction)) {
 			$actionFunction = $defaultFunction;
+		} elseif (method_exists($this, $emptyFunction)) {
+			$actionFunction = $emptyFunction;
 		} else {
 			$exception = new Ajde_Exception(sprintf("Action %s for module %s not found",
 						$this->getAction(),
@@ -99,10 +111,17 @@ class Ajde_Controller extends Ajde_Object_Standard
 		$return = true;
 		if (method_exists($this, 'beforeInvoke')) {
 			$return = $this->beforeInvoke();
-		}
+			if ($return !== true && $return !== false) {
+				// TODO:
+				throw new Ajde_Exception(sprintf("beforeInvoke() must return either TRUE or FALSE"));
+			}
+		}		
 		if ($return === true) {
 			$return = $this->$actionFunction();
 		}
+		if (method_exists($this, 'afterInvoke')) {
+			$this->afterInvoke();
+		}		
 		Ajde::app()->endTimer($timerKey);
 		return $return;
 
