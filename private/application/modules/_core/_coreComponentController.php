@@ -70,6 +70,7 @@ class _coreComponentController extends Ajde_Controller
 		
 		$items = $crud->getItems();
 		$fields = $crud->getFields();
+		$labels = $crud->getFieldLabels();
 		
 		$items->loadParents();
 		
@@ -79,6 +80,7 @@ class _coreComponentController extends Ajde_Controller
 		$this->getView()->assign('id', $crudId);
 		$this->getView()->assign('items', $items);
 		$this->getView()->assign('fields', $fields);
+		$this->getView()->assign('labels', $labels);
 		$this->getView()->assign('options', $options);
 		return $this->render();
 	}
@@ -95,6 +97,7 @@ class _coreComponentController extends Ajde_Controller
 		
 		$item = $crud->getItem($id);
 		$fields = $crud->getFields();
+		$labels = $crud->getFieldLabels();
 		
 		if (!empty($id)) {
 			$item->loadParents();
@@ -106,6 +109,7 @@ class _coreComponentController extends Ajde_Controller
 		$this->getView()->assign('id', $crudId);
 		$this->getView()->assign('item', $item);
 		$this->getView()->assign('fields', $fields);
+		$this->getView()->assign('labels', $labels);
 		return $this->render();
 	}
 	

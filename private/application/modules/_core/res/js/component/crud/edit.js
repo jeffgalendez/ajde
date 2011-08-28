@@ -21,6 +21,13 @@ AC.Crud.Edit = function() {
 				form = $('form:eq(0)');
 			}
 			
+			if (form[0].checkValidity) {
+				if (form[0].checkValidity() === false) {
+					alert('Error in form');
+					return false;
+				};
+			}
+			
 			var options = {
 				operation	: 'save',
 				crudId		: form.attr('id')					
