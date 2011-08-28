@@ -11,7 +11,7 @@ class Config_Application extends Config_Default
 									);
 									
 									
-	public $homepageRoute		= 'main';
+	//public $homepageRoute;
 	//public $defaultRouteParts;
 	//public $aliases;
 	//public $routes;
