@@ -25,12 +25,23 @@
 			<?php } ?>
 			
 			<dt>Request</dt>
-			<dd class='summary'><a href='javascript:void(0)' onclick='$("#ajdeDebuggerRequest").slideToggle("fast");'><?php echo $this->request->get('_route'); ?></a></dd>
+			<dd class='summary'>
+				<a href='javascript:void(0)' onclick='$("#ajdeDebuggerRequest").slideToggle("fast");'>
+					<?php if (!$this->request->get('_route')) {
+						echo './ [root]';
+					} else {
+						echo './' . $this->request->get('_route');
+					} ?>
+				</a>
+			</dd>
 			<dd id='ajdeDebuggerRequest' class='details'>
 				<table border=1>
 					<tr>
-						<td><?php var_dump($this->request->_data); ?></td>
+						<td>Calculated: <a href='<?php echo $this->request->getRoute(); ?>'><?php echo $this->request->getRoute(); ?></a></td>
 					</tr>
+					<tr>
+						<td><?php var_dump($this->request->_data); ?></td>
+					</tr>					
 				</table>			
 			</dd>
 					
