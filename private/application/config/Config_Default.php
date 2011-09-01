@@ -17,7 +17,7 @@ class Config_Default
 									);
 									
 	// Routing
-	public $homepageRoute		= "main.html";
+	public $homepageRoute		= "home.html";
 	public $defaultRouteParts	= array(
 									"module" => "main",
 									"controller" => null,
