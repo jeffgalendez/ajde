@@ -26,7 +26,7 @@
 				<?php
 				// Text value
 				} else { ?>
-					<td title="<?php echo $value; ?>"><?php echo htmlentities($value); ?></td>
+					<td title="<?php echo $value; ?>"><?php echo htmlspecialchars($value); ?></td>
 				<?php } ?>			
 			<?php } ?>
 			<td>

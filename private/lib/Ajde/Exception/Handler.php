@@ -14,7 +14,11 @@ class Ajde_Exception_Handler extends Ajde_Object_Static
 	{
 		error_log(sprintf("PHP error: %s in %s on line %s", $errstr, $errfile, $errline));
 		// TODO: only possible in PHP >= 5.3 ?
-		throw new ErrorException($errstr, 0, $errno, $errfile, $errline);
+		try
+		{
+			throw new ErrorException($errstr, 0, $errno, $errfile, $errline);
+		} catch(Exception $exception) {
+		}
 	}
 
 	public static function handler(Exception $exception)
