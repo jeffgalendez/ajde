@@ -14,7 +14,10 @@ class Config_Application extends Config_Default
 	//public $homepageRoute;
 	//public $defaultRouteParts;
 	//public $aliases;
-	//public $routes;
+	public $routes				= array(
+		// ./module/post-5 
+		array('%^([^\?/\.]+)/post-([0-9]+)/?$%' => array('module', 'id'))
+	);
 	
 	//public $lang;
 	//public $langAutodetect;
@@ -28,9 +31,12 @@ class Config_Application extends Config_Default
 	//public $documentProcessors;
 	
 	//public $dbAdapter;
-	//public $dbDsn;	
-	//public $dbUser;
-	//public $dbPassword;	
+	public $dbDsn				= array(
+									"host" 		=> "localhost",
+									"dbname"	=> "ajde-samples"
+									);
+	public $dbUser 				= "ajde-samples";
+	public $dbPassword 			= "blog";	
 	//public $registerNamespaces;
 	
 	//public $bootstrap;

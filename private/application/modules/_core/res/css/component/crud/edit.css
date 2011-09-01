@@ -22,6 +22,7 @@ dl.crudEdit dd {
 	padding: 5px 0;
 	color: black;
 	float: left;
+	min-height: 25px;
 }
 
 dl.crudEdit dd input[type=text] {

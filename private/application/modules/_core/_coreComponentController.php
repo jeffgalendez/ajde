@@ -50,6 +50,66 @@ class _coreComponentController extends Ajde_Controller
 		$this->getView()->assign('innerXml', $this->getInnerXml());
 		return $this->render();
 	}
+
+	public function formUploadHtml()
+	{
+		$this->setAction('form/upload');
+		$this->getView()->assign('name', $this->getName());
+		$this->getView()->assign('saveDir', $this->getSaveDir());
+		$this->getView()->assign('extensions', $this->getExtensions());
+		$this->getView()->assign('inputId', $this->getInputId());
+		$this->getView()->assign('extraClass', $this->getExtraClass());
+		return $this->render();
+	}
+	
+	public function formUploadJson()
+	{
+		// Load UploadHelper.php
+		$helper = new Ajde_Component_Form_UploadHelper();
+		
+		$saveDir = Ajde::app()->getRequest()->getSaveDir();
+		$allowedExtensions = explode(',', Ajde::app()->getRequest()->getExtensions());
+		
+		// max file size in bytes
+		$sizeLimit = 5 * 1024 * 1024;
+		
+		$uploader = new qqFileUploader($allowedExtensions, $sizeLimit);
+		$result = $uploader->handleUpload($saveDir);
+		// to pass data through iframe you will need to encode all html tags
+		return $result;
+	}
+	
+	/************************
+	 * Ajde_Component_Image
+	 ************************/
+	
+	public function imageHtml() {
+		$image = $this->getImage();
+		$imageId = md5(serialize($image));
+		
+		$session = new Ajde_Session('AC.Image');
+		$session->set($imageId, $image);
+				
+		$this->setAction('image/show');
+		$this->getView()->assign('source', $this->getSource());
+		$this->getView()->assign('width', $this->getWidth());
+		$this->getView()->assign('height', $this->getHeight());
+		$this->getView()->assign('extraClass', $this->getExtraClass());
+		return $this->render();
+	}
+	
+	public function imageData() {
+		$imageId = Ajde::app()->getRequest()->getId();
+		$session = new Ajde_Session('AC.Image');
+		$image = $session->get($imageId);
+		
+		// TODO: add crop/resize option
+		$image->crop($image->getHeight(), $image->getWidth());
+				
+		Ajde::app()->getResponse()->addHeader('Content-Type', $image->getMimeType());
+		$output = $image->getImage();
+		return $output;
+	}
 	
 	/************************
 	 * Ajde_Component_Crud
@@ -110,6 +170,7 @@ class _coreComponentController extends Ajde_Controller
 		$this->getView()->assign('item', $item);
 		$this->getView()->assign('fields', $fields);
 		$this->getView()->assign('labels', $labels);
+		$this->getView()->assign('options', $options);
 		return $this->render();
 	}
 	
@@ -120,9 +181,6 @@ class _coreComponentController extends Ajde_Controller
 		$id = Ajde::app()->getRequest()->getParam('id');
 		
 		switch ($operation) {
-			case 'edit':
-				return $this->crudEdit($crudId, $id);
-				break;
 			case 'delete':
 				return $this->crudDelete($crudId, $id);
 				break;
@@ -134,20 +192,6 @@ class _coreComponentController extends Ajde_Controller
 				break;
 		}
 	}
-	
-	// public function crudEdit($crudId, $id)
-	// {
-		// $session = new Ajde_Session('AC.Crud');
-		// $modelName = $session->get($crudId);
-// 		
-		// AjdeX_Model::register('*');
-// 		
-		// $model = new $modelName();
-		// $model->loadByPK($id);
-		// //$success = $model->delete();
-// 		
-		// return array('operation' => 'edit', 'success' => $success);
-	// }
 	
 	public function crudDelete($crudId, $id)
 	{

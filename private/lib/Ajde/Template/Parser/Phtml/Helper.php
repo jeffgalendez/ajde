@@ -169,6 +169,30 @@ class Ajde_Template_Parser_Phtml_Helper extends Ajde_Object_Standard
 		return Ajde_Component_Form::processStatic($this->getParser(), array('route' => $route, 'id' => $id, 'class' => $class));
 	}
 	
+	/**
+	 *
+	 * @param string $target
+	 * @return string
+	 */
+	public function ajaxUpload($name, $saveDir, $extensions = array(), $id = null, $class = null)
+	{
+		return Ajde_Component_Form::processStatic($this->getParser(), array('name' => $name, 'saveDir' => $saveDir, 'extensions' => $extensions, 'id' => $id, 'class' => $class));
+	}
+	
+	/************************
+	 * Ajde_Component_Image
+	 ************************/
+	
+	/**
+	 *
+	 * @param string $target
+	 * @return string
+	 */
+	public function ACImage($attributes)
+	{
+		return Ajde_Component_Image::processStatic($this->getParser(), $attributes);
+	}
+	
 	/************************
 	 * Ajde_Component_Crud
 	 ************************/

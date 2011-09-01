@@ -64,6 +64,12 @@ abstract class Ajde_Object_Magic extends Ajde_Object
 		return array_key_exists($key, $this->_data);
 	}
 	
+	public function isEmpty($key)
+	{
+		$value = $this->get($key);
+		return empty($value);
+	}
+	
 	public function reset()
 	{
 		$this->_data = array();

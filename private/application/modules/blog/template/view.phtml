@@ -1,0 +1,15 @@
+<h2>Blog</h2>
+
+<hr/>
+
+<?php foreach($this->blog as $entry) { ?>
+	
+	<h3><?php echo $entry->title; ?></h3>
+	<p>
+		<em>Written on <?php echo $entry->date; ?></em> : 
+		<?php echo $entry->content; ?>
+	</p>
+	
+	<hr/>
+	
+<?php } ?>
