@@ -26,6 +26,9 @@ class _coreDebuggerController extends Ajde_Controller
 		// Get language 
 		$view->assign('lang', Ajde_Lang::getInstance()->getLang());
 		
+		// Get session
+		$view->assign('session', $_SESSION);
+		
 		// Get the application timer
 		Ajde::app()->endTimer(0);
 		Ajde::app()->endTimer(Ajde::app()->getLastTimerKey());

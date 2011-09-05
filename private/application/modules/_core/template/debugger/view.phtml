@@ -45,7 +45,7 @@
 					</tr>
 					<tr>
 						<td><?php var_dump($this->request->_data); ?></td>
-					</tr>					
+					</tr>				
 				</table>			
 			</dd>
 					
@@ -76,8 +76,38 @@
 				<?php echo $table; ?>		
 			</dd>
 			
+			<dt>6. Session</dt>
+			<dd class='summary'>
+				<a href='javascript:void(0)' onclick='$("#ajdeDebuggerSession").slideToggle("fast");'>
+					<?php echo count($this->session); ?> key(s)
+				</a>
+			</dd>
+			<dd id='ajdeDebuggerSession' class='details'>
+				<table border=1>
+					<tr>
+						<td align="right">
+							<a href='javascript:void(0)' onclick='$("#ajdeDebuggerSession div").slideToggle("fast");'>toggle all</a>
+						</td>
+					</tr>
+					<?php
+					$i = 0; 
+					foreach($this->session as $key => $val) {
+						$i++;
+						?>
+					<tr>
+						<td>
+							<?php echo $i; ?>. <a href='javascript:void(0)' onclick='$("#session<?php echo md5($key); ?>").slideToggle("fast");'><?php echo $key; ?></a>
+							<div id='session<?php echo md5($key); ?>' style='display: none;'>
+								<?php var_dump($val); ?>
+							</div>
+						</td>
+					</tr>
+					<?php } ?>
+				</table>			
+			</dd>
+			
 			<?php if (isset($this->database)) { ?>
-			<dt>6. Database</dt>
+			<dt>7. Database</dt>
 			<dd class='summary'>		
 				<?php
 				$totalTime = 0;

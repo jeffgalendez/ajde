@@ -19,7 +19,7 @@ class Ajde_Document_Format_Processor_Html_Compressor extends Ajde_Object_Static 
 /**
  * Uses Minify_HTML from the excellent Minify project (http://code.google.com/p/minify/)
  * 
- * Only change made is that we commented out this rule (line 166):
+ * Only change made is that we commented out this rule (line 168):
  * 
  * 		// use newlines before 1st attribute in open tags (to limit line lengths)
  *		$this->_html = preg_replace('/(<[a-z\\-]+)\\s+([^>]+>)/i', "$1\n$2", $this->_html);
