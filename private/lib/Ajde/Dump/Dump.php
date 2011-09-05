@@ -14,7 +14,7 @@ class Ajde_Dump extends Ajde_Object_Static
 				!empty($item['type']) ? $item['type'] : '::',
 				!empty($item['function']) ? $item['function'] : '&lt;unknown function&gt;',
 				$line);
-			$line = isset($item['line']) ? $item['line'] : null;	
+			$line = issetor($item['line'], null);	
 			if ($i == 2) { break; }
 			$i++;
 		}
