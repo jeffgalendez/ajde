@@ -126,17 +126,20 @@ class Ajde_Core_Autoloader
 		require_once(LIB_DIR.'Ajde/Event/Event.php');
 		require_once(LIB_DIR.'Ajde/Exception/Exception.php');
 		Ajde_Event::trigger('Ajde_Core_Autoloader', 'beforeSearch', array($className));*/
-		
+		echo "<span style='color:orange;'>LOOKING FOR</span> $className <br/>";
 		foreach ($dirs as $dir) {
 			foreach (self::$files as $file) {						
-				$path = self::$dirPrepend.$dir.$file;		
-				if (file_exists($path)) {
+				$path = self::$dirPrepend.$dir.$file;				
+				if (is_file($path)) {
 					// TODO: performance gain?
 					// if (class_exists('Ajde_Cache')) {
 					// 	Ajde_Cache::getInstance()->addFile($path);
 					// }
+					echo "<span style='color:green;'>FOUND</span> $path <br/>";
 					require_once $path;
 					return;
+				} else {
+					echo "<span style='color:red;'>CONTINUE</span> $path <br/>";
 				}
 			}
 		}

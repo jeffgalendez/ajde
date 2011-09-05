@@ -8,7 +8,7 @@ class Ajde_Lang_Adapter_Ini extends Ajde_Lang_Adapter_Abstract
 		
 		$lang = Ajde_Lang::getInstance()->getLang();
 		$iniFilename = LANG_DIR . $lang . '/' . $module . '.ini';
-		if (file_exists($iniFilename)) {
+		if (is_file($iniFilename)) {
 			$book = parse_ini_file($iniFilename);
 			if (array_key_exists($ident, $book)) {
 				return $book[$ident];

@@ -72,7 +72,7 @@ class Ajde_Template extends Ajde_Object_Standard
 	{
 		// since files are checked in constructor, this is not needed anymore?
 		throw new Ajde_Core_Exception_Deprecated();
-		return file_exists($this->getFullPath());
+		return is_file($this->getFullPath());
 	}
 	
 	public function setFilename($filename)

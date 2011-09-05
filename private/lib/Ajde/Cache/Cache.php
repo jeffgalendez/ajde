@@ -38,7 +38,7 @@ class Ajde_Cache extends Ajde_Object_Singleton
 	{
 		if (!isset($this->_hashFinal))
 		{
-			if (file_exists($filename)) {
+			if (is_file($filename)) {
 				hash_update_file($this->getHashContext(), $filename);
 				$this->addLastModified(filemtime($filename));
 			}

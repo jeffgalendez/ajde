@@ -53,7 +53,7 @@ class Ajde_Resource_Local extends Ajde_Resource
 
 	protected static function exist($filename)
 	{
-		if (file_exists($filename)) {
+		if (is_file($filename)) {
 			return true;
 		}
 		return false;
