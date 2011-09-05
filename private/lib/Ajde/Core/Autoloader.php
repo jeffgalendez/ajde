@@ -3,8 +3,12 @@
 class Ajde_Core_Autoloader
 {
 	protected static $dirPrepend = null;
+	protected static $namespaces = null;
 	public static $dirs = array();
 	public static $files = array();
+	
+	static $missed = 0;
+	static $queries = 0;
 	
 	// These (ZF) classes could pose problems to the Ajde MVC mechanisms (?)
 	public static $incompatibleClasses = array(
@@ -19,6 +23,18 @@ class Ajde_Core_Autoloader
 		// Dir prepend
 		self::$dirPrepend = $dirPrepend;
 		
+		// Get namespaces from Config
+		$defaultNamespaces = array('Ajde', 'Zend');
+		if (!self::exists('Config')) {
+			require_once(array_shift(glob(CONFIG_DIR . 'Config_Default.php'))); 
+			require_once(array_shift(glob(CONFIG_DIR . 'Config_Application.php')));			
+			foreach (glob(CONFIG_DIR . '*.php') as $filename) {
+				require_once($filename); 
+			}		
+		}
+		$configNamespaces = Config::get('registerNamespaces');
+		self::$namespaces = array_merge($defaultNamespaces, $configNamespaces);
+		
 		// Configure autoloading
 		spl_autoload_register(array("Ajde_Core_Autoloader", "autoload"));
 		
@@ -32,9 +48,14 @@ class Ajde_Core_Autoloader
 		self::$dirs = array_unique(self::$dirs);
 	}
 	
-	public static function addFile($file)
+	public static function addFile($file, $prepend = false)
 	{
-		self::$files[] = $file;
+		if ($prepend) {
+			array_unshift(self::$files, $file);
+		} else {
+			self::$files[] = $file;
+		}
+		
 		self::$files = array_unique(self::$files);
 	}
 	
@@ -47,15 +68,21 @@ class Ajde_Core_Autoloader
 	}
 	
 	public static function initFiles($className)
-	{		
+	{
 		// Namespace/Class.php naming
 		self::addFile(str_ireplace('_', '/', $className) . ".php");
 
-		// Namespace/Class/Class.php naming
+		// Ajde_Foo defaults to the next naming scheme
+		$prepend = false;
+		if (substr($className, 0, 4) == 'Ajde' && substr_count($className, '_') === 1) {
+			$prepend = true;
+		}
+		
+		// Namespace/Class/Class.php naming		
 		$classNameArray = explode("_", $className);
 		$tail = end($classNameArray);
 		$head = implode("/", $classNameArray);
-		self::addFile($head . "/" . $tail . ".php");
+		self::addFile($head . "/" . $tail . ".php", $prepend);
 		
 		// Namespace_Class.php naming
 		self::addFile($className . ".php");		
@@ -63,27 +90,17 @@ class Ajde_Core_Autoloader
 
 	public static function autoload($className)
 	{
+		$debug = false; // turn on for error checking of the autoloader
+		
 		if (in_array($className, self::$incompatibleClasses)) {
 			throw new Ajde_Exception('Could not create instance of incompatible class ' . $className . '.', 90018);
 		}
 		
 		self::$files = array();
-		
-		// Get namespaces from Config
-		$defaultNamespaces = array('Ajde', 'Zend');
-		if (!self::exists('Config')) {
-			require_once(array_shift(glob(CONFIG_DIR . 'Config_Default.php'))); 
-			require_once(array_shift(glob(CONFIG_DIR . 'Config_Application.php')));			
-			foreach (glob(CONFIG_DIR . '*.php') as $filename) {
-				require_once($filename); 
-			}		
-		}
-		$configNamespaces = Config::get('registerNamespaces');
-		$namespaces = array_merge($defaultNamespaces, $configNamespaces);
-		
+				
 		$isNamespace = false;
 		
-		foreach($namespaces as $namespace) {
+		foreach(self::$namespaces as $namespace) {
 			if (substr($className, 0, strlen($namespace)) == $namespace) {
 				$isNamespace = true;
 				break;
@@ -126,7 +143,11 @@ class Ajde_Core_Autoloader
 		require_once(LIB_DIR.'Ajde/Event/Event.php');
 		require_once(LIB_DIR.'Ajde/Exception/Exception.php');
 		Ajde_Event::trigger('Ajde_Core_Autoloader', 'beforeSearch', array($className));*/
-		echo "<span style='color:orange;'>LOOKING FOR</span> $className <br/>";
+		
+		if ($debug) {
+			self::$queries++;
+			echo "<span style='color:orange;'>LOOKING FOR</span> $className <br/>";
+		}
 		foreach ($dirs as $dir) {
 			foreach (self::$files as $file) {						
 				$path = self::$dirPrepend.$dir.$file;				
@@ -135,11 +156,17 @@ class Ajde_Core_Autoloader
 					// if (class_exists('Ajde_Cache')) {
 					// 	Ajde_Cache::getInstance()->addFile($path);
 					// }
-					echo "<span style='color:green;'>FOUND</span> $path <br/>";
+					if ($debug) {
+						echo "<span style='color:green;'>FOUND</span> $path <br/>";
+						echo "<span style='font-size:smaller;color:gray;'>stats : (missed/lookups) : ".self::$missed."/".self::$queries." : ".(int) (self::$missed / self::$queries * 100)."% missed</span><br/>";
+					}
 					require_once $path;
 					return;
 				} else {
-					echo "<span style='color:red;'>CONTINUE</span> $path <br/>";
+					if ($debug) {
+						echo "<span style='color:red;'>CONTINUE</span> $path <br/>";
+						self::$missed++;
+					}
 				}
 			}
 		}

@@ -4,7 +4,7 @@
  */
 
 $absRoot = $_SERVER["SERVER_NAME"] . str_replace('loadtest.php', '', $_SERVER["PHP_SELF"]);
-$interval = 500000;
+$interval = 50000;
 
 if (isset($_GET['c'])) {
 	

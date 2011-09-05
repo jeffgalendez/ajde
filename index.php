@@ -88,6 +88,9 @@ function __($ident, $module = null) {
  * LET'S RUN THINGS
  *********************/
 
+// Speed up autoloading
+require_once(LIB_DIR . "Ajde/Ajde.php");
+
 // Run the main application
 $app = Ajde::create();
 
