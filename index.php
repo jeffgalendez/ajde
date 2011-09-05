@@ -66,7 +66,6 @@ Ajde_Core_Autoloader::register();
 // This translates in Ajde to return issetor($test);
 function issetor(&$what, $else = null)
 {
-	// Rewritten to force copy-on-demand
 	// @see http://fabien.potencier.org/article/48/the-php-ternary-operator-fast-or-not
 	if (isset($what)) {
 		return $what;
