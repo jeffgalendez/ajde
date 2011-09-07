@@ -19,6 +19,7 @@ class Ajde_Http_Response extends Ajde_Object_Standard
 
 	public static function dieOnCode($code)
 	{
+		ob_get_clean();
 		self::setResponseType($code);
 		header("Content-type: text/html; charset=UTF-8");
 		$_SERVER['REDIRECT_STATUS'] = $code;

@@ -3,10 +3,10 @@
 class Config_Application extends Config_Default
 {	
 	// Site parameters
-	public $ident				= "project";
-	public $sitename 			= "Project Name";	
+	public $ident				= "unst";
+	public $sitename 			= ".UNST";	
 	public $version 			= array(
-									"number" => "0",
+									"number" => "1",
 									"name" => "alpha"
 									);
 									
@@ -16,11 +16,11 @@ class Config_Application extends Config_Default
 	//public $aliases;
 	//public $routes;
 	
-	//public $lang;
-	//public $langAutodetect;
-	//public $langAdapter;
+	public $lang 				= "nl_NL";
+	public $langAutodetect		= false;
+	public $langAdapter			= 'gettext';
 	//public $timezone;
-	//public $layout;
+	public $layout				= 'unst';
 	
 	//public $compressResources;
 	//public $debug;
@@ -28,10 +28,16 @@ class Config_Application extends Config_Default
 	//public $documentProcessors;
 	
 	//public $dbAdapter;
-	//public $dbDsn;	
-	//public $dbUser;
-	//public $dbPassword;	
-	//public $registerNamespaces;
+	public $dbDsn				= array(
+									"host" 		=> "localhost",
+									"dbname"	=> "unst"
+									);
+	
+	public $dbUser				= 'unst';
+	public $dbPassword			= 'unst';	
+	public $registerNamespaces	= array(
+									'Unst'
+									);
 	
 	//public $bootstrap;
 	

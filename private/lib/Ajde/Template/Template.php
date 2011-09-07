@@ -105,6 +105,13 @@ class Ajde_Template extends Ajde_Object_Standard
 		$this->_table[$key] = $value;
 	}
 	
+	public function assignArray($array)
+	{
+		foreach($array as $key => $value) {
+			$this->assign($key, $value);
+		}		
+	}
+	
 	public function hasAssigned($key)
 	{
 		return array_key_exists($key, $this->_table);	

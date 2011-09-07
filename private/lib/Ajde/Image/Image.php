@@ -154,6 +154,11 @@ class Ajde_Image extends Ajde_Object_Standard
 		}
 	}
 	
+	public function getBase64()
+	{
+		return 'data:' . $this->getMimeType() . ';base64,' . base64_encode($this->getImage());
+	}
+	
 	public function destroy() {
 		imagedestroy($this->_image); 
 	}
