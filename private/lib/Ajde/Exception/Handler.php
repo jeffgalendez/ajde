@@ -86,8 +86,8 @@ class Ajde_Exception_Handler extends Ajde_Object_Static
 							!empty($item['type']) ? $item['type'] : '::',
 							!empty($item['function']) ? $item['function'] : '&lt;unknown function&gt;',
 							self::embedScript(
-									isset($item['file']) ? $item['file'] : null,
-									isset($item['line']) ? $item['line'] : null,
+									issetor($item['file'], null),
+									issetor($item['line'],null),
 									$arguments,
 									false									
 							));					

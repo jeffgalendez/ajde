@@ -30,7 +30,8 @@ RewriteRule \.(php|css|jpe?g|gif|png|js|pdf|ico)$ - [L]
 #RewriteCond %{REQUEST_URI} ^/[^\.]+[^/]$
 #RewriteRule ^(.*)$ http://%{HTTP_HOST}/$1/ [R=301,L]
 
-# Rewrite all traffic to index.php
+# Rewrite all traffic to index.php, exclude existing files
+RewriteCond %{REQUEST_FILENAME} !-f
 RewriteRule ^(.+)$ index.php?_route=$1 [QSA,L]
 
 # Error documents

@@ -20,8 +20,8 @@ class Ajde_Controller extends Ajde_Object_Standard
 		if (!isset($action) || !isset($format)) {
 			$defaultParts = Config::get('defaultRouteParts');
 		}
-		$this->setAction(isset($action) ? $action : $defaultParts['action']);
-		$this->setFormat(isset($format) ? $format : $defaultParts['format']);
+		$this->setAction(issetor($action, $defaultParts['action']));
+		$this->setFormat(issetor($format, $defaultParts['format']));
 		
 		$route = new Ajde_Core_Route($this->getAction());
 		$route->getFormat($this->getFormat());
@@ -90,8 +90,8 @@ class Ajde_Controller extends Ajde_Object_Standard
 	public function invoke($action = null, $format = null)
 	{
 		$timerKey = Ajde::app()->addTimer((string) $this->_route);
-		$action = isset($action) ? $action : $this->getAction();
-		$format = isset($format) ? $format : $this->getFormat();
+		$action = issetor($action, $this->getAction());
+		$format = issetor($format, $this->getFormat());
 		$emptyFunction = $action;
 		$defaultFunction = $action . "Default";
 		$formatFunction = $action . ucfirst($format);

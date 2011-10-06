@@ -24,7 +24,9 @@ class Ajde_Document_Format_Processor_Html_Beautifier extends Ajde_Object_Static 
 			throw new Ajde_Exception('Class Tidy not found', 90023);
 		}
 		$tidy = new Tidy();
-		// http://bugs.php.net/bug.php?id=35647
+		// tidy does not produce valid utf8 when the encoding is specified in the config
+		// so we provide a third parameter, 'utf8' to fix this
+		// @see http://bugs.php.net/bug.php?id=35647
 		return $tidy->repairString($html, $config, 'utf8');
 	}
 	

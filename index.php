@@ -62,9 +62,16 @@ Ajde_Core_Autoloader::register();
  *********************/
 
 // The only thing missing in PHP < 5.3
+// In PHP 5.3 you can use: return $test ?: false;
+// This translates in Ajde to return issetor($test);
 function issetor(&$what, $else = null)
 {
-	return isset($what) ? $what : $else;
+	// @see http://fabien.potencier.org/article/48/the-php-ternary-operator-fast-or-not
+	if (isset($what)) {
+		return $what;
+	} else {
+		return $else;
+	}
 }
  
 // Global dump function for debugging
@@ -80,6 +87,9 @@ function __($ident, $module = null) {
 /*********************
  * LET'S RUN THINGS
  *********************/
+
+// Speed up autoloading
+require_once(LIB_DIR . "Ajde/Ajde.php");
 
 // Run the main application
 $app = Ajde::create();

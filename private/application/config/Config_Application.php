@@ -6,7 +6,7 @@ class Config_Application extends Config_Default
 	public $ident				= "samples";
 	public $sitename 			= "Ajde Samples";	
 	public $version 			= array(
-									"number" => "0",
+									"number" => "0.1",
 									"name" => "alpha"
 									);
 									

@@ -98,6 +98,20 @@ class _coreComponentController extends Ajde_Controller
 		return $this->render();
 	}
 	
+	public function imageBase64Html() {		
+		$image = $this->getImage();
+		
+		// TODO: add crop/resize option
+		$image->crop($image->getHeight(), $image->getWidth());		
+		
+		$this->setAction('image/base64');
+		$this->getView()->assign('image', $this->getImage());
+		$this->getView()->assign('width', $this->getWidth());
+		$this->getView()->assign('height', $this->getHeight());
+		$this->getView()->assign('extraClass', $this->getExtraClass());
+		return $this->render();
+	}
+	
 	public function imageData() {
 		$imageId = Ajde::app()->getRequest()->getId();
 		$session = new Ajde_Session('AC.Image');
