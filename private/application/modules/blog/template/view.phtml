@@ -4,11 +4,11 @@
 
 <?php foreach($this->blog as $entry) { ?>
 	
-	<h3><?php echo $entry->title; ?></h3>
+	<h3><?php echo $this->escape( $entry->title ); ?></h3>
 	<p>
-		<em>Written on <?php echo $entry->date; ?></em> :
+		<em>Written on <?php echo $this->escape( $entry->date ); ?></em> :
 	</p>
-	<p><?php echo $entry->content; ?></p>
+	<p><?php echo $this->escape( $entry->content ); ?></p>
 	
 	<hr/>
 	
