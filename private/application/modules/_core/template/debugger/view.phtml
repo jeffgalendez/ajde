@@ -44,7 +44,18 @@
 						<td>Calculated: <a href='<?php echo $this->request->getRoute(); ?>'><?php echo $this->request->getRoute(); ?></a></td>
 					</tr>
 					<tr>
-						<td><?php var_dump($this->request->_data); ?></td>
+						<td>
+							<?php
+								// XSS prevention
+								$vars = $this->request->_data;
+								if (!function_exists('safeVars')) {
+									function safeVars(&$item, $key) {
+										$item = htmlspecialchars($item);
+									}
+								}
+								array_walk($vars, "safeVars");
+								var_dump($vars);
+							?></td>
 					</tr>				
 				</table>			
 			</dd>

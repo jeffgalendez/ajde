@@ -23,7 +23,23 @@ class Ajde_Http_Response extends Ajde_Object_Standard
 		self::setResponseType($code);
 		header("Content-type: text/html; charset=UTF-8");
 		$_SERVER['REDIRECT_STATUS'] = $code;
-		include("errordocument.php");
+		if (array_key_exists($code, Config::getInstance()->responseCodeRoute)) {
+			// We start a mini app here to display the error page
+			// Copied from Ajde_Application
+			$route = new Ajde_Core_Route(Config::getInstance()->responseCodeRoute[$code]);		
+			$document = Ajde_Document::fromRoute($route);
+			$controller = Ajde_Controller::fromRoute($route);
+			$actionResult = $controller->invoke();
+			$document->setBody($actionResult);	
+			if (!$document->hasLayout())
+			{
+				$layout = new Ajde_Layout(Config::get("layout"));
+				$document->setLayout($layout);
+			}
+			echo $document->render();
+		} else {
+			include("errordocument.php");
+		}
 		die();
 	}
 

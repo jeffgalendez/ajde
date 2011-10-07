@@ -26,6 +26,19 @@ class Ajde_Template_Parser_Phtml_Helper extends Ajde_Object_Standard
 		return $this->_parser;
 	}
 	
+	/**
+	 * 
+	 * @return Ajde_Document 
+	 */
+	public function getDocument()
+	{
+		if ($this->getParser()->getTemplate()->has('document')) {
+			return $this->getParser()->getTemplate()->getDocument();
+		} else {
+			return Ajde::app()->getDocument();
+		}
+	}
+	
 	/************************
 	 * Ajde_Component_Js
 	 ************************/
@@ -164,9 +177,20 @@ class Ajde_Template_Parser_Phtml_Helper extends Ajde_Object_Standard
 	 * @param mixed $id
 	 * @return string
 	 */
-	public function ajaxForm($route, $id = null, $class = null)
+	public function form($route, $id = null, $class = null)
 	{
 		return Ajde_Component_Form::processStatic($this->getParser(), array('route' => $route, 'id' => $id, 'class' => $class));
+	}
+	
+	/**
+	 *
+	 * @param string $route
+	 * @param mixed $id
+	 * @return string
+	 */
+	public function ajaxForm($route, $id = null, $class = null)
+	{
+		return Ajde_Component_Form::processStatic($this->getParser(), array('route' => $route, 'ajax' => true, 'id' => $id, 'class' => $class));
 	}
 	
 	/**
@@ -214,7 +238,7 @@ class Ajde_Template_Parser_Phtml_Helper extends Ajde_Object_Standard
 	}
 	
 	/************************
-	 * Ajde_Component_Escape
+	 * Ajde_Component_String
 	 ************************/
 
 	/**
@@ -222,10 +246,11 @@ class Ajde_Template_Parser_Phtml_Helper extends Ajde_Object_Standard
 	 * @param mixed $model
 	 * @return string
 	 */
-	public function ACEscape($var)
+	public function ACString($var)
 	{
-		return Ajde_Component_Escape::processStatic($this->getParser(),
+		return Ajde_Component_String::processStatic($this->getParser(),
 			array(
+				'escape' => true,
 				'var' => $var
 			)
 		);
@@ -233,6 +258,16 @@ class Ajde_Template_Parser_Phtml_Helper extends Ajde_Object_Standard
 	
 	public function escape($var)
 	{
-		return $this->ACEscape($var);
+		return $this->ACString($var);
+	}
+	
+	public function clean($var)
+	{
+		return Ajde_Component_String::processStatic($this->getParser(),
+			array(
+				'clean' => true,
+				'var' => $var
+			)
+		);
 	}
 }

@@ -38,6 +38,16 @@ class Ajde_Layout extends Ajde_Template
 		return $this->get('format');
 	}
 	
+	public function getDocument()
+	{
+		return $this->get('document');
+	}
+	
+	public function setDocument(Ajde_Document $document)
+	{
+		return $this->set('document', $document);
+	}
+	
 	public function getDefaultResourcePosition()
 	{
 		return Ajde_Document_Format_Html::RESOURCE_POSITION_FIRST;

@@ -12,7 +12,7 @@ $this->requireCssTop('reset');
 		<meta name='description' content=''>
 		<meta name='author' content=''>
 		<base href='http://<?php echo Config::get('site_root'); ?>' />
-		<?php echo Ajde::app()->getDocument()->getHead('css'); ?>
+		<?php echo $this->getDocument()->getHead('css'); ?>
 	</head>
 	<!--[if lt IE 7 ]> <body class='ie6'> <![endif]-->
 	<!--[if IE 7 ]>    <body class='ie7'> <![endif]-->
@@ -21,8 +21,8 @@ $this->requireCssTop('reset');
 	<!--[if (gt IE 9)|!(IE)]><!--> <body> <!--<![endif]-->
 		<div id='wrapper'>
 			<h1><?php echo Config::get('sitename'); ?></h1>
-			<?php echo Ajde::app()->getDocument()->getBody(); ?>
+			<?php echo $this->getDocument()->getBody(); ?>
 		</div>
-		<?php echo Ajde::app()->getDocument()->getScripts(); ?>
+		<?php echo $this->getDocument()->getScripts(); ?>
 	</body>
 </html>
