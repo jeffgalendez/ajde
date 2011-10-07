@@ -6,6 +6,8 @@ class Ajde_Cache extends Ajde_Object_Singleton
 	protected $_hashFinal;
 	protected $_lastModified = array();
 	protected $_contents;
+	
+	protected $_enabled = true;
 
 	/**
 	 *
@@ -16,6 +18,26 @@ class Ajde_Cache extends Ajde_Object_Singleton
 	{
 		static $instance;
 		return $instance === null ? $instance = new self : $instance;
+	}
+	
+	public function __construct()
+	{
+		$this->_enabled = Config::get('useCache');
+	}
+	
+	public function isEnabled()
+	{
+		return $this->_enabled;
+	}
+	
+	public function enable()
+	{
+		$this->_enabled = true;
+	}
+	
+	public function disable()
+	{
+		$this->_enabled = false;
 	}
 
 	public function getHashContext() {
@@ -86,7 +108,7 @@ class Ajde_Cache extends Ajde_Object_Singleton
 	public function saveResponse()
 	{
 		$response = Ajde::app()->getResponse();
-		if ($this->ETagMatch() && Config::get('useCache')) {			
+		if ($this->ETagMatch() && $this->isEnabled()) {			
 			$response->setResponseType(Ajde_Http_Response::RESPONSE_TYPE_NOT_MODIFIED);
 			$response->addHeader('Content-Length', '0');
 			$response->setData(false);

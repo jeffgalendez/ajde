@@ -131,6 +131,9 @@ class _coreComponentController extends Ajde_Controller
 	
 	public function crudListDefault()
 	{
+		$cache = Ajde_Cache::getInstance();
+		$cache->disable();
+		
 		if (Ajde::app()->getRequest()->has('edit')) {
 			return $this->crudEditDefault();			
 		} elseif (Ajde::app()->getRequest()->has('new')) {

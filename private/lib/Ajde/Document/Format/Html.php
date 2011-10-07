@@ -7,7 +7,8 @@ class Ajde_Document_Format_Html extends Ajde_Document
 	const RESOURCE_POSITION_DEFAULT = 2;
 	const RESOURCE_POSITION_LAST = 3;
 	
-	protected $_cacheControl = 'private';
+	// TODO: implement a way to override
+	protected $_cacheControl = 'no-cache';
 	
 	protected $_resources = array(
 		self::RESOURCE_POSITION_FIRST => array(),

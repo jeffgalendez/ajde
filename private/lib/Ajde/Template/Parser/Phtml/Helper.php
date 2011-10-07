@@ -212,4 +212,27 @@ class Ajde_Template_Parser_Phtml_Helper extends Ajde_Object_Standard
 			)
 		);
 	}
+	
+	/************************
+	 * Ajde_Component_Escape
+	 ************************/
+
+	/**
+	 *
+	 * @param mixed $model
+	 * @return string
+	 */
+	public function ACEscape($var)
+	{
+		return Ajde_Component_Escape::processStatic($this->getParser(),
+			array(
+				'var' => $var
+			)
+		);
+	}
+	
+	public function escape($var)
+	{
+		return $this->ACEscape($var);
+	}
 }
