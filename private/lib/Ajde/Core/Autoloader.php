@@ -24,7 +24,7 @@ class Ajde_Core_Autoloader
 		self::$dirPrepend = $dirPrepend;
 		
 		// Get namespaces from Config
-		$defaultNamespaces = array('Ajde', 'Zend', 'HTMLPurifier');
+		$defaultNamespaces = array('Ajde', 'AjdeX', 'Zend', 'HTMLPurifier');
 		if (!self::exists('Config')) {
 			require_once(array_shift(glob(CONFIG_DIR . 'Config_Default.php'))); 
 			require_once(array_shift(glob(CONFIG_DIR . 'Config_Application.php')));			
@@ -104,7 +104,7 @@ class Ajde_Core_Autoloader
 		$isNamespace = false;
 		
 		foreach(self::$namespaces as $namespace) {
-			if (substr($className, 0, strlen($namespace)) == $namespace) {
+			if (substr($className, 0, strlen($namespace . '_')) == $namespace . '_') {
 				$isNamespace = true;
 				break;
 			}

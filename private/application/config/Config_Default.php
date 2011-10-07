@@ -36,6 +36,14 @@ class Config_Default
 	public $langAdapter			= "ini";
 	public $timezone			= "UTC";
 	public $layout 				= "default";
+	public $responseCodeRoute	= array(
+									'404' => 'main/code404.html'
+									);			
+	
+	// Security
+	public $autoEscapeString	= true;
+	public $autoCleanHtml		= true;
+	public $requirePostToken	= true;
 	
 	// Performance
 	public $compressResources	= true;

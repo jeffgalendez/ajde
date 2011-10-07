@@ -31,7 +31,11 @@ abstract class Ajde_Resource extends Ajde_Object_Standard
 
 	public static function getLinkTemplateFilename($type, $format = 'null')
 	{
-		$layout = Ajde::app()->getDocument()->getLayout();
+		if (Ajde::app()->getDocument()->hasLayout()) {
+			$layout = Ajde::app()->getDocument()->getLayout();
+		} else {
+			$layout = new Ajde_Layout(Config::get("layout"));
+		}
 		$format = issetor($format, 'html');
 		return LAYOUT_DIR . $layout->getName() . '/link/' . $type . '.' . $format . '.php';
 	}

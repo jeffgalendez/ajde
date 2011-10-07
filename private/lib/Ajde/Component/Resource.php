@@ -19,18 +19,18 @@ class Ajde_Component_Resource extends Ajde_Component
 			$base = $this->getParser()->getTemplate()->getBase();			
 		}
 		$resource = new Ajde_Resource_Local($type, $base, $action, $format);
-		Ajde::app()->getDocument()->addResource($resource, $position);
+		$this->getParser()->getDocument()->addResource($resource, $position);
 	}
 	
 	public function requirePublicResource($type, $filename, $position = Ajde_Document_Format_Html::RESOURCE_POSITION_DEFAULT)
 	{
 		$resource = new Ajde_Resource_Public($type, $filename);
-		Ajde::app()->getDocument()->addResource($resource, $position);
+		$this->getParser()->getDocument()->addResource($resource, $position);
 	}
 	
 	public function requireRemoteResource($type, $url, $position = Ajde_Document_Format_Html::RESOURCE_POSITION_DEFAULT)
 	{
 		$resource = new Ajde_Resource_Remote($type, $url);
-		Ajde::app()->getDocument()->addResource($resource, $position);
+		$this->getParser()->getDocument()->addResource($resource, $position);
 	}
 }

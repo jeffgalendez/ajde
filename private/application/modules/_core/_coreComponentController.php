@@ -41,14 +41,28 @@ class _coreComponentController extends Ajde_Controller
 	 * Ajde_Component_Form
 	 ************************/
 
-	public function formAjaxDefault()
+	public function formDefault()
 	{
-		$this->setAction('form/ajax');
+		if ($this->getAction() !== 'form/ajax') {
+			$this->setAction('form/form');
+		}
+		
+		// CSRF
+		$formToken = Ajde::app()->getRequest()->getFormToken();
+		$this->getView()->assign('formToken', $formToken);
+		Ajde::app()->getRequest()->markFormTime();		
+		
 		$this->getView()->assign('formAction', $this->getFormAction());
 		$this->getView()->assign('formId', $this->getFormId());
 		$this->getView()->assign('extraClass', $this->getExtraClass());
 		$this->getView()->assign('innerXml', $this->getInnerXml());
 		return $this->render();
+	}
+	 
+	public function formAjaxDefault()
+	{
+		$this->setAction('form/ajax');
+		return $this->formDefault();
 	}
 
 	public function formUploadHtml()

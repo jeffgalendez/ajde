@@ -24,6 +24,15 @@ abstract class Ajde_Document extends Ajde_Object_Standard
 			Ajde::routingError($exception);
 		}
 		return new $documentClass();
+	}
+	
+	/**
+	 * @return Ajde_Layout
+	 */
+	public function setLayout(Ajde_Layout $layout)
+	{
+		$layout->setDocument($this);
+		return $this->set("layout", $layout);
 	}	
 
 	/**

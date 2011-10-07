@@ -6,4 +6,9 @@ class MainController extends Ajde_Controller
 	{
 		return $this->render();
 	}
+	
+	function code404()
+	{
+		return $this->render();
+	}
 }
