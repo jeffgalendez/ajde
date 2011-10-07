@@ -21,6 +21,11 @@ class Config_Application extends Config_Default
 	//public $langAdapter;
 	//public $timezone;
 	//public $layout;
+	//public $responseCodeRoute;
+	
+	//public $autoEscapeString;
+	//public $autoCleanHtml;
+	//public $requirePostToken;			
 	
 	//public $compressResources;
 	//public $debug;
