@@ -24,7 +24,7 @@ class Ajde_Core_Autoloader
 		self::$dirPrepend = $dirPrepend;
 		
 		// Get namespaces from Config
-		$defaultNamespaces = array('Ajde', 'Zend');
+		$defaultNamespaces = array('Ajde', 'Zend', 'HTMLPurifier');
 		if (!self::exists('Config')) {
 			require_once(array_shift(glob(CONFIG_DIR . 'Config_Default.php'))); 
 			require_once(array_shift(glob(CONFIG_DIR . 'Config_Application.php')));			
@@ -86,11 +86,14 @@ class Ajde_Core_Autoloader
 		
 		// Namespace_Class.php naming
 		self::addFile($className . ".php");		
+		
+		// Class/Class.php naming
+		self::addFile($className . '/' . $className . ".php");
 	}
 
 	public static function autoload($className)
 	{
-		$debug = false; // turn on for error checking of the autoloader
+		$debug = false; // turn on for performance checking of the autoloader
 		
 		if (in_array($className, self::$incompatibleClasses)) {
 			throw new Ajde_Exception('Could not create instance of incompatible class ' . $className . '.', 90018);
@@ -175,9 +178,11 @@ class Ajde_Core_Autoloader
 		 * Throwing exceptions is only possible as of PHP 5.3.0
 		 * See: http://php.net/manual/en/language.oop5.autoload.php
 		 */
-		if (self::exists('Ajde_Core_Autoloader_Exception') && version_compare(PHP_VERSION, '5.3.0') >= 0)
+		if (version_compare(PHP_VERSION, '5.3.0') >= 0 && self::exists('Ajde_Core_Autoloader_Exception'))
 		{
-			throw new Ajde_Core_Autoloader_Exception("Unable to load $className", 90005);
+			// TODO: Custom Exceptions are still causing problems
+			// throw new Ajde_Core_Autoloader_Exception("Unable to load $className", 90005);
+			throw new Exception("Unable to load $className", 90005);
 		}
 	}
 

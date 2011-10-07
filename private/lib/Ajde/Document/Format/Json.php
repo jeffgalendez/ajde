@@ -2,7 +2,7 @@
 
 class Ajde_Document_Format_Json extends Ajde_Document
 {
-	protected $_cacheControl = 'private';
+	protected $_cacheControl = 'no-cache';
 	
 	public function render()
 	{

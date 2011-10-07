@@ -55,9 +55,10 @@ class Config_Default
 									);
 
 	// Which modules should we call on bootstrapping?
-	public $bootstrap			= array(
+	public $bootstrap			= array(									
 									"Ajde_Exception_Handler",
 									"Ajde_Session",
+									"Ajde_Core_ExternalLibs"						
 									);
 
 	function __construct()
