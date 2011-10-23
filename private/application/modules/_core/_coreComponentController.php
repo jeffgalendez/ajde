@@ -184,7 +184,7 @@ class _coreComponentController extends Ajde_Controller
 		$crudId = spl_object_hash($crud);
 		$options = $this->getCrudOptions();
 		
-		$id = Ajde::app()->getRequest()->getParam('edit');
+		$id = Ajde::app()->getRequest()->getParam('edit', false);
 		
 		$item = $crud->getItem($id);
 		$fields = $crud->getFields();
