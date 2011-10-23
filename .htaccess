@@ -35,6 +35,8 @@ RewriteCond %{REQUEST_FILENAME} !-f
 RewriteRule ^(.+)$ index.php?_route=$1 [QSA,L]
 
 # Error documents
+# Update to local path, i.e. /ajde/errordocument.php to prevent error:
+# 	'Additionally, a 404 Not Found error was encountered while trying to use an ErrorDocument to handle the request.'
 ErrorDocument 400 /errordocument.php
 ErrorDocument 401 /errordocument.php
 ErrorDocument 403 /errordocument.php
@@ -84,10 +86,10 @@ SetEnvIfNoCase Request_URI  \
 	ExpiresDefault                          "access plus 1 month"
 	ExpiresByType text/cache-manifest       "access plus 0 seconds" 
 	ExpiresByType text/html                 "access"
-	ExpiresByType application/xhtml+xml	"access"
-	ExpiresByType application/json		"access"
-	ExpiresByType application/xml		"access"
-	ExpiresByType text/xml			"access"
+	ExpiresByType application/xhtml+xml		"access"
+	ExpiresByType application/json			"access"
+	ExpiresByType application/xml			"access"
+	ExpiresByType text/xml					"access"
 	ExpiresByType application/rss+xml       "access plus 1 hour"
 	ExpiresByType application/atom+xml      "access plus 1 hour"
 	ExpiresByType image/vnd.microsoft.icon  "access plus 1 week" 
