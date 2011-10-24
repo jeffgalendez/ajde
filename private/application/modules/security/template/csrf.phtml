@@ -1,0 +1,30 @@
+<h2>Security features</h2>
+<h3>CSRF Tokens</h3>
+
+<a href='security/csrfAttack'>Attack page</a>
+
+<p>With AJAX</p>
+
+<?php echo $this->ajaxForm('security/csrfTarget'); ?>
+
+	<input type='text' name='csrftest' value="secret" />
+	<button type="submit">CSRF submit</button>
+
+</form>
+
+<script>
+	document.addEventListener('DOMContentLoaded', function() {
+		$('form.ACAjaxForm').bind('result', function(e, data) {
+			alert(data.result);
+		})
+	});
+</script>
+
+<p>Without AJAX</p>
+
+<?php echo $this->form('security/csrfTarget'); ?>
+
+	<input type='text' name='csrftest' value="secret" />
+	<button type="submit">CSRF submit</button>
+
+</form>

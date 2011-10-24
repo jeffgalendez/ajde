@@ -1,0 +1,25 @@
+<h2>Logon</h2>
+
+<?php echo $this->ajaxForm('user/logon', 'loginform'); ?>
+	<input type="hidden" name="redirect" value="<?php echo $this->redirect; ?>" />
+	<dl>
+		<dt>HKU mail</dt>
+		<dd>
+			<input type="text" name="email" placeholder="naam@students.hku.nl" required />
+		</dd>
+		
+		<dt>wachtwoord</dt>
+		<dd>
+			<input type="password" name="password" placeholder="****" required />
+		</dd>
+		
+		<dd id="loginformStatus"></dd>
+		
+		<dd>
+			<input type="submit" value="Login" />
+		</dd>	
+	</dl>
+
+</form>
+
+<?php echo $this->includeModule('user/facebookConnect'); ?>

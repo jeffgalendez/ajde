@@ -1,0 +1,26 @@
+<h2>Security features</h2>
+<h3>XSS Input</h3>
+
+<form action="">
+	<label for="xsstest">Input some unsafe text</label>
+	<textarea name="xsstest" id="xsstest" style="display: block;" cols="100" rows="10">
+This is a XSS test
+&lt;script&gt;
+	alert('unsafe!');
+&lt;/script&gt;
+	</textarea>
+	<label for="escapeon">Clean HTML on</label> <input type="radio" checked="checked" id="escapeon" name="escape" value="on">
+	<label for="escapeoff">Clean HTML off</label> <input type="radio" id="escapeoff" name="escape" value="off">
+	<br/>
+	<button type="submit">XSS Test</button>
+</form>
+
+<h3>XSS Container</h3>
+
+<?php if (isset($this->safe) && $this->safe == true) {
+	echo '<div style=\'border:2px solid green;padding:5px;margin:5px;\'>' . $this->clean($this->xsstest) . '</div>';
+	echo '<textarea cols="100" rows="10">' . $this->clean($this->xsstest) . '</textarea>';
+} else {
+	echo '<div style=\'border:2px solid red;padding:5px;margin:5px;\'>' . $this->xsstest . '</div>';
+	echo '<textarea cols="100" rows="10">' . $this->xsstest . '</textarea>';
+}?>
