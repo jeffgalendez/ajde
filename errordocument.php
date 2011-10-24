@@ -1,5 +1,9 @@
 <?php
 
+if (!isset($_SERVER['REDIRECT_STATUS'])) {
+	die('No direct access');
+}
+
 $code = $_SERVER['REDIRECT_STATUS'];
 
 function desc() {

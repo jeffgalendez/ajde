@@ -95,7 +95,7 @@ require_once(LIB_DIR . "Ajde/Ajde.php");
 $app = Ajde::create();
 
 try {
-	$app->run();	
+	$app->run();
 } catch (Ajde_Core_Exception_Deprecated $e) {
 	// Throw $e to die on deprecated functions / methods (only in debug mode)
 	throw $e;

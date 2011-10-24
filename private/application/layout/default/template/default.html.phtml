@@ -9,9 +9,18 @@ $this->requireCssTop('reset');
 		<meta charset='utf-8'>
 		<!--[if IE]><![endif]-->
 		<title><?php echo Config::get('sitename'); ?></title>
-		<meta name='description' content=''>
-		<meta name='author' content=''>
 		<base href='http://<?php echo Config::get('site_root'); ?>' />
+		<meta name='description' content='' />
+		<meta name='author' content='' />
+		<!-- require JavaScript and cookies -->		
+		<noscript>
+			<meta http-equiv="refresh" content="0;url=main/nojavascript.html" />
+		</noscript>				
+		<script>
+			if (navigator.cookieEnabled === false) {
+				document.location.href='main/nocookies.html';
+			}
+		</script>
 		<?php echo $this->getDocument()->getHead('css'); ?>
 	</head>
 	<!--[if lt IE 7 ]> <body class='ie6'> <![endif]-->

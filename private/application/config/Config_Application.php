@@ -24,6 +24,11 @@ class Config_Application extends Config_Default
 	//public $langAdapter;
 	//public $timezone;
 	//public $layout;
+	//public $responseCodeRoute;
+	
+	//public $autoEscapeString;
+	//public $autoCleanHtml;
+	//public $requirePostToken;			
 	
 	//public $compressResources;
 	//public $debug;
@@ -36,7 +41,7 @@ class Config_Application extends Config_Default
 									"dbname"	=> "ajde-samples"
 									);
 	public $dbUser 				= "ajde-samples";
-	public $dbPassword 			= "blog";	
+	public $dbPassword 			= "ajde-samples";	
 	//public $registerNamespaces;
 	
 	//public $bootstrap;
