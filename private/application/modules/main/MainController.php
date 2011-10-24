@@ -14,6 +14,8 @@ class MainController extends Ajde_Controller
 	
 	function nojavascript()
 	{
+		$returnto = Ajde::app()->getRequest()->getParam('returnto', '');
+		$this->getView()->assign('returnto', $returnto);
 		die($this->render());
 	}
 	
@@ -22,6 +24,8 @@ class MainController extends Ajde_Controller
 		// set a cookie so a user can change settings in browsers which only
 		// gives users the choice to enable cookies when a website tries to set one
 		$session = new Ajde_Session('_ajde');
+		$returnto = Ajde::app()->getRequest()->getParam('returnto', '');
+		$this->getView()->assign('returnto', $returnto);
 		die($this->render());
 	}
 }

@@ -14,11 +14,11 @@ $this->requireCssTop('reset');
 		<meta name='author' content='' />
 		<!-- require JavaScript and cookies -->		
 		<noscript>
-			<meta http-equiv="refresh" content="0;url=main/nojavascript.html" />
+		<meta http-equiv="refresh" content="0;url=main/nojavascript.html?returnto=<?php echo urlencode((string) Ajde::app()->getRoute()); ?>" />
 		</noscript>				
 		<script>
 			if (navigator.cookieEnabled === false) {
-				document.location.href='main/nocookies.html';
+				document.location.href='main/nocookies.html?returnto=<?php echo urlencode((string) Ajde::app()->getRoute()); ?>';
 			}
 		</script>
 		<?php echo $this->getDocument()->getHead('css'); ?>
