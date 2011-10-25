@@ -18,28 +18,37 @@ class Ajde_Http_Response extends Ajde_Object_Standard
 	}
 
 	public static function dieOnCode($code)
-	{
-		ob_get_clean();
+	{		
 		self::setResponseType($code);
 		header("Content-type: text/html; charset=UTF-8");
 		$_SERVER['REDIRECT_STATUS'] = $code;
 		if (array_key_exists($code, Config::getInstance()->responseCodeRoute)) {
-			// We start a mini app here to display the error page
-			// Copied from Ajde_Application
-			$route = new Ajde_Core_Route(Config::getInstance()->responseCodeRoute[$code]);		
-			$document = Ajde_Document::fromRoute($route);
-			$controller = Ajde_Controller::fromRoute($route);
-			$actionResult = $controller->invoke();
-			$document->setBody($actionResult);	
-			if (!$document->hasLayout())
-			{
-				$layout = new Ajde_Layout(Config::get("layout"));
-				$document->setLayout($layout);
-			}
-			echo $document->render();
+			self::dieOnRoute(Config::getInstance()->responseCodeRoute[$code]);
 		} else {
+			ob_get_clean();
 			include("errordocument.php");
+			die();
 		}
+	}
+	
+	public static function dieOnRoute($route)
+	{
+		ob_get_clean();
+		// We start a mini app here to display the route
+		// Copied from Ajde_Application
+		$route = new Ajde_Core_Route($route);		
+		$document = Ajde_Document::fromRoute($route);
+		// replace document in Ajde_Application
+		Ajde::app()->setDocument($document);
+		$controller = Ajde_Controller::fromRoute($route);
+		$actionResult = $controller->invoke();
+		$document->setBody($actionResult);
+		if (!$document->hasLayout())
+		{
+			$layout = new Ajde_Layout(Config::get("layout"));
+			$document->setLayout($layout);
+		}
+		echo $document->render();
 		die();
 	}
 

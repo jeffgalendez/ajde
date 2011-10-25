@@ -1,3 +1,4 @@
+;
 if (typeof AC ==="undefined") { 		AC = function() {}; }
 if (typeof AC.Form ==="undefined") { 	AC.Form = function() {}; }
 
@@ -16,9 +17,13 @@ AC.Form.Ajax = function() {
 				$('body').removeClass('loading');
 				$(form).trigger('result', [data]);
 			};
+			var errorHandler = function() {
+				$('body').removeClass('loading');
+				$(form).trigger('error');
+			};
 			var dataType = 'json';
 			$('body').addClass('loading');
-			$.post(url, data, success, dataType);
+			$.post(url, data, success, dataType).error(errorHandler);
 			return false;	
 		},
 		
@@ -39,4 +44,4 @@ AC.Form.Ajax = function() {
 
 $(document).ready(function() {
 	AC.Form.Ajax.init();
-})
+});

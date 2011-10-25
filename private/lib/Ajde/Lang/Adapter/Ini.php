@@ -2,6 +2,8 @@
 
 class Ajde_Lang_Adapter_Ini extends Ajde_Lang_Adapter_Abstract
 {
+	// TODO: cache .ini files!
+	
 	public function get($ident, $module = null)
 	{
 		$module = $this->getModule($module);

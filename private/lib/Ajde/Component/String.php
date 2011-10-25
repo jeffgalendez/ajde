@@ -2,6 +2,8 @@
 
 class Ajde_Component_String extends Ajde_Component
 {
+	protected static $_allowedTags = '<p><ul><li><b><strong><i><em><u>';
+	
 	public static function processStatic(Ajde_Template_Parser $parser, $attributes)
 	{
 		$instance = new self($parser, $attributes);
@@ -44,7 +46,7 @@ class Ajde_Component_String extends Ajde_Component
 			$purifier = $external->get("HTMLPurifier");
 			return $purifier->purify($var);
 		} else {
-			return strip_tags($var);
+			return strip_tags($var, self::$_allowedTags);
 		}
 	}
 }

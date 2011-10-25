@@ -43,6 +43,6 @@ class Ajde_Component_Js extends Ajde_Component_Resource
 	{
 		$url = Ajde_Resource_JsLibrary::getUrl($library, $version);
 		$resource = new Ajde_Resource_Remote(Ajde_Resource::TYPE_JAVASCRIPT, $url);
-		Ajde::app()->getDocument()->addResource($resource, Ajde_Document_Format_Html::RESOURCE_POSITION_TOP);
+		$this->getParser()->getDocument()->addResource($resource, Ajde_Document_Format_Html::RESOURCE_POSITION_TOP);
 	}
 }

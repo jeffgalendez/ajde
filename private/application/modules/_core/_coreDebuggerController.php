@@ -29,6 +29,11 @@ class _coreDebuggerController extends Ajde_Controller
 		// Get session
 		$view->assign('session', $_SESSION);
 		
+		// Get ACL
+		if (Ajde_Core_Autoloader::exists('AjdeX_Acl')) {
+			$view->assign('acl', AjdeX_Acl::getLog());
+		}
+		
 		// Get the application timer
 		Ajde::app()->endTimer(0);
 		Ajde::app()->endTimer(Ajde::app()->getLastTimerKey());

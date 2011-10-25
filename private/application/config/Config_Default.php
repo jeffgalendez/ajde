@@ -44,6 +44,10 @@ class Config_Default
 	public $autoEscapeString	= true;
 	public $autoCleanHtml		= true;
 	public $requirePostToken	= true;
+	public $secret				= 'randomstring';
+	public $cookieDomain		= false;
+	public $cookieSecure		= false;
+	public $cookieHttponly		= true;
 	
 	// Performance
 	public $compressResources	= true;

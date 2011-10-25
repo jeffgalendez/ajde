@@ -6,8 +6,35 @@ class Ajde_Session extends Ajde_Object_Standard
 	
 	public function __bootstrap()
 	{
+		// Cookie parameter
+		$lifetime	= 0;
+		$path		= Config::get('site_path');
+		$domain		= Config::get('cookieDomain');
+		$secure		= Config::get('cookieSecure');
+		$httponly	= Config::get('cookieHttponly');
+		session_set_cookie_params($lifetime, $path, $domain, $secure, $httponly);
 		session_cache_limiter('private_no_expire');
+		
+		// Start the session!
 		session_start();
+		
+		// Strengthen session security with REMOTE_ADDRESS and HTTP_USER_AGENT
+		// @see http://shiflett.org/articles/session-hijacking
+		if (isset($_SESSION['client']) &&
+				$_SESSION['client'] !== md5($_SERVER['REMOTE_ADDRESS'] . $_SERVER['HTTP_USER_AGENT'] . Config::get('secret'))) {
+			session_destroy();
+			// TODO:
+			$exception = new Ajde_Exception('Possible session hijacking detected. Bailing out.');
+			if (Config::getInstance()->debug === true) {
+				throw $exception;
+			} else {
+				Ajde_Exception_Log::logException($exception);	
+				Ajde_Http_Response::dieOnCode(403);
+			}
+		} else {
+			$_SESSION['client'] = md5($_SERVER['REMOTE_ADDRESS'] . $_SERVER['HTTP_USER_AGENT'] . Config::get('secret'));
+		}
+		
 		// remove cache headers invoked by session_start();
 		if (version_compare(PHP_VERSION, '5.3.0') >= 0) {
 			header_remove('X-Powered-By');

@@ -50,7 +50,6 @@ class _coreComponentController extends Ajde_Controller
 		// CSRF
 		$formToken = Ajde::app()->getRequest()->getFormToken();
 		$this->getView()->assign('formToken', $formToken);
-		Ajde::app()->getRequest()->markFormTime();		
 		
 		$this->getView()->assign('formAction', $this->getFormAction());
 		$this->getView()->assign('formId', $this->getFormId());

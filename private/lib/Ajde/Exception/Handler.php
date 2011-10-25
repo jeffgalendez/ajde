@@ -4,6 +4,10 @@ class Ajde_Exception_Handler extends Ajde_Object_Static
 {
 	public static function __bootstrap()
 	{
+		// making xdebug.overload_var_dump = 1 work
+		if (Config::get('debug')) {
+			ini_set('html_errors', 1);
+		}
 		// TODO: why is this defined here? also in index.php!
 		set_error_handler(array('Ajde_Exception_Handler', 'errorHandler'));
 		set_exception_handler(array('Ajde_Exception_Handler', 'handler'));
@@ -119,7 +123,7 @@ class Ajde_Exception_Handler extends Ajde_Object_Static
 						$exceptionDump .= '<h2>Dumps</h2>';
 						foreach($dumps as $dump) {
 							ob_start();
-							var_dump($dump);
+							var_dump($dump[0]);
 							$exceptionDump  .= ob_get_clean();
 						}			
 					} 

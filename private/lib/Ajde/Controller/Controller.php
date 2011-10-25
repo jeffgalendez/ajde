@@ -168,6 +168,11 @@ class Ajde_Controller extends Ajde_Object_Standard
 		Ajde::app()->getResponse()->setRedirect($route);
 	}
 	
+	public function rewrite($route)
+	{
+		Ajde::app()->getResponse()->dieOnRoute($route);
+	}
+	
 	public function updateCache()
 	{
 		Ajde_Cache::getInstance()->updateHash(time());
