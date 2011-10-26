@@ -25,7 +25,11 @@ class Config_Application extends Config_Default
 	
 	//public $autoEscapeString;
 	//public $autoCleanHtml;
-	//public $requirePostToken;			
+	//public $requirePostToken;
+	public $secret				= 'randomstring';
+	//public $cookieDomain;
+	//public $cookieSecure;
+	//public $cookieHttponly;
 	
 	//public $compressResources;
 	//public $debug;
