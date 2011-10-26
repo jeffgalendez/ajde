@@ -138,8 +138,24 @@
 				</table>			
 			</dd>
 			
+			<?php if (isset($this->acl)) { ?>
+			<dt>7. ACL</dt>
+			<dd class='summary'>		
+				<a href='javascript:void(0)' onclick='$("#ajdeDebuggerACL").slideToggle("fast");'>
+					Access <?php echo AjdeX_Acl::$access ? 'granted' : 'denied'; ?>
+				</a>
+			</dd>
+			<dd id='ajdeDebuggerACL' class='details'>
+				<?php
+				foreach($this->acl as $log) {  
+		            echo $log . '<br/>';
+		        }
+				?>	
+			</dd>
+			<?php } ?>
+			
 			<?php if (isset($this->database)) { ?>
-			<dt>7. Database</dt>
+			<dt>8. Database</dt>
 			<dd class='summary'>		
 				<?php
 				$totalTime = 0;

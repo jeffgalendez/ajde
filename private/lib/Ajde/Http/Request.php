@@ -9,7 +9,7 @@ class Ajde_Http_Request extends Ajde_Object_Standard
 	const TYPE_RAW	 	= 5;
 	
 	const FORM_MIN_TIME	= 2; 	// minimum time to have a post form returned (seconds)
-	const FORM_MAX_TIME	= 600;	// timeout of post forms (seconds) 
+	const FORM_MAX_TIME	= 3600;	// timeout of post forms (seconds) 
 	
 	/**
 	 * @var Ajde_Core_Route
@@ -33,7 +33,7 @@ class Ajde_Http_Request extends Ajde_Object_Standard
 					throw $exception;
 				} else {
 					Ajde_Exception_Log::logException($exception);	
-					Ajde_Http_Response::dieOnCode(401);
+					Ajde_Http_Response::dieOnCode(403);
 				}
 			}
 			$formToken = $_POST['_token'];
@@ -44,7 +44,7 @@ class Ajde_Http_Request extends Ajde_Object_Standard
 					throw $exception;
 				} else {
 					Ajde_Exception_Log::logException($exception);	
-					Ajde_Http_Response::dieOnCode(401);
+					Ajde_Http_Response::dieOnCode(403);
 				}
 			}
 		}
@@ -88,16 +88,17 @@ class Ajde_Http_Request extends Ajde_Object_Standard
 		if (!isset($token)) {
 			$token = md5(uniqid(rand(), true));
 			$session = new Ajde_Session('_ajde');
-			$session->set('formToken', $token);
+			$session->set('formTokenHash', md5($token . $_SERVER['REMOTE_ADDRESS'] . $_SERVER['HTTP_USER_AGENT'] . Config::get('secret')));
 		}
+		self::markFormTime();
 		return $token;
 	}
 	
 	public static function verifyFormToken($requestToken)
 	{
 		$session = new Ajde_Session('_ajde');
-		$sessionToken = $session->get('formToken');
-		return ($requestToken === $sessionToken);
+		$sessionTokenHash = $session->get('formTokenHash');
+		return (md5($requestToken . $_SERVER['REMOTE_ADDRESS'] . $_SERVER['HTTP_USER_AGENT'] . Config::get('secret')) === $sessionTokenHash);
 	}
 	
 	public static function markFormTime()
