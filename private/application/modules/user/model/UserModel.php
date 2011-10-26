@@ -2,8 +2,8 @@
 
 class UserModel extends AjdeX_User
 {
-	protected $_autoloadParents = false;
-	protected $_displayField = "nickname";
+	public $usernameField = 'username';
+	public $passwordField = 'password';
 	
-	
+	public $defaultUserGroup = self::USERGROUP_USERS;
 }

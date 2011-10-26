@@ -5,9 +5,12 @@ class BlogController extends Ajde_Controller
 	function view()
     {
     	AjdeX_Model::register($this);
-		$blog = new BlogCollection();
-		$blog->orderBy('date', AjdeX_Query::ORDER_DESC);
-		$blog->load();
+		/* @var $blog BlogCollection */
+		// Direct object creation and chaining only from PHP 5.3!
+		// Use $blog = new BlogCollection() instead
+		$blog = BlogCollection::create()
+			->orderBy('date', AjdeX_Query::ORDER_DESC)
+			->load();
 		$this->getView()->assign('blog', $blog);
         return $this->render();
     }

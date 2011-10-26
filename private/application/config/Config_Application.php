@@ -24,11 +24,15 @@ class Config_Application extends Config_Default
 	//public $langAdapter;
 	//public $timezone;
 	//public $layout;
-	//public $responseCodeRoute;
+	public $responseCodeRoute	= array(
+									'404' => 'main/code404.html',
+									'401' => 'user/logon.html'
+									);
 	
 	//public $autoEscapeString;
 	//public $autoCleanHtml;
-	//public $requirePostToken;			
+	//public $requirePostToken;
+	public $secret				= '0de9edf642ecc58511cfb76ba751f82f59e45917';
 	
 	//public $compressResources;
 	//public $debug;
@@ -44,6 +48,11 @@ class Config_Application extends Config_Default
 	public $dbPassword 			= "ajde-samples";	
 	//public $registerNamespaces;
 	
-	//public $bootstrap;
+	public $bootstrap			= array(									
+									"Ajde_Exception_Handler",
+									"Ajde_Session",
+									"Ajde_Core_ExternalLibs",
+									"AjdeX_User_Autologon",
+									);
 	
 }
