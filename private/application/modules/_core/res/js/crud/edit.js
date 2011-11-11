@@ -53,7 +53,7 @@ AC.Crud.Edit = function() {
 			AC.Crud.Edit.equalizeForm();
 			
 			$('body').addClass('loading');			
-			$.post(url, data, function(data) {		
+			$.post(url, data, function(data) {				
 				$('body').removeClass('loading');
 				if (data.success === false) {
 					if (data.errors) {
@@ -80,7 +80,11 @@ AC.Crud.Edit = function() {
 				}
 			}, 'json').error(function(jqXHR, message, exception) {
 				$('body').removeClass('loading');
-				alert('Something went wrong, please refresh and try again. (' + exception + ')');
+				if (exception == 'Unauthorized' || exception == 'Forbidden') {
+					alert("Timed out or not logged in.\nPlease refresh and try again. (All your changes will be lost)");
+				} else {
+					alert('Something went wrong, please refresh and try again. (' + exception + ')');
+				}
 			});
 			
 			return false;

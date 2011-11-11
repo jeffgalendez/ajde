@@ -31,6 +31,7 @@ class Ajde_Http_Request extends Ajde_Object_Standard
 				// TODO:
 				$exception = new Ajde_Exception('No form token received or no form time set, bailing out to prevent CSRF attack');
 				if (Config::getInstance()->debug === true) {
+					Ajde_Http_Response::setResponseType(Ajde_Http_Response::RESPONSE_TYPE_FORBIDDEN);
 					throw $exception;
 				} else {
 					Ajde_Exception_Log::logException($exception);	
@@ -42,6 +43,7 @@ class Ajde_Http_Request extends Ajde_Object_Standard
 				// TODO:
 				$exception = new Ajde_Exception('No matching form token, or form timed out, bailing out to prevent CSRF attack');
 				if (Config::getInstance()->debug === true) {
+					Ajde_Http_Response::setResponseType(Ajde_Http_Response::RESPONSE_TYPE_FORBIDDEN);
 					throw $exception;
 				} else {
 					Ajde_Exception_Log::logException($exception);	
@@ -210,6 +212,11 @@ class Ajde_Http_Request extends Ajde_Object_Standard
 	public function getPostParam($key, $default = null, $type = self::TYPE_STRING)
 	{
 		return $this->getParam($key, $default, $type, true);
+	}
+	
+	public function hasPostParam($key)
+	{
+		return array_key_exists($key, $this->_postData);
 	}
 	
 	/**
