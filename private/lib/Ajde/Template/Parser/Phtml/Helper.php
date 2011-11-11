@@ -177,7 +177,7 @@ class Ajde_Template_Parser_Phtml_Helper extends Ajde_Object_Standard
 	 * @param mixed $id
 	 * @return string
 	 */
-	public function form($route, $id = null, $class = null)
+	public function ACForm($route, $id = null, $class = null)
 	{
 		return Ajde_Component_Form::processStatic($this->getParser(), array('route' => $route, 'id' => $id, 'class' => $class));
 	}
@@ -188,7 +188,7 @@ class Ajde_Template_Parser_Phtml_Helper extends Ajde_Object_Standard
 	 * @param mixed $id
 	 * @return string
 	 */
-	public function ajaxForm($route, $id = null, $class = null)
+	public function ACAjaxForm($route, $id = null, $class = null)
 	{
 		return Ajde_Component_Form::processStatic($this->getParser(), array('route' => $route, 'ajax' => true, 'id' => $id, 'class' => $class));
 	}
@@ -198,7 +198,7 @@ class Ajde_Template_Parser_Phtml_Helper extends Ajde_Object_Standard
 	 * @param string $target
 	 * @return string
 	 */
-	public function ajaxUpload($name, $saveDir, $extensions = array(), $id = null, $class = null)
+	public function ACAjaxUpload($name, $saveDir, $extensions = array(), $id = null, $class = null)
 	{
 		return Ajde_Component_Form::processStatic($this->getParser(), array('name' => $name, 'saveDir' => $saveDir, 'extensions' => $extensions, 'id' => $id, 'class' => $class));
 	}
@@ -224,14 +224,31 @@ class Ajde_Template_Parser_Phtml_Helper extends Ajde_Object_Standard
 	/**
 	 *
 	 * @param mixed $model
-	 * @return string
+	 * @return AjdeX_Crud
 	 */
-	public function crudList($model, $options = array())
+	public function ACCrudList($model, $options = array())
 	{
 		return Ajde_Component_Crud::processStatic($this->getParser(),
 			array(
-				'view' => 'list',
+				'list' => true,
 				'model' => $model,
+				'options' => $options
+			)
+		);
+	}
+	
+	/**
+	 *
+	 * @param mixed $model
+	 * @return AjdeX_Crud
+	 */
+	public function ACCrudEdit($model, $id, $options = array())
+	{
+		return Ajde_Component_Crud::processStatic($this->getParser(),
+			array(
+				'edit' => true,
+				'model' => $model,
+				'id' => $id,
 				'options' => $options
 			)
 		);

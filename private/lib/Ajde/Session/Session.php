@@ -22,6 +22,7 @@ class Ajde_Session extends Ajde_Object_Standard
 		// @see http://shiflett.org/articles/session-hijacking
 		if (isset($_SESSION['client']) &&
 				$_SESSION['client'] !== md5($_SERVER['REMOTE_ADDRESS'] . $_SERVER['HTTP_USER_AGENT'] . Config::get('secret'))) {
+			session_regenerate_id();
 			session_destroy();
 			// TODO:
 			$exception = new Ajde_Exception('Possible session hijacking detected. Bailing out.');
@@ -79,5 +80,12 @@ class Ajde_Session extends Ajde_Object_Standard
 			throw new Ajde_Exception('It is not allowed to store a Model directly in the session, use Ajde_Session::setModel() instead.');
 		}
 		$_SESSION[$this->_namespace][$key] = $value;
+	}
+	
+	public function getOnce($key)
+	{
+		$return = $this->get($key);
+		$this->set($key, null);
+		return $return;
 	}
 }

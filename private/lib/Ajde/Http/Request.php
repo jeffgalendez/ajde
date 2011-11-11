@@ -15,6 +15,7 @@ class Ajde_Http_Request extends Ajde_Object_Standard
 	 * @var Ajde_Core_Route
 	 */
 	protected $_route = null;
+	protected $_postData = array();
 	
 	/**
 	 * @return Ajde_Http_Request
@@ -48,11 +49,14 @@ class Ajde_Http_Request extends Ajde_Object_Standard
 				}
 			}
 		}
-		$global = array_merge($_GET, $_POST);
+		// Security measure, protect $_POST
+		//$global = array_merge($_GET, $_POST);
+		$global = $_GET;
 		foreach($global as $key => $value)
 		{
 			$instance->set($key, $value);
 		}
+		$instance->_postData = $_POST;
 		return $instance;
 	}
 
@@ -129,32 +133,36 @@ class Ajde_Http_Request extends Ajde_Object_Standard
 		return $this->getParam($key);
 	}
 	
-	public function getParam($key, $default = null, $type = self::TYPE_STRING )
+	public function getParam($key, $default = null, $type = self::TYPE_STRING, $post = false)
 	{
-		if ($this->has($key)) {
+		$data = $this->_data;
+		if ($post === true) {
+			$data = $this->getPostData();
+		}
+		if (isset($data[$key])) {
 			switch ($type) {
 				case self::TYPE_HTML:
 					if ($this->autoCleanHtml() === true) {
-						return Ajde_Component_String::clean($this->_data[$key]);
+						return Ajde_Component_String::clean($data[$key]);
 					} else {
-						return $this->_data[$key];
+						return $data[$key];
 					}
 					break;
 				case self::TYPE_INTEGER:
-					return (int) $this->_data[$key];
+					return (int) $data[$key];
 					break;
 				case self::TYPE_FLOAT:
-					return (float) $this->_data[$key];
+					return (float) $data[$key];
 					break;
 				case self::TYPE_RAW:
-					return $this->_data[$key];
+					return $data[$key];
 					break;
 				case self::TYPE_STRING:
 				default:
 					if ($this->autoEscapeString() === true) {
-						return Ajde_Component_String::escape($this->_data[$key]);
+						return Ajde_Component_String::escape($data[$key]);
 					} else {
-						return $this->_data[$key];
+						return $data[$key];
 					}
 			}			
 		} else {
@@ -188,6 +196,20 @@ class Ajde_Http_Request extends Ajde_Object_Standard
 	public function getFloat($key, $default = null)
 	{
 		return $this->getParam($key, $default, self::TYPE_FLOAT);
+	}
+	
+	/**
+	 * POST
+	 */
+	
+	public function getPostData()
+	{
+		return $this->_postData;
+	}
+	
+	public function getPostParam($key, $default = null, $type = self::TYPE_STRING)
+	{
+		return $this->getParam($key, $default, $type, true);
 	}
 	
 	/**

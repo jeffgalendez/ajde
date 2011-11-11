@@ -1,0 +1,21 @@
+<?php
+/* @var $this Ajde_Template_Parser_Phtml_Helper */
+/* @var $field AjdeX_Crud_Field_File */
+$field = $this->field;
+
+if ($field->getValue()) { ?>
+	<input
+		<?php echo $field->getHtmlAttributes(); ?>
+	/>
+	<!-- assume image for now -->
+	<?php echo $this->ACImage(array(
+			'filename' => $field->getSaveDir() . $field->getValue(),
+			'width' => 150,
+			'height' => 150,
+			'crop' => true
+		)); ?>
+	<br/>
+	<span><?php echo $field->getValue(); ?></span>
+<?php } else { ?>
+	<?php echo $this->ACAjaxUpload($field->getName(), $field->getSaveDir(), $field->getExtensions()); ?>
+<?php } ?>

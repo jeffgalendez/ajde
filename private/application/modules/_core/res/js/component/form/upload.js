@@ -1,3 +1,4 @@
+;
 if (typeof AC ==="undefined") { 		AC = function() {}; }
 if (typeof AC.Form ==="undefined") { 	AC.Form = function() {}; }
 
@@ -48,7 +49,7 @@ AC.Form.Upload = function() {
 
 $(document).ready(function() {
 	AC.Form.Upload.init();
-})
+});
 
 /**
  * http://github.com/valums/file-uploader

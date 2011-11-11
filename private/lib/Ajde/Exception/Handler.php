@@ -56,17 +56,12 @@ class Ajde_Exception_Handler extends Ajde_Object_Static
 
 	public static function trace(Exception $exception, $output = self::EXCEPTION_TRACE_HTML)
 	{
-		if ($exception instanceof ErrorException)
-		{
+		if ($exception instanceof ErrorException) {
 			$type = "PHP Error " . self::getErrorType($exception->getSeverity());
-		}
-		elseif ($exception instanceof Ajde_Exception)
-		{
-			$type = "Ajde uncaught exception " . $exception->getCode();
-		}
-		else
-		{
-			$type = "Uncaught exception " . $exception->getCode();
+		} elseif ($exception instanceof Ajde_Exception) {
+			$type = "Uncaught application exception" . ($exception->getCode() ? ' ' . $exception->getCode() : '');
+		} else {
+			$type = "Uncaught PHP exception " . $exception->getCode();
 		}
 
 		switch ($output) {
@@ -99,23 +94,25 @@ class Ajde_Exception_Handler extends Ajde_Object_Static
 				}
 				$traceMessage .= '</ol>';
 				
-				$exceptionMessage = sprintf("<h3>%s:</h3><h2>%s</h2> in %s\n",
+				$exceptionDocumentation = '';
+				if ($exception instanceof Ajde_Exception && $exception->getCode()) {
+					$exceptionDocumentation = sprintf("<div style='margin-top: 4px;'><img src='//" . Config::get('site_root') . "public/images/_core/globe_16.png' style='vertical-align: bottom;' title='Primary key' width='16' height='16' /> <a href='%s'>Documentation on error %s</a>&nbsp;</div>",
+						Ajde_Core_Documentation::getUrl($exception->getCode()),
+						$exception->getCode()
+					);
+				}
+				
+				$exceptionMessage = sprintf("<div style='background-color:#F1F1F1;background-image: url(\"//" . Config::get('site_root') . "public/images/_core/warning_48.png\"); background-repeat: no-repeat; background-position: 10px 10px; border: 1px solid silver; padding: 10px 10px 10px 70px;'><h3 style='margin:0;'>%s:</h3><h2 style='margin:0;'>%s</h2> Exception thrown in %s%s</div><h3>Trace:</h3>\n",
 						$type,
 						$exception->getMessage(),
 						self::embedScript(
 								$exception->getFile(),
 								$exception->getLine(),
 								$arguments,
-								!self::$firstApplicationFileExpanded
-						)						
+								false //!self::$firstApplicationFileExpanded
+						),
+						$exceptionDocumentation
 				);
-
-				if ($exception instanceof Ajde_Exception && $exception->getCode()) {
-					$exceptionMessage .= sprintf('<span style="border:1px solid black;display:inline-block;"><strong style="border-right:1px solid #aaa;padding:1px 8px;display:inline-block;background-color:yellow;">i</strong> <a href="%s">Ajde documentation on error %s</a>&nbsp;</span>',
-						Ajde_Core_Documentation::getUrl($exception->getCode()),
-						$exception->getCode()
-					);
-				}
 				
 				$exceptionDump = '';
 				if (class_exists("Ajde_Dump")) {
@@ -129,10 +126,13 @@ class Ajde_Exception_Handler extends Ajde_Object_Static
 					} 
 				}
 				
-				$style = '<style>';
-				$style .= file_get_contents(MODULE_DIR . '_core/res/css/debugger/handler.css');
-				$style .= '</style>';
-				
+				$style = file_get_contents(MODULE_DIR . '_core/res/css/debugger/handler.css');
+				if ($style === false) {
+					// For shutdown() call
+					$style = 'body {font: 13px sans-serif;} a {color: #005D9A;} a:hover {color: #9A0092;} h2 {color: #005D9A;} span > a {color: #9A0092;}';
+				}
+				$style = '<style>' . $style . '</style>';
+
 				$message = $style . $exceptionDump . $exceptionMessage . $traceMessage;
 				break;
 			case self::EXCEPTION_TRACE_LOG:
@@ -174,7 +174,7 @@ class Ajde_Exception_Handler extends Ajde_Object_Static
 	 
 	protected static function embedScript($filename = null, $line = null, $arguments = null, $expand = false)
 	{
-		$lineOffset = 3;
+		$lineOffset = 5;
 		$file = '';
 		if (isset($filename) && isset($line))
 		{
@@ -184,11 +184,11 @@ class Ajde_Exception_Handler extends Ajde_Object_Static
 				$lineNumber = str_repeat(" ", 4 - strlen($i + 1)) . ($i + 1);
 				if ($i == $line - 1)
 				{
-					$file .= "<span style='background-color: yellow;'>" . $lineNumber . htmlentities($lines[$i]) . "</span>";
+					$file .= "{{{}}}" . $lineNumber . ' ' . ($lines[$i]) . "{{{/}}}";
 				}
 				else
 				{
-					$file .= $lineNumber . htmlentities($lines[$i]);
+					$file .= $lineNumber . ' ' . ($lines[$i]);
 				}
 			}
 		}
@@ -200,13 +200,18 @@ class Ajde_Exception_Handler extends Ajde_Object_Static
 			}
 			self::$firstApplicationFileExpanded = true; 
 		}
+		$file = highlight_string("<?php".$file, true);
+		$file = str_replace('&lt;?php', '', $file);
+		$file = str_replace('<code>', "<code style='display:block;border:1px solid silver;margin:5px 0 5px 0;background-color:#f1f1f1;'>", $file);
+		$file = str_replace('{{{}}}', "<div style='background-color: #ffff9e;'>", $file);
+		$file = str_replace('{{{/}}}', "</div>", $file);
 
 		$id = md5(microtime());
 		return sprintf(
 				"<a
 					onclick='document.getElementById(\"$id\").style.display = document.getElementById(\"$id\").style.display == \"block\" ? \"none\" : \"block\";'
 					href='javascript:void(0);'
-				><i>%s</i> on line <b>%s</b></a>&nbsp;<div id='$id' style='display:%s;'><pre style='border:1px solid gray;background-color:#eee;'>%s</pre>%s</div>",
+				><i>%s</i> on line <b>%s</b></a>&nbsp;<div id='$id' style='display:%s;'>%s%s</div>",
 				$filename,
 				$line,
 				$expand ? "block" : "none",

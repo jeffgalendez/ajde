@@ -1,0 +1,47 @@
+<?php
+/* @var $crud AjdeX_Crud */
+$crud = $this->crud;
+$listOptions = $crud->getOptions('list');
+?>
+
+<?php echo $this->ACAjaxForm('_core/crud:commit', $crud->getHash(), 'ACCrudList'); ?>
+
+	<table class='crudList'>
+	<thead>
+		<tr>
+			<th width="25"></th>
+			<?php foreach($crud->getFields() as $field) {
+				if (isset($listOptions['show']) && (!in_array($field->getName(), $listOptions['show']))) { continue; } ?>
+				<th><?php echo $field->getLabel(); ?></th>
+			<?php } ?>
+			<th width="120">
+				<a href="javascript:void(null);" class='button new'>new</a>
+			</th>
+		</tr>
+	</thead>
+	<tbody>
+	<?php foreach($crud->getItems() as $model) {?>
+		<tr>
+			<td><input type="checkbox" name="chk_<?php echo $model->getPK(); ?>" value="<?php echo $model->getPK(); ?>" /></td>
+			<?php foreach($model->values() as $fieldName => $value) {
+				if (isset($listOptions['show']) && (!in_array($fieldName, $listOptions['show']))) { continue; } ?>
+				<?php
+				// Linked Model
+				if ($value instanceof AjdeX_Model) { ?>
+					<td class="linkedModel" title="<?php echo $value->get($value->getDisplayField()); ?>"><?php echo $value->get($value->getDisplayField()); ?></td>
+				<?php
+				// Text value
+				} else { ?>
+					<td title="<?php echo $value; ?>"><?php echo $this->escape($value); ?></td>
+				<?php } ?>			
+			<?php } ?>
+			<td class='buttons'>
+				<a href="javascript:void(null);" class='button edit'>edit</a>
+				<a href="javascript:void(null);" class='button delete'>delete</a>
+			</td>
+		</tr>
+	<?php } ?>
+	</tbody>
+	</table>
+
+</form>

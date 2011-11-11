@@ -1,0 +1,22 @@
+<?php
+/* @var $crud AjdeX_Crud */
+$crud = $this->crud;
+?>
+
+<?php echo $this->ACAjaxForm('_core/crud:commit', $crud->getHash(), 'ACCrudEdit'); ?>
+	
+	<dl class='crudEdit'>
+		
+		<?php foreach($crud->getFields() as $field) {
+			echo $field->getHtml();
+		} ?>
+		
+		<dt>&nbsp;</dt>
+		<dd>
+			<button type="submit" class="button save">Save</button>
+			<a href="javascript:void(null);" class='button cancel'>Cancel</a>
+		</dd>
+		
+		<div class='clearfix'></div>
+	</dl>
+</form>

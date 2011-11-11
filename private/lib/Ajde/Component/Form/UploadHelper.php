@@ -5,6 +5,8 @@ class Ajde_Component_Form_UploadHelper
 }
 
 /**
+ * @see http://valums.com/ajax-upload/
+ * @see https://github.com/valums/ajax-upload
  * Handle file uploads via XMLHttpRequest
  */
 class qqUploadedFileXhr {

@@ -1,0 +1,14 @@
+<?php $field = $this->field; ?>
+<dt title="<?php echo $field->getLabel(); ?>">
+	<?php echo $field->getLabel(); ?>
+	<?php if ($field->getIsRequired() === true) :
+		echo $field->getHtmlRequired();
+	endif; ?>
+</dt>
+
+<dd>
+	<?php if ($field->getIsPK() === true) :
+		echo $field->getHtmlPK();
+	endif; ?>
+	<?php echo $field->getInput(); ?>
+</dd>

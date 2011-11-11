@@ -176,12 +176,25 @@ class Ajde_Document_Format_Html extends Ajde_Document
 			{
 				$this->addResource($defaultResource, $position);
 			}
+			if (substr_count($template->getAction(), '/') > 0 &&
+				$actionDefaultResource = Ajde_Resource_Local::lazyCreate($resourceType, $template->getBase(), $this->_getTemplateActionDefault($template), $template->getFormat()))
+			{
+				$this->addResource($actionDefaultResource, $position);
+			}
 			if ($template->getAction() != 'default' &&
 				$actionResource = Ajde_Resource_Local::lazyCreate($resourceType, $template->getBase(), $template->getAction(), $template->getFormat()))
 			{
 				$this->addResource($actionResource, $position);
 			}
 		}
+	}
+	
+	private function _getTemplateActionDefault(Ajde_Template $template)
+	{
+		$actionArray = explode('/', $template->getAction());
+		end($actionArray);
+		$actionArray[key($actionArray)] = 'default';
+		return implode('/', $actionArray);
 	}
 	
 }
