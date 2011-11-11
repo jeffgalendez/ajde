@@ -44,7 +44,7 @@ class UserController extends AjdeX_User_Controller
 			$message = Ajde::app()->getRequest()->getParam('message', '');
 			$this->getView()->assign('message', $message);
 			$this->getView()->assign('user', $user);
-			$this->getView()->assign('returnto', Ajde::app()->getRequest()->getParam('returnto', false));
+			$this->getView()->assign('returnto', Ajde::app()->getRequest()->getParam('returnto', $_SERVER['REDIRECT_STATUS'] == 200 ? 'user' : false));
 			return $this->render();
 		}		
 	}

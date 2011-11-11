@@ -1,3 +1,29 @@
 <h2>Edit</h2>
 
-<?php echo $this->crudList('blog'); ?>
+<?php
+	$fields = array(
+		'image' => array(
+			'type' => 'file',
+				'saveDir' => 'public/images/blog/',
+				'extensions' => array('png', 'jpg'),
+			'label' => 'Plaatje',
+			'length' => 255,
+			'isRequired' => false,
+			'default' => '',
+			'isAutoIncrement' => false,
+			)
+	);
+	$list = array(
+		'show' => array('title', 'date', 'published', 'user')
+	);
+	$options = array(
+		'fields'	=> $fields,
+		'list'		=> $list
+	);
+	
+	$crud = $this->ACCrudList('blog', $options);
+	//dump($crud, true);
+	echo $crud->output();
+?>
+
+<?php //echo $this->ACCrudEdit('user', 50)->output(); ?>

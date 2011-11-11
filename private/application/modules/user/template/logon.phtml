@@ -4,8 +4,8 @@
 	<a href="user/register"><?php echo __('Register'); ?></a>
 </p>
 
-<?php echo $this->ajaxForm('user/logon', 'loginform'); ?>
-	<input type="hidden" name="returnto" value="<?php echo $this->returnto; ?>" />
+<?php echo $this->ACAjaxForm('user/logon', 'loginform'); ?>
+	<input type="hidden" name="returnto" id="returnto" value="<?php echo $this->returnto; ?>" />
 	<dl>
 		<dt><?php echo __(ucfirst($this->user->usernameField)); ?></dt>
 		<dd>

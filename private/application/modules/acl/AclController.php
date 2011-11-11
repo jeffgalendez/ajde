@@ -22,7 +22,12 @@ class AclController extends AjdeX_Acl_Controller
 		return $this->render();
 	}
 	
-	public function delete()
+	public function denied()
+	{
+		return $this->render();
+	}
+	
+	public function owner()
 	{
 		return $this->render();
 	}

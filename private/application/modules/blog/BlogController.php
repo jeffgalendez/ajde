@@ -1,7 +1,11 @@
 <?php 
 
-class BlogController extends Ajde_Controller
+class BlogController extends AjdeX_Acl_Controller
 {
+	protected $_allowedActions = array(
+		'view',
+	);
+	
 	function view()
     {
     	AjdeX_Model::register($this);

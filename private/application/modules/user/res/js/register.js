@@ -4,7 +4,7 @@ $(document).ready(function() {
 		if (data.success === false) {
 			$("#registerformStatus").text(data.message);
 		} else {
-			window.location.href = 'user/logon';
+			window.location.href = 'user';
 		}
 	});
 	$('#registerform').bind('error', function(event) {

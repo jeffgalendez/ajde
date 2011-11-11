@@ -4,7 +4,11 @@ $(document).ready(function() {
 		if (data.success === false) {
 			$("#loginformStatus").text(data.message);
 		} else {
-			window.location.reload(true);
+			if ($("#returnto").val()) {
+				window.location.href = $("#returnto").val();
+			} else {
+				window.location.reload(true);
+			}
 		}
 	});
 	$('#loginform').bind('error', function(event) {
