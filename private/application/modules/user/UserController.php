@@ -53,9 +53,9 @@ class UserController extends AjdeX_User_Controller
 	{
 		$user = new UserModel();
 		
-		$username = Ajde::app()->getRequest()->getParam($user->usernameField);
-		$password = Ajde::app()->getRequest()->getParam('password');
-		$rememberme = Ajde::app()->getRequest()->has('rememberme');
+		$username	= Ajde::app()->getRequest()->getPostParam($user->usernameField);
+		$password	= Ajde::app()->getRequest()->getPostParam('password');
+		$rememberme = Ajde::app()->getRequest()->hasPostParam('rememberme');
 				
 		$return = array(false);
 		
@@ -94,11 +94,11 @@ class UserController extends AjdeX_User_Controller
 	{
 		$user = new UserModel();
 		
-		$username = Ajde::app()->getRequest()->getParam($user->usernameField);
-		$password = Ajde::app()->getRequest()->getParam('password');
-		$passwordCheck = Ajde::app()->getRequest()->getParam('passwordCheck');
-		$email = Ajde::app()->getRequest()->getParam('email', false);
-		$fullname = Ajde::app()->getRequest()->getParam('fullname', false);
+		$username		= Ajde::app()->getRequest()->getPostParam($user->usernameField);
+		$password		= Ajde::app()->getRequest()->getPostParam('password');
+		$passwordCheck	= Ajde::app()->getRequest()->getPostParam('passwordCheck');
+		$email			= Ajde::app()->getRequest()->getPostParam('email', false);
+		$fullname		= Ajde::app()->getRequest()->getPostParam('fullname', false);
 		
 		$return = array(false);
 		
