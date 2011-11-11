@@ -1,3 +1,4 @@
+;
 if (typeof AC ==="undefined") { 		AC = function() {}; }
 if (typeof AC.Crud ==="undefined") { 	AC.Crud = function() {}; }
 
@@ -26,6 +27,7 @@ AC.Crud.List = function() {
 			window.location.href = window.location.pathname + '?edit=' + id;
 		},
 		
+		// TODO: this should be a post request, with csrf protection!
 		deleteHandler: function() {
 			var row = $(this).parents('tr');
 			var id = row.find('input[type=checkbox]').attr('value');			
@@ -34,13 +36,21 @@ AC.Crud.List = function() {
 			if (confirm('Are you sure you want to delete the record with ID = ' + id + '?')) {
 				var options = {
 					operation	: 'delete',
-					crudId		: form.attr('id'), 
-					id			: id					
+					crudId		: form.attr('id')
 				};
-				$.getJSON(form.attr('action'), options, function(data) {
+				var url = form.attr('action') + "?" + $.param(options);
+				var data = {					
+					_token	: form.find('input[name=_token]').val(),
+					id		: id
+				};
+				
+				$.post(url, data, function(data) {
 					if (data.operation === 'delete' && data.success === true) {
 						row.css({backgroundColor:'red'}).fadeOut();
 					}
+				}, 'json').error(function(jqXHR, message, exception) {
+					$('body').removeClass('loading');
+					alert('Something went wrong, please refresh and try again. (' + exception + ')');
 				});
 			}
 		}
@@ -49,4 +59,4 @@ AC.Crud.List = function() {
 
 $(document).ready(function() {
 	AC.Crud.List.init();
-})
+});

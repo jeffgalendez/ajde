@@ -1,0 +1,33 @@
+<?php
+/* @var $this Ajde_Template_Parser_Phtml_Helper */
+/* @var $field AjdeX_Crud_Field_File */
+$field = $this->field;
+
+$collectionName = ucfirst($field->getName()) . 'Collection';
+$collection = new $collectionName;
+$collection->load(); 
+
+if ($field->getValue()) {
+	if ($field->getValue() instanceof AjdeX_Model) {
+		$pk = $field->getValue()->getPK();
+	} else {
+		$pk = $field->getValue();
+	}
+} else {
+	$pk = null;
+}
+
+?>
+
+<select
+	<?php echo $field->getHtmlAttributes(); ?>
+>
+	<?php if (!$field->getIsRequired() === true) { ?>
+		<option value=''>(none)</option>
+	<?php } ?>
+	<?php foreach($collection as $option) { ?>							
+		<option value='<?php echo $option; ?>'
+			<?php if ($option == $pk) { echo "selected='selected'"; } ?>
+			><?php echo $option->get($option->getDisplayField()); ?></option>
+	<?php } ?>
+</select>

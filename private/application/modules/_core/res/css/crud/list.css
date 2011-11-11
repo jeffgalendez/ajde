@@ -1,0 +1,42 @@
+table.crudList {
+    border-collapse: collapse;
+    border-top: 1px solid silver;
+	background-color: silver;
+}
+
+table.crudList tr {
+	margin: 0;
+	margin-bottom: 1px;
+	min-height: 35px;
+	border-bottom: 1px solid silver;
+}
+
+table.crudList th {
+	padding: 10px;
+	background-color: #f1f1f1;
+	text-align: left;
+}
+
+table.crudList td {
+	padding: 10px;
+    text-overflow: ellipsis;
+    overflow: hidden;
+    vertical-align: top;
+	background-color: white;
+}
+
+	table.crudList td.linkedModel {
+		text-decoration: underline;
+	}
+	
+	table.crudList td.buttons {
+		white-space: nowrap;
+	}
+
+table.crudList tr:nth-child(even) td {
+	background-color: #f9f9f9;
+}
+
+table.crudList tr:hover td {
+	background-color: #eee;
+}

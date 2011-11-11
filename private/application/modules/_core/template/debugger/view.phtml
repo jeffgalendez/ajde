@@ -1,6 +1,8 @@
-<?php $this->requireJs('component/shortcut'); ?>
-
-<?php $this->requireJsLibrary('jquery', '1'); ?>
+<?php
+$this->requireJs('component/shortcut');
+$this->requireJsLibrary('jquery', '1');
+$expand = false;
+?>
 
 <div id="ajdeDebugger">
 	<div id="ajdeDebuggerHeader"></div>
@@ -12,7 +14,8 @@
 				<dd class='summary'><a href='javascript:void(0)' onclick='$("#ajdeDebuggerDump div").slideToggle("fast");'>toggle all</a></dd>
 				<dd id='ajdeDebuggerDump' class='details' style='display: block'>
 					<table border=1>
-						<?php foreach($this->dump as $source => $var) { ?>
+						<?php foreach($this->dump as $source => $var) {
+							if ($var[1] === true) { $expand = true; } ?>
 						<tr>
 							<td>
 								<a href='javascript:void(0)' onclick='$("#dump<?php echo md5($source); ?>").slideToggle("fast");'><?php echo $source; ?></a>
@@ -178,3 +181,11 @@
 		</dl>
 	</div>
 </div>
+<?php 
+if ($expand === true) { ?>
+<script>
+	$(document).ready(function() {
+		$('#ajdeDebuggerHeader').trigger('click');
+	});
+</script>
+<?php } ?>

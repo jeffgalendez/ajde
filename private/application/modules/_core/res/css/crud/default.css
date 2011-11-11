@@ -1,0 +1,46 @@
+.button,
+.qq-upload-button {
+	height: 10px;
+	padding: 2px 5px 2px 20px;
+	
+	margin-right: 5px;
+	font-weight: normal;
+	
+	white-space:nowrap;
+	text-decoration: none;
+	
+	border: 1px solid silver;
+	
+	color: black;
+	
+	background-color: white;
+	background-repeat: no-repeat;
+	background-position: 3px center;
+	
+  -webkit-border-radius: 10px; 
+     -moz-border-radius: 10px; 
+          border-radius: 10px; 
+   -moz-background-clip: padding; -webkit-background-clip: padding-box; background-clip: padding-box; 
+}
+
+button.button {
+	height: 22px;
+}
+
+.button:hover, .button:focus,
+.qq-upload-button:hover, .qq-upload-button:focus {
+	color: black;
+	
+  -webkit-box-shadow: 0px 0px 4px gray; 
+     -moz-box-shadow: 0px 0px 4px gray; 
+          box-shadow: 0px 0px 4px gray; 
+}
+
+.button.delete	{ border: 1px solid #e43c3c; }
+.button.save	{ border: 1px solid #6fbe15; }
+
+.button.save	{ background-image: url('../../../../public/images/_core/crud/accepted_16.png'); }
+.button.new		{ background-image: url('../../../../public/images/_core/crud/add_16.png'); }
+.button.edit	{ background-image: url('../../../../public/images/_core/crud/pencil_16.png'); }
+.button.cancel	{ background-image: url('../../../../public/images/_core/crud/cancel_16.png'); }
+.button.delete	{ background-image: url('../../../../public/images/_core/crud/cross_16.png'); }

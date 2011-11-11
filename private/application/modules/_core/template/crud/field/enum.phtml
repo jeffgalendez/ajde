@@ -1,0 +1,14 @@
+<?php
+$field = $this->field;
+$options = explode(',', $field->getLength()); ?>
+
+<select
+	<?php echo $field->getHtmlAttributes(); ?>
+>
+	<?php foreach($options as $option) { 
+		$option = trim($option, "'"); ?>
+		<option value='<?php echo $option; ?>'
+			<?php if ($option == $field->getValue()) { echo "selected='selected'"; } ?>
+			><?php echo $option; ?></option>
+	<?php } ?>
+</select>

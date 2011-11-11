@@ -1,3 +1,8 @@
 /**
  * Styles for Default layout
  */
+ 
+ body.loading {
+	 opacity: 0.3;
+	 filter: alpha(opacity = 30);
+ }

@@ -15,22 +15,20 @@ class Ajde_Image extends Ajde_Object_Standard
 	{
 		$this->_source = $file;
 		$this->_type = $this->fileExtension($file);
-		// TODO: only get resource when needed??
-		$this->_image = $this->getImageResource();
 	}
-	
+		
 	public function getImage()
 	{
 		ob_start();
 		switch ($this->_type) {
 			case "jpg": 
-				imagejpeg($this->_image);
+				imagejpeg($this->getImageResource());
 				break;
 			case "png":
-				imagepng($this->_image);
+				imagepng($this->getImageResource());
 				break;
 			case "gif":
-				imagegif($this->_image);
+				imagegif($this->getImageResource());
 				break;
 		}
 		$image = ob_get_contents();
@@ -38,35 +36,39 @@ class Ajde_Image extends Ajde_Object_Standard
 		return $image;
 	}
 	
-	// public function __sleep()
-	// {
-		// return array();
-	// }
+	public function __sleep()
+	{
+		$this->_image = null;
+		return array('_source', '_type', '_data');
+	}
 
 	public function __wakeup()
 	{
-		$this->_image = $this->getImageResource();
+		//$this->_image = $this->getImageResource();
 	}
 	
 	public function getImageResource()
 	{
-		switch ($this->_type) {
-			case "jpg": 
-				return imagecreatefromjpeg($this->_source);
-				break;
-			case "png":
-				return imagecreatefrompng($this->_source);
-				break;
-			case "gif":
-				return imagecreatefromgif($this->_source);
-				break;
+		if (!isset($this->_image)) {
+			switch ($this->_type) {
+				case "jpg": 
+					$this->_image = imagecreatefromjpeg($this->_source);
+					break;
+				case "png":
+					$this->_image = imagecreatefrompng($this->_source);
+					break;
+				case "gif":
+					$this->_image = imagecreatefromgif($this->_source);
+					break;
+			}
 		}
+		return $this->_image;
 	}
 	
 	public function resize($dim, $w_or_h) {
 		
-		$old_x=imageSX($this->_image);
-		$old_y=imageSY($this->_image);
+		$old_x=imageSX($this->getImageResource());
+		$old_y=imageSY($this->getImageResource());
 			
 		if ($w_or_h = "w") {
 			$thumb_w=$new_w;
@@ -79,7 +81,7 @@ class Ajde_Image extends Ajde_Object_Standard
 		
 		$newimage = ImageCreateTrueColor($thumb_w,$thumb_h);
 		
-		$this->fastimagecopyresampled($newimage,$this->_image,0,0,0,0,$thumb_w,$thumb_h,$old_x,$old_y,5);
+		$this->fastimagecopyresampled($newimage,$this->getImageResource(),0,0,0,0,$thumb_w,$thumb_h,$old_x,$old_y,5);
 		
 		$this->_image = $newimage;		
 	}
@@ -92,8 +94,8 @@ class Ajde_Image extends Ajde_Object_Standard
 		
 		$newimage=ImageCreateTrueColor($width,$height);
 		
-		$old_x=imageSX($this->_image);
-		$old_y=imageSY($this->_image);
+		$old_x=imageSX($this->getImageResource());
+		$old_y=imageSY($this->getImageResource());
 				
 		$thumb_w=$width;
 		$thumb_h=intval($old_y*($width/$old_x));
@@ -120,7 +122,7 @@ class Ajde_Image extends Ajde_Object_Standard
 		$x_offset = $x_offset + $x_o;
 		$y_offset = $y_offset + $y_o;
 		
-		$this->fastimagecopyresampled($newimage,$this->_image,-$x_offset,-$y_offset,0,0,$thumb_w,$thumb_h,$old_x,$old_y,5);
+		$this->fastimagecopyresampled($newimage,$this->getImageResource(),-$x_offset,-$y_offset,0,0,$thumb_w,$thumb_h,$old_x,$old_y,5);
 		
 		$this->_image = $newimage;
 	}
