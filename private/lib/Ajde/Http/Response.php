@@ -6,6 +6,8 @@ class Ajde_Http_Response extends Ajde_Object_Standard
 	const REDIRECT_REFFERER = 2;
 
 	const RESPONSE_TYPE_NOT_MODIFIED = 304;
+	const RESPONSE_TYPE_UNAUTHORIZED = 401;
+	const RESPONSE_TYPE_FORBIDDEN = 403;
 	
 	public static function redirectNotFound()
 	{
