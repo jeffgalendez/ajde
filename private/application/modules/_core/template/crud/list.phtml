@@ -27,7 +27,7 @@ $listOptions = $crud->getOptions('list');
 				if (isset($listOptions['show']) && (!in_array($fieldName, $listOptions['show']))) { continue; } ?>
 				<?php
 				// Linked Model
-				if ($value instanceof AjdeX_Model) { ?>
+				if ($value instanceof AjdeX_Model && $value->hasLoaded()) { ?>
 					<td class="linkedModel" title="<?php echo $value->get($value->getDisplayField()); ?>"><?php echo $value->get($value->getDisplayField()); ?></td>
 				<?php
 				// Text value

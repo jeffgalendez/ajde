@@ -74,7 +74,7 @@ $expand = false;
 				<?php
 		        $table = '<table border=1><tr><th>Description</th><th colspan=\'2\'>Time (ms)</th></tr>';
 				
-				$tmpTimer = array();
+				$tmpTimer = array(0);
 				$childrenTime = array();
 				$i = count($this->timers);
 				foreach (array_reverse($this->timers) as $entry) {
