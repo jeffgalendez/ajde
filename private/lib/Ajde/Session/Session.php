@@ -6,6 +6,9 @@ class Ajde_Session extends Ajde_Object_Standard
 	
 	public function __bootstrap()
 	{
+		// Session name
+		session_name(Config::get('ident') . '_session');
+		
 		// Cookie parameter
 		$lifetime	= 0;
 		$path		= Config::get('site_path');
@@ -18,10 +21,10 @@ class Ajde_Session extends Ajde_Object_Standard
 		// Start the session!
 		session_start();
 		
-		// Strengthen session security with REMOTE_ADDRESS and HTTP_USER_AGENT
+		// Strengthen session security with REMOTE_ADDR and HTTP_USER_AGENT
 		// @see http://shiflett.org/articles/session-hijacking
 		if (isset($_SESSION['client']) &&
-				$_SESSION['client'] !== md5($_SERVER['REMOTE_ADDRESS'] . $_SERVER['HTTP_USER_AGENT'] . Config::get('secret'))) {
+				$_SESSION['client'] !== md5($_SERVER['REMOTE_ADDR'] . $_SERVER['HTTP_USER_AGENT'] . Config::get('secret'))) {
 			session_regenerate_id();
 			session_destroy();
 			// TODO:
@@ -33,7 +36,7 @@ class Ajde_Session extends Ajde_Object_Standard
 				Ajde_Http_Response::dieOnCode(403);
 			}
 		} else {
-			$_SESSION['client'] = md5($_SERVER['REMOTE_ADDRESS'] . $_SERVER['HTTP_USER_AGENT'] . Config::get('secret'));
+			$_SESSION['client'] = md5($_SERVER['REMOTE_ADDR'] . $_SERVER['HTTP_USER_AGENT'] . Config::get('secret'));
 		}
 		
 		// remove cache headers invoked by session_start();

@@ -77,7 +77,6 @@ class _coreCrudController extends AjdeX_Acl_Controller
 		$session = new Ajde_Session('AC.Crud');
 		$crud = $session->getModel($crudId);
 		$model = $crud->getModel();
-		$session->destroy();
 				
 		$model->loadByPK($id);
 		$success = $model->delete();

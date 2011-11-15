@@ -20,8 +20,8 @@ class Ajde_Controller extends Ajde_Object_Standard
 		if (!isset($action) || !isset($format)) {
 			$defaultParts = Config::get('defaultRouteParts');
 		}
-		$this->setAction(issetor($action, $defaultParts['action']));
-		$this->setFormat(issetor($format, $defaultParts['format']));
+		$this->setAction(isset($action) ? $action : $defaultParts['action']);
+		$this->setFormat(isset($format) ? $format : $defaultParts['format']);
 		
 		$route = new Ajde_Core_Route($this->getAction());
 		$route->getFormat($this->getFormat());
