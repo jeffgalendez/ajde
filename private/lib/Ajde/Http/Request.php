@@ -94,7 +94,7 @@ class Ajde_Http_Request extends Ajde_Object_Standard
 		if (!isset($token)) {
 			$token = md5(uniqid(rand(), true));
 			$session = new Ajde_Session('_ajde');
-			$session->set('formTokenHash', md5($token . $_SERVER['REMOTE_ADDRESS'] . $_SERVER['HTTP_USER_AGENT'] . Config::get('secret')));
+			$session->set('formTokenHash', md5($token . $_SERVER['REMOTE_ADDR'] . $_SERVER['HTTP_USER_AGENT'] . Config::get('secret')));
 		}
 		self::markFormTime();
 		return $token;
@@ -104,7 +104,7 @@ class Ajde_Http_Request extends Ajde_Object_Standard
 	{
 		$session = new Ajde_Session('_ajde');
 		$sessionTokenHash = $session->get('formTokenHash');
-		return (md5($requestToken . $_SERVER['REMOTE_ADDRESS'] . $_SERVER['HTTP_USER_AGENT'] . Config::get('secret')) === $sessionTokenHash);
+		return (md5($requestToken . $_SERVER['REMOTE_ADDR'] . $_SERVER['HTTP_USER_AGENT'] . Config::get('secret')) === $sessionTokenHash);
 	}
 	
 	public static function markFormTime()

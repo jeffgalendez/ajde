@@ -7,14 +7,16 @@
 
 ###### Ajde specific
 
-# PHP compatibility settings
-php_flag short_open_tag off
-php_flag magic_quotes_gpc off
-php_flag register_globals off
+<IfModule mod_php5.c>
+	# PHP compatibility settings
+	php_flag short_open_tag off
+	php_flag magic_quotes_gpc off
+	php_flag register_globals off
 
-# Force PHP errors
-php_value display_errors 1
-php_value display_startup_errors 1
+	# Force PHP errors
+	php_value display_errors 1
+	php_value display_startup_errors 1
+</IfModule>
 
 # Turn the RewriteEngine on, optionally specify the base path too
 RewriteEngine on
@@ -37,15 +39,15 @@ RewriteRule ^(.+)$ index.php?_route=$1 [QSA,L]
 # Error documents
 # Update to local path, i.e. /ajde/errordocument.php to prevent error:
 # 	'Additionally, a 404 Not Found error was encountered while trying to use an ErrorDocument to handle the request.'
-ErrorDocument 400 /errordocument.php
-ErrorDocument 401 /errordocument.php
-ErrorDocument 403 /errordocument.php
-ErrorDocument 404 /errordocument.php
+ErrorDocument 400 /unst/www/errordocument.php
+ErrorDocument 401 /unst/www/errordocument.php
+ErrorDocument 403 /unst/www/errordocument.php
+ErrorDocument 404 /unst/www/errordocument.php
 
-ErrorDocument 500 /errordocument.php
-ErrorDocument 501 /errordocument.php
-ErrorDocument 502 /errordocument.php
-ErrorDocument 503 /errordocument.php
+ErrorDocument 500 /unst/www/errordocument.php
+ErrorDocument 501 /unst/www/errordocument.php
+ErrorDocument 502 /unst/www/errordocument.php
+ErrorDocument 503 /unst/www/errordocument.php
 
 ###### From HTML5 Boilerplate
 
