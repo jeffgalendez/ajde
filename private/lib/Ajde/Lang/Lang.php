@@ -49,7 +49,13 @@ class Ajde_Lang extends Ajde_Object_Singleton
 		}
 		return false;
 	}
-	 
+	
+	public function setGlobalLang($lang)
+	{
+		$this->setLang($lang);
+		Config::getInstance()->lang_root = Config::getInstance()->site_root . $this->getShortLang() . '/';
+	}
+
 	protected function detect()
 	{		
 		if (Config::get("langAutodetect")) {

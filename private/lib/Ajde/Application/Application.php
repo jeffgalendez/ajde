@@ -73,7 +73,7 @@ class Ajde_Application extends Ajde_Object_Singleton
 		$this->setRequest($request);
 
 		// Get route
-		$route = $request->getRoute();
+		$route = $request->initRoute();
 		$this->setRoute($route);
 
 		// Load document

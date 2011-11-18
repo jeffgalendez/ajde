@@ -237,6 +237,15 @@ class Ajde_Http_Request extends Ajde_Object_Standard
 		}
 		return $this->_route;
 	}
-
+	
+	public function initRoute()
+	{
+		$route = $this->getRoute();
+		if ($route->hasLang()) {
+			$langInstance = Ajde_Lang::getInstance();
+			$langInstance->setGlobalLang($route->getLang());
+		}
+		return $route;
+	}
 
 }
