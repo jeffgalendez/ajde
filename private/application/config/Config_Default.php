@@ -80,6 +80,7 @@ class Config_Default
 		$this->site_domain = $_SERVER["SERVER_NAME"];
 		$this->site_path = str_replace('index.php', '', $_SERVER["PHP_SELF"]);
 		$this->site_root = $this->site_domain . $this->site_path;
+		$this->lang_root = $this->site_root;
 		date_default_timezone_set($this->timezone);
 	}
 	
