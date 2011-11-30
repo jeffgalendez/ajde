@@ -10,12 +10,12 @@ class Ajde_Session extends Ajde_Object_Standard
 		session_name(Config::get('ident') . '_session');
 		
 		// Cookie parameter
-		$lifetime	= 0;
+		$lifetime	= 60; // in minutes
 		$path		= Config::get('site_path');
 		$domain		= Config::get('cookieDomain');
 		$secure		= Config::get('cookieSecure');
 		$httponly	= Config::get('cookieHttponly');
-		session_set_cookie_params($lifetime, $path, $domain, $secure, $httponly);
+		session_set_cookie_params($lifetime * 60, $path, $domain, $secure, $httponly);
 		session_cache_limiter('private_no_expire');
 		
 		// Start the session!

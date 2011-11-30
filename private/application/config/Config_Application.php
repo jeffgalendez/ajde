@@ -41,6 +41,7 @@ class Config_Application extends Config_Default
 	//public $dbUser;
 	//public $dbPassword;	
 	//public $registerNamespaces;
+	//public $overrideClass;
 	
 	//public $bootstrap;
 	

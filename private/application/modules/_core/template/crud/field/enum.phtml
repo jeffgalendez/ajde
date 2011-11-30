@@ -9,6 +9,6 @@ $options = explode(',', $field->getLength()); ?>
 		$option = trim($option, "'"); ?>
 		<option value='<?php echo $option; ?>'
 			<?php if ($option == $field->getValue()) { echo "selected='selected'"; } ?>
-			><?php echo $option; ?></option>
+			><?php echo __($option); ?></option>
 	<?php } ?>
 </select>

@@ -1,6 +1,6 @@
 <?php
 $this->requireJs('component/shortcut');
-$this->requireJsLibrary('jquery', '1');
+$this->requireJsLibrary('jquery', '1.7');
 $expand = false;
 ?>
 
@@ -80,7 +80,8 @@ $expand = false;
 				foreach (array_reverse($this->timers) as $entry) {
 					$i--;
 					if ($entry['level'] > 0) {
-						$tmpTimer[$entry['level'] - 1] = $tmpTimer[$entry['level'] - 1] + $entry['total']; 
+						$orig = isset($tmpTimer[$entry['level'] - 1]) ? $tmpTimer[$entry['level'] - 1] : 0;
+						$tmpTimer[$entry['level'] - 1] = $orig + $entry['total']; 
 					}
 					if (array_key_exists($entry['level'], $tmpTimer)) {
 						$childrenTime[$i] = $tmpTimer[$entry['level']];
@@ -91,7 +92,7 @@ $expand = false;
 		        	if ($entry['level'] >= 0) {
 		        		$table .= '<tr><td>';
 		        		if ($entry['level'] > 0) {
-		        			$table .= str_repeat('&nbsp;&nbsp;&nbsp;', $entry['level']) . '<span style="color: gray;">└</span>&nbsp;';
+		        			$table .= str_repeat('&nbsp;&nbsp;&nbsp;', $entry['level']) . '<span style="color: gray;">â””</span>&nbsp;';
 						}
 		            	$table .= $entry['description'] . '</td><td style=\'text-align: right;\'>';
 						if (array_key_exists($key, $childrenTime)) {

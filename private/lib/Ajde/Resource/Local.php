@@ -2,6 +2,8 @@
 
 class Ajde_Resource_Local extends Ajde_Resource
 {
+	private $_filename;
+	
 	public function  __construct($type, $base, $action, $format = 'html')
 	{
 		$this->setBase($base);
@@ -20,9 +22,7 @@ class Ajde_Resource_Local extends Ajde_Resource
 	 */
 	public static function lazyCreate($type, $base, $action, $format = 'html')
 	{
-		$filename = self::getFilenameFromStatic($base, $type, $action);
-		if (self::exist($filename))
-		{
+		if (self::getFilenameFromStatic($base, $type, $action, $format)) {
 			return new self($type, $base, $action, $format);
 		}
 		return false;
@@ -35,7 +35,7 @@ class Ajde_Resource_Local extends Ajde_Resource
 	 */
 	public static function fromHash($hash)
 	{
-		$session = new Ajde_Session('_ajde');
+		$session = new Ajde_Session('AC.Resource');
 		return $session->get($hash);
 	}
 
@@ -60,25 +60,42 @@ class Ajde_Resource_Local extends Ajde_Resource
 
 	}
 
-	protected static function _getFilename($base, $type, $action)
+	protected static function _getFilename($base, $type, $action, $format)
 	{
-		return $base . 'res/' . $type . '/' . $action . '.' . $type;
+		$filename = false;
+		$formatResource = $base . 'res/' . $type . '/' . $action . '.' . $format . '.' . $type;
+		if (self::exist($formatResource)) {
+			$filename = $formatResource;
+		} else {
+			$noFormatResource = $base . 'res/' . $type . '/' . $action . '.' . $type;
+			if (self::exist($noFormatResource)) {
+				$filename = $noFormatResource;
+			}
+		}
+		return $filename;
 	}
 
 	public function getFilename()
 	{
-		return $this->_getFilename($this->getBase(), $this->getType(), $this->getAction());
+		if (!isset($this->_filename)) {
+			$this->_filename = $this->_getFilename($this->getBase(), $this->getType(), $this->getAction(), $this->getFormat());
+		}
+		if (!$this->_filename) {
+			// TODO:
+			throw new Ajde_Exception('Resource could not be found');
+		}
+		return $this->_filename;
 	}
 
-	public static function getFilenameFromStatic($base, $type, $action)
+	public static function getFilenameFromStatic($base, $type, $action, $format)
 	{
-		return self::_getFilename($base, $type, $action);
+		return self::_getFilename($base, $type, $action, $format);
 	}
 
 	protected function getLinkUrl()
 	{
 		$hash = md5(serialize($this));
-		$session = new Ajde_Session('_ajde');
+		$session = new Ajde_Session('AC.Resource');
 		$session->set($hash, $this);
 		
 		$url = '_core/component:resourceLocal/' . $this->getType() . '/' . $hash . '/';

@@ -1,6 +1,15 @@
 <?php
 /* @var $this Ajde_Template_Parser_Phtml_Helper */
-$this->requireCssTop('reset'); 
+
+// Unify the user agent specific css rules
+$this->requireCssTop('reset');
+
+// Include jQuery 1.7
+// $this->requireJsLibrary('jquery', '1.7');
+
+// Some JavaScript i18n
+// $this->requireJsFirst('i18n.' . Ajde_Lang::getInstance()->getShortLang());
+
 ?>
 <!-- Inspired by HTML5 Boilerplate -->
 <!doctype html>
@@ -8,10 +17,11 @@ $this->requireCssTop('reset');
 	<head>
 		<meta charset='utf-8'>
 		<!--[if IE]><![endif]-->
-		<title><?php echo Config::get('sitename'); ?></title>
-		<base href='http://<?php echo Config::get('lang_root'); ?>' />
+		<title><?php echo Config::get('sitename'); ?></title>		
 		<meta name='description' content='' />
 		<meta name='author' content='' />
+		<?php echo Ajde::app()->getDocument()->getMeta(); ?>
+		<base href='http://<?php echo Config::get('lang_root'); ?>' />
 		<!-- require JavaScript and cookies -->		
 		<noscript>
 			<meta http-equiv="refresh" content="0;url=main/nojavascript.html?returnto=<?php echo urlencode((string) Ajde::app()->getRoute()); ?>" />
@@ -21,6 +31,7 @@ $this->requireCssTop('reset');
 				document.location.href='main/nocookies.html?returnto=<?php echo urlencode((string) Ajde::app()->getRoute()); ?>';
 			}
 		</script>
+		<link rel="shortcut icon" type="image/x-icon" href="favicon.ico" />
 		<?php echo $this->getDocument()->getHead('css'); ?>
 	</head>
 	<!--[if lt IE 7 ]> <body class='ie6'> <![endif]-->

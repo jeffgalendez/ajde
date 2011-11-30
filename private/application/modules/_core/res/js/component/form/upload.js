@@ -12,29 +12,39 @@ AC.Form.Upload = function() {
 	                element: elm[0],
 	                action: '_core/component:formUpload.json',
 	                params: {
-	                	'saveDir' : elm.attr('data-saveDir'),
-	                	'extensions' : elm.attr('data-extensions')
+	                	'optionsId' : elm.attr('data-options')
 	                },
-	                allowedExtensions: [],        
+	                allowedExtensions: [], 
 					sizeLimit: 0,   
 					minSizeLimit: 0,
 					onSubmit: function(id, fileName) {
-						elm.find('.qq-upload-button').hide();
+						// Disable save button
+						elm.parents('form').find('button.save').attr('disabled', 'disabled');
+						// Disable upload button
+						if (elm.attr('data-multiple') == '0') {
+							elm.find('.qq-upload-button').hide();
+						}
 					},
 					onProgress: function(id, fileName, loaded, total) {},
 					onComplete: function(id, fileName, responseJSON) {
 						if (responseJSON.error) {
 							elm.find('.qq-upload-button').show();
+							elm.parents('form').find('button.save').attr('disabled', null);
 						} else {
 							var filename = responseJSON.filename;
-							$('input[name=' + elm.attr('data-name') + ']').val(filename);
-							elm.find('.qq-uploader').remove();
-							elm.after($('<span/>').text(filename));
-							elm.remove();
-						}
+							var $input = $('input[name=' + elm.attr('data-name') + ']');
+							$input.val($input.val() + ($input.val() ? ':' : '') + filename);
+							elm.parents('form').find('button.save').attr('disabled', null);
+							if (elm.attr('data-multiple') == '0') {
+								elm.find('.qq-uploader').remove();
+								elm.after($('<span/>').text(filename));
+								elm.remove();
+							}
+						}						
 					},
 					onCancel: function(id, fileName) {
 						elm.find('.qq-upload-button').show();
+						elm.parents('form').find('button.save').attr('disabled', null);
 					},
 	                debug: false
 	            });          
@@ -46,10 +56,6 @@ AC.Form.Upload = function() {
 		}
 	};
 }();
-
-$(document).ready(function() {
-	AC.Form.Upload.init();
-});
 
 /**
  * http://github.com/valums/file-uploader
@@ -1189,7 +1195,7 @@ qq.UploadHandlerXhr.isSupported = function(){
 };
 
 // @inherits qq.UploadHandlerAbstract
-qq.extend(qq.UploadHandlerXhr.prototype, qq.UploadHandlerAbstract.prototype)
+qq.extend(qq.UploadHandlerXhr.prototype, qq.UploadHandlerAbstract.prototype);
 
 qq.extend(qq.UploadHandlerXhr.prototype, {
     /**
@@ -1297,4 +1303,8 @@ qq.extend(qq.UploadHandlerXhr.prototype, {
             this._xhrs[id] = null;                                   
         }
     }
+});
+
+$(document).ready(function() {
+	AC.Form.Upload.init();
 });

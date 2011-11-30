@@ -85,8 +85,8 @@ SetEnvIfNoCase Request_URI  \
 # Far-future expires headers
 <IfModule mod_expires.c>	
 	ExpiresActive on
-	ExpiresDefault                          "access plus 1 month"
-	ExpiresByType text/cache-manifest       "access plus 0 seconds" 
+	ExpiresDefault                          "access plus 0 seconds"
+	ExpiresByType text/cache-manifest       "access plus 0 seconds"
 	ExpiresByType text/html                 "access"
 	ExpiresByType application/xhtml+xml		"access"
 	ExpiresByType application/json			"access"

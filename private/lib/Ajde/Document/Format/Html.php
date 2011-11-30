@@ -59,6 +59,15 @@ class Ajde_Document_Format_Html extends Ajde_Document
 		return $this->renderHead($resourceTypes);
 	}
 	
+	public function getMeta()
+	{
+		$code = '';
+		foreach($this->_meta as $meta) {
+			$code .= '<meta ' . $meta . ' />';
+		}
+		return $code;
+	}
+	
 	public function getScripts()
 	{
 		return $this->getHead('js');
@@ -67,8 +76,7 @@ class Ajde_Document_Format_Html extends Ajde_Document
 	public function renderHead(array $resourceTypes = array('*'))
 	{		
 		$code = '';
-		$code .= $this->renderResources($resourceTypes);
-		// TODO: meta tags etc
+		$code .= $this->renderResources($resourceTypes);		
 		return $code;
 	}
 
@@ -138,7 +146,7 @@ class Ajde_Document_Format_Html extends Ajde_Document
 
 	public function addMeta($contents)
 	{
-		
+		$this->_meta[] = $contents;
 	}
 
 	public function addResource(Ajde_Resource $resource, $position = self::RESOURCE_POSITION_DEFAULT)

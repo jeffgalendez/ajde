@@ -63,8 +63,9 @@ class Config_Default
 									);
 	public $dbUser 				= "ajde";
 	public $dbPassword 			= "ajde";	
-	public $registerNamespaces	= array(
-									);
+	public $registerNamespaces	= array();
+	public $overrideClass		= array();
+
 
 	// Which modules should we call on bootstrapping?
 	public $bootstrap			= array(									

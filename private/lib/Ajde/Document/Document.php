@@ -3,10 +3,11 @@
 abstract class Ajde_Document extends Ajde_Object_Standard
 {
 	protected $_cacheControl = 'public';
+	protected $_contentType = 'text/html';
 	
 	public function  __construct()
 	{
-		
+		$this->setFormat(strtolower(str_replace("Ajde_Document_Format_", '', get_class($this))));
 	}
 	
 	/**
@@ -63,6 +64,11 @@ abstract class Ajde_Document extends Ajde_Object_Standard
 		} else {
 			return '';
 		}
+	}
+	
+	public function setContentType($mimeType)
+	{
+		$this->_contentType = $mimeType;
 	}
 
 	public function render()

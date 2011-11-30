@@ -27,5 +27,19 @@ class Ajde_Core_ExternalLibs extends Ajde_Object_Singleton
 		}
 		return true;
 	}
+	
+	public static function getClassname($className)
+	{
+		$config = Config::getInstance();
+		return (isset($config->overrideClass[$className])) ? 
+			$config->overrideClass[$className] :
+			$className;
+	}
+	
+	public static function setOverride($className, $newClass)
+	{
+		$config = Config::getInstance();
+		$config->overrideClass[$className] = $newClass;
+	}
 
 }

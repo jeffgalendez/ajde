@@ -198,9 +198,9 @@ class Ajde_Template_Parser_Phtml_Helper extends Ajde_Object_Standard
 	 * @param string $target
 	 * @return string
 	 */
-	public function ACAjaxUpload($name, $saveDir, $extensions = array(), $id = null, $class = null)
+	public function ACAjaxUpload($name, $options = array(), $id = null, $class = null)
 	{
-		return Ajde_Component_Form::processStatic($this->getParser(), array('name' => $name, 'saveDir' => $saveDir, 'extensions' => $extensions, 'id' => $id, 'class' => $class));
+		return Ajde_Component_Form::processStatic($this->getParser(), array('name' => $name, 'upload' => true, 'options' => $options, 'id' => $id, 'class' => $class));
 	}
 	
 	/************************

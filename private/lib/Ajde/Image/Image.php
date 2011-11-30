@@ -7,6 +7,7 @@
 
 class Ajde_Image extends Ajde_Object_Standard
 {
+	protected $_cache;
 	protected $_source;
 	protected $_type;
 	protected $_image;
@@ -14,25 +15,29 @@ class Ajde_Image extends Ajde_Object_Standard
 	public function __construct($file)
 	{
 		$this->_source = $file;
-		$this->_type = $this->fileExtension($file);
+		$this->_type = $this->extension();
 	}
 		
 	public function getImage()
 	{
-		ob_start();
-		switch ($this->_type) {
-			case "jpg": 
-				imagejpeg($this->getImageResource());
-				break;
-			case "png":
-				imagepng($this->getImageResource());
-				break;
-			case "gif":
-				imagegif($this->getImageResource());
-				break;
+		if (isset($this->_cache)) {
+			$image = file_get_contents($this->_cache);
+		} else {
+			ob_start();
+			switch ($this->_type) {
+				case "jpg": 
+					imagejpeg($this->getImageResource());
+					break;
+				case "png":
+					imagepng($this->getImageResource());
+					break;
+				case "gif":
+					imagegif($this->getImageResource());
+					break;
+			}
+			$image = ob_get_contents();
+			ob_end_clean();
 		}
-		$image = ob_get_contents();
-		ob_end_clean();
 		return $image;
 	}
 	
@@ -86,16 +91,69 @@ class Ajde_Image extends Ajde_Object_Standard
 		$this->_image = $newimage;		
 	}
 	
-	public function crop($height, $width) {
+	public function imageInCache($width, $height, $crop = true)
+	{
+		if (is_file($cache = $this->getGeneratedFilename($width, $height, $crop))) {
+			$this->_cache = $cache;
+			return true;
+		}
+		return false;
+	}
+	
+	public function saveCached($width, $height, $crop = true)
+	{
+		$this->save($this->getGeneratedFilename($width, $height, $crop));
+	}
+	
+	public function getGeneratedFilename($width = null, $height = null, $crop = null)
+	{
+		if (!isset($width) && $this->hasWidth()) {
+			$width = $this->getWidth();
+		}
+		if (!isset($height) && $this->hasHeight()) {
+			$height = $this->getHeight();
+		}
+		if (!isset($crop) && $this->hasCrop()) {
+			$crop = $this->getCrop();
+		} elseif (!isset($crop)) {
+			$crop = true;
+		}
+		
+		$filename = $this->dir();
+		$filename .= '/';
+		$filename .= $this->filename();
+		$filename .= '_' . $width . 'x' . $height;
+		$filename .= ($crop ? 'c' : '');
+		$filename .= '.';
+		$filename .= $this->extension();
+		return $filename;
+	}
+	
+	public function crop($height, $width)
+	{
+		if ($this->imageInCache($width, $height, true)) {
+			return;
+		}
+		
+		$old_x=imageSX($this->getImageResource());
+		$old_y=imageSY($this->getImageResource());
+				
+		if (empty($height)) {
+			$height = (int) (($old_y / $old_x) * $width);
+		}
+		if (empty($width)) {
+			$width = (int) (($old_x / $old_y) * $height);
+		}
+		
+		if ($this->imageInCache($width, $height, true)) {
+			return;
+		}
 		
 		// no x or y correction
 		$x_o = 0; //intval($_GET["x"]);
 		$y_o = 0; //intval($_GET["y"]);
 		
 		$newimage=ImageCreateTrueColor($width,$height);
-		
-		$old_x=imageSX($this->getImageResource());
-		$old_y=imageSY($this->getImageResource());
 				
 		$thumb_w=$width;
 		$thumb_h=intval($old_y*($width/$old_x));
@@ -125,21 +183,24 @@ class Ajde_Image extends Ajde_Object_Standard
 		$this->fastimagecopyresampled($newimage,$this->getImageResource(),-$x_offset,-$y_offset,0,0,$thumb_w,$thumb_h,$old_x,$old_y,5);
 		
 		$this->_image = $newimage;
+		
+		$this->saveCached($width, $height, true);
 	}
 	
-	// public function save($target) {
-		// switch ($this->_type) {
-			// case "jpg": 
-				// imagejpeg($this->_image,$target);
-				// break;
-			// case "png":
-				// imagepng($this->_image,$target);
-				// break;
-			// case "gif":
-				// imagegif($this->_image,$target);
-				// break;
-		// }
-	// }
+	public function save($target)
+	{
+		switch ($this->_type) {
+			case "jpg": 
+				imagejpeg($this->_image, $target);
+				break;
+			case "png":
+				imagepng($this->_image, $target);
+				break;
+			case "gif":
+				imagegif($this->_image, $target);
+				break;
+		}
+	}
 	
 	public function getMimeType()
 	{
@@ -165,9 +226,19 @@ class Ajde_Image extends Ajde_Object_Standard
 		imagedestroy($this->_image); 
 	}
 	
-	protected function fileExtension($filename) {
-	    $path_info = pathinfo($filename);
+	protected function extension() {
+	    $path_info = pathinfo($this->_source);
 	    return strtolower($path_info['extension']);
+	}
+	
+	protected function dir() {
+		$path_info = pathinfo($this->_source);
+	    return $path_info['dirname'];
+	}
+	
+	protected function filename() {
+		$path_info = pathinfo($this->_source);
+	    return $path_info['filename'];
 	}
 	
 	protected function fastimagecopyresampled (&$dst_image, $src_image, $dst_x, $dst_y, $src_x, $src_y, $dst_w, $dst_h, $src_w, $src_h, $quality = 3) {

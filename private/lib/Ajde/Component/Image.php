@@ -40,7 +40,7 @@ class Ajde_Component_Image extends Ajde_Component
 			$image->setHeight($this->attributes['height']);
 			$image->setCrop($this->attributes['crop']);
 			
-			$id = md5(serialize($image));
+			$id = md5($image->getGeneratedFilename());
 			$source = '_core/component:image.data?id=' . $id;
 			
 			$controller = Ajde_Controller::fromRoute(new Ajde_Core_Route('_core/component:image'));

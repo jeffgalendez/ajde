@@ -1,4 +1,3 @@
-<?php $this->requireJsLibrary('jquery', '1'); ?>
 <form class="ACAjaxForm <?php echo $this->extraClass; ?>" id="<?php echo $this->formId; ?>" action="<?php echo $this->formAction; ?>" method="post">
 	<input type='hidden' name='_token' value='<?php echo $this->formToken; ?>' />
 <?php if (!empty($this->innerXml)) { ?>

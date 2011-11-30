@@ -15,7 +15,7 @@ class Ajde_Resource_Local_Compressed extends Ajde_Resource
 	 */
 	public static function fromHash($hash)
 	{
-		$session = new Ajde_Session('_ajde');
+		$session = new Ajde_Session('AC.Resource');
 		return $session->get($hash);
 	}
 
@@ -23,7 +23,7 @@ class Ajde_Resource_Local_Compressed extends Ajde_Resource
 	{
 		
 		$hash = md5(serialize($this));
-		$session = new Ajde_Session('_ajde');
+		$session = new Ajde_Session('AC.Resource');
 		$session->set($hash, $this);
 		
 		$url = '_core/component:resourceCompressed/' . $this->getType() . '/' . $hash . '/';

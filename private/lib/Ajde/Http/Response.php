@@ -58,7 +58,7 @@ class Ajde_Http_Response extends Ajde_Object_Standard
 	{
 		header("HTTP/1.0 ".$code." ".self::getResponseType($code));
 		ob_get_clean();
-		header("Status: $code");
+		header("Status: ".$code." ".self::getResponseType($code));
 	}
 
 	protected static function getResponseType($code)

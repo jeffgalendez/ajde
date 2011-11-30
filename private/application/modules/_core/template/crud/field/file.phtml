@@ -17,5 +17,11 @@ if ($field->getValue()) { ?>
 	<br/>
 	<span><?php echo $field->getValue(); ?></span>
 <?php } else { ?>
-	<?php echo $this->ACAjaxUpload($field->getName(), $field->getSaveDir(), $field->getExtensions()); ?>
+	<?php 
+	$options = array(
+		'saveDir' => $field->getSaveDir(),
+		'extensions' => $field->getExtensions(),
+		'multiple' => $field->getMultiple()
+	);
+	echo $this->ACAjaxUpload($field->getName(), $options); ?>
 <?php } ?>

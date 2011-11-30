@@ -2,7 +2,6 @@
 
 abstract class Ajde_Resource extends Ajde_Object_Standard
 {
-
 	const TYPE_JAVASCRIPT	= 'js';
 	const TYPE_STYLESHEET	= 'css';
 	

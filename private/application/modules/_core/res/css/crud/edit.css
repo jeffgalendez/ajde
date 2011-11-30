@@ -30,6 +30,7 @@ dl.crudEdit dd {
 	float: left;
 	
 	width: 500px;
+	min-height: 21px;
 	
 	padding: 10px;
 	margin: 0;
@@ -47,7 +48,8 @@ dl.crudEdit dd input[type=number] {
 	width: 5em;
 }
 
-dl.crudEdit dd input[readonly] {
+dl.crudEdit dd input[readonly],
+dl.crudEdit dd textarea[readonly]{
 	border: none;
 	background-color: #eee;
 }

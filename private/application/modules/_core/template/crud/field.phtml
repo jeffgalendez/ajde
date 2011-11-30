@@ -1,6 +1,6 @@
 <?php $field = $this->field; ?>
 <dt title="<?php echo $field->getLabel(); ?>">
-	<?php echo $field->getLabel(); ?>
+	<?php echo __($field->getLabel()); ?>
 	<?php if ($field->getIsRequired() === true) :
 		echo $field->getHtmlRequired();
 	endif; ?>

@@ -2,6 +2,7 @@
 /* @var $crud AjdeX_Crud */
 $crud = $this->crud;
 $listOptions = $crud->getOptions('list');
+$fieldOptions = $crud->getOptions('fields');
 ?>
 
 <?php echo $this->ACAjaxForm('_core/crud:commit', $crud->getHash(), 'ACCrudList'); ?>
@@ -15,7 +16,9 @@ $listOptions = $crud->getOptions('list');
 				<th><?php echo $field->getLabel(); ?></th>
 			<?php } ?>
 			<th width="120">
-				<a href="javascript:void(null);" class='button new'>new</a>
+				<?php if (!(isset($listOptions['new']) && $listOptions['new'] === false)) { ?>
+					<a href="javascript:void(null);" class='button new'>new</a>
+				<?php } ?>
 			</th>
 		</tr>
 	</thead>
@@ -30,9 +33,33 @@ $listOptions = $crud->getOptions('list');
 				if ($value instanceof AjdeX_Model && $value->hasLoaded()) { ?>
 					<td class="linkedModel" title="<?php echo $value->get($value->getDisplayField()); ?>"><?php echo $value->get($value->getDisplayField()); ?></td>
 				<?php
+				// File
+				} elseif ($crud->getField($fieldName) instanceof AjdeX_Crud_Field_File) { ?>
+					<td title="<?php echo $this->escape($value); ?>">
+						<?php
+						$extension = pathinfo($value, PATHINFO_EXTENSION);
+						if (in_array(strtolower($extension), array('jpg', 'jpeg', 'png', 'gif'))) {
+							echo $this->ACImage(array(
+								'filename' => 'public/images/content/' . $value,
+								'width' => 25,
+								'height' => 25,
+								'crop' => true
+							));
+							echo ' ' . $this->escape($value);
+						} else {
+							echo $this->escape($value);
+						}						
+						?>
+					</td>
+				<?php
 				// Text value
 				} else { ?>
-					<td title="<?php echo $value; ?>"><?php echo $this->escape($value); ?></td>
+					<td title="<?php echo $this->escape($value); ?>">
+						<?php echo substr($this->escape($value), 0, 100); ?>
+						<?php if (strlen($this->escape($value)) > 100) { ?>
+							...
+						<?php } ?>
+					</td>
 				<?php } ?>			
 			<?php } ?>
 			<td class='buttons'>

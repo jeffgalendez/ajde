@@ -153,7 +153,7 @@ class Ajde_Core_Autoloader
 		}
 		foreach ($dirs as $dir) {
 			foreach (self::$files as $file) {						
-				$path = self::$dirPrepend.$dir.$file;				
+				$path = self::$dirPrepend.$dir.$file;
 				if (is_file($path)) {
 					// TODO: performance gain?
 					// if (class_exists('Ajde_Cache')) {

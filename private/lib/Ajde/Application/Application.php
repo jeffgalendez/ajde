@@ -64,6 +64,10 @@ class Ajde_Application extends Ajde_Object_Singleton
 		// For debugger
 		$timer = $this->addTimer('Application');
 		
+		// Create fresh response
+		$response = new Ajde_Http_Response();
+		$this->setResponse($response);
+
 		// Bootstrap init
 		$bootstrap = new Ajde_Core_Bootstrap();
 		$bootstrap->run();
@@ -80,10 +84,6 @@ class Ajde_Application extends Ajde_Object_Singleton
 		$document = Ajde_Document::fromRoute($route);
 		$this->setDocument($document);
 		
-		// Create fresh response
-		$response = new Ajde_Http_Response();
-		$this->setResponse($response);
-
 		// Load controller
 		$controller = Ajde_Controller::fromRoute($route);
 		$this->setController($controller);

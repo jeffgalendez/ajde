@@ -5,9 +5,9 @@ class Ajde_Exception_Handler extends Ajde_Object_Static
 	public static function __bootstrap()
 	{
 		// making xdebug.overload_var_dump = 1 work
-		if (Config::get('debug')) {
+		//if (Config::get('debug')) {
 			ini_set('html_errors', 1);
-		}
+		//}
 		// TODO: why is this defined here? also in index.php!
 		set_error_handler(array('Ajde_Exception_Handler', 'errorHandler'));
 		set_exception_handler(array('Ajde_Exception_Handler', 'handler'));
@@ -126,7 +126,10 @@ class Ajde_Exception_Handler extends Ajde_Object_Static
 					} 
 				}
 				
-				$style = file_get_contents(MODULE_DIR . '_core/res/css/debugger/handler.css');
+				$style = false;
+				if (file_exists(MODULE_DIR . '_core/res/css/debugger/handler.css')) {
+					$style = file_get_contents(MODULE_DIR . '_core/res/css/debugger/handler.css');
+				}
 				if ($style === false) {
 					// For shutdown() call
 					$style = 'body {font: 13px sans-serif;} a {color: #005D9A;} a:hover {color: #9A0092;} h2 {color: #005D9A;} span > a {color: #9A0092;}';
@@ -136,12 +139,17 @@ class Ajde_Exception_Handler extends Ajde_Object_Static
 				$message = $style . $exceptionDump . $exceptionMessage . $traceMessage;
 				break;
 			case self::EXCEPTION_TRACE_LOG:
-				$message = sprintf("%s: %s in %s on line %s",
+				$message = 'Request ' . $_SERVER["REQUEST_URI"] . " triggered:\n\r";
+				$message .= sprintf("%s: %s in %s on line %s",
 						$type,
 						$exception->getMessage(),
 						$exception->getFile(),
 						$exception->getLine()
 				);
+				foreach(array_reverse($exception->getTrace()) as $i => $line) {
+					$message .= "\n\r";
+					$message .= $i . '. ' . $line['file'] . ' on line ' . $line['line'];
+				}				
 				break;
 		}
 		return $message;

@@ -35,7 +35,15 @@ class _coreCrudController extends AjdeX_Acl_Controller
 		$this->setAction('edit');
 		
 		$crud = $this->getCrudInstance();
-		$crud->setAction('edit');
+		$editOptions = $crud->getOptions('edit');
+		if ($crud->getOperation() === 'list') {
+			if (!empty($editOptions) &&
+					isset($editOptions['action'])) {
+				$crud->setAction($editOptions['action']);
+			} else {
+				$crud->setAction('edit');
+			}
+		}
 		
 		if (!$crud->hasId()) {
 			$crud->setId(Ajde::app()->getRequest()->getParam('edit', false));
@@ -45,7 +53,8 @@ class _coreCrudController extends AjdeX_Acl_Controller
 		$session->setModel($crud->getHash(), $crud);
 		
 		$view = $crud->getTemplate();		
-		$view->requireJs('component/shortcut');
+		
+		$view->requireJsFirst('component/shortcut', 'html', MODULE_DIR . '_core/');		
 		$view->assign('crud', $crud);
 		
 		return $view->render();
@@ -55,7 +64,7 @@ class _coreCrudController extends AjdeX_Acl_Controller
 	{
 		$operation = Ajde::app()->getRequest()->getParam('operation');
 		$crudId = Ajde::app()->getRequest()->getParam('crudId');
-		$id = Ajde::app()->getRequest()->getPostParam('id');
+		$id = Ajde::app()->getRequest()->getPostParam('id', false);
 		
 		AjdeX_Model::registerAll();
 		
@@ -87,10 +96,12 @@ class _coreCrudController extends AjdeX_Acl_Controller
 	public function save($crudId, $id)
 	{
 		$session = new Ajde_Session('AC.Crud');
+		/* @var $crud AjdeX_Crud */
 		$crud = $session->getModel($crudId);
 		/* @var $model AjdeX_Model */
-		$model = $crud->getModel();
-				
+		$model = $crud->getModel();		
+		$model->setOptions($crud->getOptions('model'));
+		
 		// Get POST params
 		$post = $_POST;
 		foreach($post as $key => $value) {

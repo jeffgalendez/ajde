@@ -2,7 +2,7 @@
 
 class Ajde_Component_String extends Ajde_Component
 {
-	protected static $_allowedTags = '<p><ul><li><b><strong><i><em><u>';
+	protected static $_allowedTags = '<a><br><p><ul><li><b><strong><i><em><u>';
 	
 	public static function processStatic(Ajde_Template_Parser $parser, $attributes)
 	{

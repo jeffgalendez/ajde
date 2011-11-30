@@ -1,3 +1,4 @@
+;
 $(document).ready(function() {
 	var height = 400;
 	
@@ -41,4 +42,4 @@ $(document).ready(function() {
 			$('#ajdeDebuggerContent').animate({height: '0'}, 'fast');
 		}
 	};
-})
+});

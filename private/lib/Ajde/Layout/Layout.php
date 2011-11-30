@@ -2,14 +2,18 @@
 
 class Ajde_Layout extends Ajde_Template
 {
-	public function __construct($name, $style = 'default', $format = 'html')
+	public function __construct($name, $style = 'default', $format = null)
 	{
 		$this->setName($name);
 		$this->setStyle($style);
 
 		$base = LAYOUT_DIR.$this->getName() . '/';
 		$action = $this->getStyle();
-		$format = $format;
+		if (!$format) {
+			$format = ( (Ajde_Http_Request::isAjax() && $this->exist($base, $action, 'ajax'))
+					|| Ajde::app()->getDocument()->getFormat() === 'ajax' )
+					? 'ajax' : 'html';
+		}
 		parent::__construct($base, $action, $format);
 	}
 

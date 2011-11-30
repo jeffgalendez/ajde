@@ -3,6 +3,11 @@ if (typeof AC ==="undefined") {AC = function(){}};
 if (typeof AC.Crud ==="undefined") {AC.Crud = function(){}};
 
 AC.Crud.Edit = function() {
+	
+	var infoHandler		= alert;
+	var warningHandler	= alert;
+	var errorHandler	= alert;
+	
 	return {
 		
 		init: function() {
@@ -34,7 +39,7 @@ AC.Crud.Edit = function() {
 			
 			if (form[0].checkValidity) {
 				if (form[0].checkValidity() === false) {
-					alert('Error in form');
+					alert(i18n.formError);
 					return false;
 				};
 			}
@@ -48,42 +53,62 @@ AC.Crud.Edit = function() {
 			var data = $(form).serialize();
 			
 			// clean up errors
-			form.find('input').parent().removeClass('validation_error');
-			form.find('div.validation_message').remove();
+			form.find(':input').parent().removeClass('validation_error');
+			form.find('div.validation_message').fadeOut(function() {
+				$(this).remove();
+			});
 			AC.Crud.Edit.equalizeForm();
 			
-			$('body').addClass('loading');			
+			$('body').addClass('loading');
+			if (typeof $(form[0]).data('onBeforeSubmit') === 'function') {
+				var fn = $(form[0]).data('onBeforeSubmit');
+				fn();
+			}
 			$.post(url, data, function(data) {				
 				$('body').removeClass('loading');
 				if (data.success === false) {
 					if (data.errors) {
+						if (typeof $(form[0]).data('onError') === 'function') {
+							var fn = $(form[0]).data('onError');
+							fn();
+						}
 						for(var i in data.errors) {
-							$parent = $('input[name=' + i + ']').parent();
+							$parent = $(':input[name=' + i + ']').parent();
 							$parent.addClass('validation_error');
 							firstError = data.errors[i][0];
 							$parent.attr('data-message', firstError);							
-							$message = $('<div></div>').html(firstError).addClass('validation_message');
-							$parent.prepend($message);
+							$message = $('<div></div>').html(firstError).addClass('validation_message').hide();
+							$parent.prepend($message.fadeIn());
 							AC.Crud.Edit.equalizeForm();
 						}
 					} else {
-						alert('Something went wrong. (Application error)');
+						errorHandler(i18n.applicationError);
 					}
 				} else {
+					if (typeof $(form[0]).data('onSave') === 'function') {
+						var fn = $(form[0]).data('onSave');
+						if (fn(data) === false) {
+							return;
+						}
+					}
 					if (data.operation === 'save') {
-						$('dl.crudEdit > *', form[0]).css({backgroundColor:'orange'});
+						//$('dl.crudEdit > *', form[0]).css({backgroundColor:'orange'});
 						window.location.href = window.location.pathname + '?list';
 					} else {
-						$('dl.crudEdit > *', form[0]).css({backgroundColor:'green'});
+						//$('dl.crudEdit > *', form[0]).css({backgroundColor:'green'});
 						window.location.href = window.location.pathname + '?list';						
 					}
 				}
 			}, 'json').error(function(jqXHR, message, exception) {
 				$('body').removeClass('loading');
+				if (typeof $(form[0]).data('onError') === 'function') {
+					var fn = $(form[0]).data('onError');
+					fn();
+				}
 				if (exception == 'Unauthorized' || exception == 'Forbidden') {
-					alert("Timed out or not logged in.\nPlease refresh and try again. (All your changes will be lost)");
+					warningHandler(i18n.forbiddenWarning);
 				} else {
-					alert('Something went wrong, please refresh and try again. (' + exception + ')');
+					errorHandler(i18n.requestError + ' (' + exception + ')');
 				}
 			});
 			

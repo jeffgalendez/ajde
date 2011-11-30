@@ -31,6 +31,7 @@ class Ajde_Lang extends Ajde_Object_Singleton
 	
 	public function setLang($lang)
 	{
+		setlocale(LC_ALL, $lang, $lang.'.utf8', $lang.'.UTF8', $lang.'utf-8', $lang.'.UTF-8');
 		$this->_lang = $lang;
 	}
 
