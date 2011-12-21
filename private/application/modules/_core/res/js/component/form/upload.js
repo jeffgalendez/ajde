@@ -33,12 +33,14 @@ AC.Form.Upload = function() {
 						} else {
 							var filename = responseJSON.filename;
 							var $input = $('input[name=' + elm.attr('data-name') + ']');
-							$input.val($input.val() + ($input.val() ? ':' : '') + filename);
 							elm.parents('form').find('button.save').attr('disabled', null);
 							if (elm.attr('data-multiple') == '0') {
+								$input.val(filename);
 								elm.find('.qq-uploader').remove();
 								elm.after($('<span/>').text(filename));
 								elm.remove();
+							} else {
+								$input.val($input.val() + ($input.val() ? ':' : '') + filename);
 							}
 						}						
 					},

@@ -34,18 +34,19 @@ $fieldOptions = $crud->getOptions('fields');
 					<td class="linkedModel" title="<?php echo $value->get($value->getDisplayField()); ?>"><?php echo $value->get($value->getDisplayField()); ?></td>
 				<?php
 				// File
-				} elseif ($crud->getField($fieldName) instanceof AjdeX_Crud_Field_File) { ?>
+				} elseif ($crud->getField($fieldName) instanceof AjdeX_Crud_Field_File) { 
+					$field = $crud->getField($fieldName) ?>
 					<td title="<?php echo $this->escape($value); ?>">
 						<?php
 						$extension = pathinfo($value, PATHINFO_EXTENSION);
 						if (in_array(strtolower($extension), array('jpg', 'jpeg', 'png', 'gif'))) {
 							echo $this->ACImage(array(
-								'filename' => 'public/images/content/' . $value,
-								'width' => 25,
-								'height' => 25,
+								'filename' => $field->getSaveDir() . $value,
+								'width' => 75,
+								'height' => 75,
 								'crop' => true
 							));
-							echo ' ' . $this->escape($value);
+							//echo ' ' . $this->escape($value);
 						} else {
 							echo $this->escape($value);
 						}						
@@ -64,7 +65,9 @@ $fieldOptions = $crud->getOptions('fields');
 			<?php } ?>
 			<td class='buttons'>
 				<a href="javascript:void(null);" class='button edit'>edit</a>
-				<a href="javascript:void(null);" class='button delete'>delete</a>
+				<?php if (!(isset($listOptions['delete']) && $listOptions['delete'] === false)) { ?>
+					<a href="javascript:void(null);" class='button delete'>delete</a>
+				<?php } ?>
 			</td>
 		</tr>
 	<?php } ?>

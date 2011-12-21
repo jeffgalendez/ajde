@@ -12,7 +12,10 @@
 	php_flag short_open_tag off
 	php_flag magic_quotes_gpc off
 	php_flag register_globals off
-
+  
+	# Max upload size
+	php_value upload_max_filesize 15M
+                                               
 	# Force PHP errors
 	php_value display_errors 1
 	php_value display_startup_errors 1

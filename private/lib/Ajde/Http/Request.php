@@ -216,6 +216,19 @@ class Ajde_Http_Request extends Ajde_Object_Standard
 	}
 	
 	/**
+	 * FORM
+	 */
+	
+	public function getCheckbox($key, $post = true)
+	{
+		if ($this->getParam($key, false, self::TYPE_RAW, $post) ===  'on') {
+			return true;
+		} else {
+			return false;
+		}
+	}
+	
+	/**
 	 * POST
 	 */
 	

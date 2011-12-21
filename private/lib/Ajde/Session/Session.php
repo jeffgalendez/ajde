@@ -10,7 +10,7 @@ class Ajde_Session extends Ajde_Object_Standard
 		session_name(Config::get('ident') . '_session');
 		
 		// Cookie parameter
-		$lifetime	= 60; // in minutes
+		$lifetime	= 20; // in minutes, 0 = session
 		$path		= Config::get('site_path');
 		$domain		= Config::get('cookieDomain');
 		$secure		= Config::get('cookieSecure');
@@ -20,6 +20,9 @@ class Ajde_Session extends Ajde_Object_Standard
 		
 		// Start the session!
 		session_start();
+		
+		// Force send new cookie with updated lifetime (keep-alive)
+		session_regenerate_id();
 		
 		// Strengthen session security with REMOTE_ADDR and HTTP_USER_AGENT
 		// @see http://shiflett.org/articles/session-hijacking

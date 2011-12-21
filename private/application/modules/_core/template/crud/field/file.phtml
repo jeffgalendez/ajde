@@ -16,7 +16,8 @@ if ($field->getValue()) { ?>
 		)); ?>
 	<br/>
 	<span><?php echo $field->getValue(); ?></span>
-<?php } else { ?>
+<?php } ?>
+	
 	<?php 
 	$options = array(
 		'saveDir' => $field->getSaveDir(),
@@ -24,4 +25,3 @@ if ($field->getValue()) { ?>
 		'multiple' => $field->getMultiple()
 	);
 	echo $this->ACAjaxUpload($field->getName(), $options); ?>
-<?php } ?>

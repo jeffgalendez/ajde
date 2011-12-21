@@ -91,6 +91,14 @@ class Ajde_Image extends Ajde_Object_Standard
 		$this->_image = $newimage;		
 	}
 	
+	public function getCalculatedDim()
+	{
+		return array(
+			'width' => imageSX($this->getImageResource()),
+			'height' => imageSY($this->getImageResource())
+		);
+	}
+	
 	public function imageInCache($width, $height, $crop = true)
 	{
 		if (is_file($cache = $this->getGeneratedFilename($width, $height, $crop))) {

@@ -28,6 +28,8 @@
 	ini_set('short_open_tag', 0);
 	ini_set('magic_quotes_gpc', 0);
 	ini_set('register_globals', 0);
+	// Max upload size
+	ini_set('upload_max_filesize', '15M');
 	// Force PHP errors
 	ini_set('display_errors', 1);
 	ini_set('display_startup_errors', 1);
@@ -99,18 +101,24 @@
 	}
  
 //	--------------------
-//	Global dump function for debugging
+//	Global helper functions
 //	--------------------
 	function dump($var, $collapse = false) {
 		Ajde_Dump::dump($var, $collapse);
 	}
 
-//	--------------------
-//	Global translation function
-//	--------------------
 	function __($ident, $module = null) {
-		return Ajde_Lang::getInstance()->get($ident, $module);
+		return Ajde_Lang::getInstance()->translate($ident, $module);
 	}
+	
+	function _e($var) {
+		return Ajde_Component_String::escape($var);
+	}
+	
+	function _c($var) {
+		return Ajde_Component_String::clean($var);
+	}
+	
 
 /*********************
  * LET'S RUN THINGS

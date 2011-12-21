@@ -117,11 +117,18 @@ class Ajde_Lang extends Ajde_Object_Singleton
 	
 	public static function _($ident, $module = null)
 	{
-		return self::getInstance()->get($ident, $module);
+		return self::getInstance()->translate($ident, $module);
+	}
+	
+	public function translate($ident, $module = null)
+	{
+		return $this->getAdapter()->get($ident, $module);
 	}
 	
 	public function get($ident, $module = null)
 	{
+		// TODO:
+		throw new Ajde_Core_Exception_Deprecated();
 		return $this->getAdapter()->get($ident, $module);
 	}
 }

@@ -11,7 +11,9 @@ class Ajde_Resource_Local_Compressor_Js extends Ajde_Resource_Local_Compressor
 	public function compress($content)
 	{
 		$packer = new JavaScriptPacker($content);
-		return $packer->pack();
+		$packed = $packer->pack();
+		$compressed = 'try{' . $packed . '}catch(e){alert(\'De JavaScript op deze pagina spoort niet (\' + e.message + \').\')}';
+		return $compressed;
 	}
 }
 
