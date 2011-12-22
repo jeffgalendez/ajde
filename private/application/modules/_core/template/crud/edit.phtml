@@ -1,6 +1,7 @@
 <?php
 /* @var $crud AjdeX_Crud */
 $crud = $this->crud;
+$editOptions = $crud->getOptions('edit');
 ?>
 
 <?php echo $this->ACAjaxForm('_core/crud:commit', $crud->getHash(), 'ACCrudEdit'); ?>
@@ -8,7 +9,13 @@ $crud = $this->crud;
 	<dl class='crudEdit'>
 		
 		<?php foreach($crud->getFields() as $field) {
+			if (isset($editOptions['show']) && (!in_array($field->getName(), $editOptions['show']))) { ?>
+				<div class='visuallyhidden'>
+			<?php }
 			echo $field->getHtml();
+			if (isset($editOptions['show']) && (!in_array($field->getName(), $editOptions['show']))) { ?>
+				</div>
+			<?php }
 		} ?>
 		
 		<dt>&nbsp;</dt>

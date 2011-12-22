@@ -1,5 +1,23 @@
-<?php $field = $this->field; ?>
+<?php 
+/* @var $field AjdeX_Crud_Field */
+$field = $this->field;
+?>
+
+<?php if (!$field->getLength()) { ?>
+
+<textarea
+	name='<?php echo $field->getName(); ?>'
+	<?php if ($field->hasReadonly() && $field->getReadonly() === true) {
+		echo ' readonly="readonly" ';	
+	} ?>
+>
+<?php echo $field->getValue(); ?>
+</textarea>
+
+<?php } else { ?>
 
 <input
 	<?php echo $field->getHtmlAttributes(); ?>
 />
+
+<?php } ?>

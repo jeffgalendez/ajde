@@ -3,6 +3,11 @@ if (typeof AC ==="undefined") { 		AC = function() {}; }
 if (typeof AC.Crud ==="undefined") { 	AC.Crud = function() {}; }
 
 AC.Crud.List = function() {
+	
+	var infoHandler		= alert;
+	var warningHandler	= alert;
+	var errorHandler	= alert;
+	
 	return {
 		
 		init: function() {
@@ -33,7 +38,7 @@ AC.Crud.List = function() {
 			var id = row.find('input[type=checkbox]').attr('value');			
 			var form = $(this).parents('form');
 			
-			if (confirm('Are you sure you want to delete the record with ID = ' + id + '?')) {
+			if (confirm(i18n.confirmDelete + ' (id:' + id + ')')) {
 				var options = {
 					operation	: 'delete',
 					crudId		: form.attr('id')
@@ -50,7 +55,7 @@ AC.Crud.List = function() {
 					}
 				}, 'json').error(function(jqXHR, message, exception) {
 					$('body').removeClass('loading');
-					alert('Something went wrong, please refresh and try again. (' + exception + ')');
+					errorHandler(i18n.requestError + ' (' + exception + ')');
 				});
 			}
 		}

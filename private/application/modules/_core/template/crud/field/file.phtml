@@ -3,19 +3,51 @@
 /* @var $field AjdeX_Crud_Field_File */
 $field = $this->field;
 
-if ($field->getValue()) { ?>
-	<input
-		<?php echo $field->getHtmlAttributes(); ?>
-	/>
-	<!-- assume image for now -->
-	<?php echo $this->ACImage(array(
-			'filename' => $field->getSaveDir() . $field->getValue(),
-			'width' => 150,
-			'height' => 150,
-			'crop' => true
-		)); ?>
-	<br/>
-	<span><?php echo $field->getValue(); ?></span>
-<?php } else { ?>
-	<?php echo $this->ACAjaxUpload($field->getName(), $field->getSaveDir(), $field->getExtensions()); ?>
+$iconCdn = 'http://p.yusukekamiyamane.com/icons/search/fugue/icons/document-%s.png';
+$iconDictionary = array(
+	'jpg' => 'image', 'gif' => 'image', 'png' => 'image',
+	'xls' => 'excel', 'xlsx' => 'excel',
+	'doc' => 'word', 'docx' => 'word'
+);
+
+if ($field->getValue()) {
+	$extension = pathinfo($field->getValue(), PATHINFO_EXTENSION); ?>
+
+	<div class='filelist'>
+		
+		<input
+			<?php echo $field->getHtmlAttributes(); ?>
+		/>
+		
+		<?php
+		if (in_array($extension, array('jpg', 'jpeg', 'png', 'gif'))) {
+			echo $this->ACImage(array(
+					'filename' => $field->getSaveDir() . $field->getValue(),
+					'width' => 150,
+					'height' => 150,
+					'crop' => true
+				)); ?>
+			<br/>
+		<?php } ?>
+
+		<span>
+			<img class='icon' src='<?php echo sprintf($iconCdn, isset($iconDictionary[$extension]) ? $iconDictionary[$extension] : $extension); ?>' />
+			<?php echo $field->getValue(); ?>
+			<a href='#' class='deleteFileCrud'>delete</a> 
+		</span>
+			
+	</div>
+		
 <?php } ?>
+	
+<div class='fileupload <?php if ($field->getValue()) { echo 'visuallyhidden'; } ?>'>
+	
+	<?php 
+	$options = array(
+		'saveDir' => $field->getSaveDir(),
+		'extensions' => $field->getExtensions(),
+		'multiple' => $field->getMultiple()
+	);
+	echo $this->ACAjaxUpload($field->getName(), $options); ?>
+
+</div>

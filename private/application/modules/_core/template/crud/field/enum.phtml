@@ -5,10 +5,13 @@ $options = explode(',', $field->getLength()); ?>
 <select
 	<?php echo $field->getHtmlAttributes(); ?>
 >
+	<?php if (!$field->getIsRequired()) { ?>
+		<option value=''>(kies <?php echo strtolower($field->getLabel()); ?>)</option>
+	<?php } ?>
 	<?php foreach($options as $option) { 
 		$option = trim($option, "'"); ?>
-		<option value='<?php echo $option; ?>'
+		<option value='<?php echo $option; ?>'			
 			<?php if ($option == $field->getValue()) { echo "selected='selected'"; } ?>
-			><?php echo $option; ?></option>
+			><?php echo __($option); ?></option>
 	<?php } ?>
 </select>

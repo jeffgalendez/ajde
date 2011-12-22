@@ -66,10 +66,16 @@ class _coreComponentController extends Ajde_Controller
 
 	public function formUploadHtml()
 	{
+		$options = $this->getOptions();
+		$optionsId = md5(serialize($options));
+		$session = new Ajde_Session('AC.Form');
+		$session->set($optionsId, $options);
+
 		$this->setAction('form/upload');
 		$this->getView()->assign('name', $this->getName());
-		$this->getView()->assign('saveDir', $this->getSaveDir());
-		$this->getView()->assign('extensions', $this->getExtensions());
+		$this->getView()->assign('optionsId', $optionsId);
+		$this->getView()->assign('optionsMultiple', issetor($options['multiple'], false));
+		//$this->getView()->assign('extensions', issetor($options['extensions'], array()));
 		$this->getView()->assign('inputId', $this->getInputId());
 		$this->getView()->assign('extraClass', $this->getExtraClass());
 		return $this->render();
@@ -77,17 +83,30 @@ class _coreComponentController extends Ajde_Controller
 	
 	public function formUploadJson()
 	{
+		$optionsId = Ajde::app()->getRequest()->getParam('optionsId', array());
+		$session = new Ajde_Session('AC.Form');
+		$options = $session->get($optionsId);
+		
 		// Load UploadHelper.php
 		$helper = new Ajde_Component_Form_UploadHelper();
 		
-		$saveDir = Ajde::app()->getRequest()->getSaveDir();
-		$allowedExtensions = explode(',', Ajde::app()->getRequest()->getExtensions());
+		$saveDir = $options['saveDir'];
+		$allowedExtensions = $options['extensions'];
 		
 		// max file size in bytes
-		$sizeLimit = 5 * 1024 * 1024;
+		$max_upload = (int)(ini_get('upload_max_filesize'));
+		$max_post = (int)(ini_get('post_max_size'));
+		$memory_limit = (int)(ini_get('memory_limit'));
+		$upload_mb = min($max_upload, $max_post, $memory_limit);
+		$sizeLimit = $upload_mb * 1024 * 1024;
 		
 		$uploader = new qqFileUploader($allowedExtensions, $sizeLimit);
 		$result = $uploader->handleUpload($saveDir);
+		
+		// Set content type to text/html for qqUploader bug 163
+		// @see https://github.com/valums/file-uploader/issues/163
+		Ajde::app()->getDocument()->setContentType('text/html');
+		
 		// to pass data through iframe you will need to encode all html tags
 		return $result;
 	}
@@ -98,7 +117,7 @@ class _coreComponentController extends Ajde_Controller
 	
 	public function imageHtml() {
 		$image = $this->getImage();
-		$imageId = md5(serialize($image));
+		$imageId = md5($image->getGeneratedFilename());
 		
 		$session = new Ajde_Session('AC.Image');
 		$session->set($imageId, $image);
@@ -128,11 +147,16 @@ class _coreComponentController extends Ajde_Controller
 	public function imageData() {
 		$imageId = Ajde::app()->getRequest()->getId();
 		$session = new Ajde_Session('AC.Image');
+		if (!$session->has($imageId)) {
+			Ajde::app()->getResponse()->redirectNotFound();
+		}
+		/* @var $image Ajde_Image */
+		//$image = $session->get($imageId);
 		$image = $session->getOnce($imageId);
 				
 		// TODO: add crop/resize option
 		$image->crop($image->getHeight(), $image->getWidth());
-				
+		
 		Ajde::app()->getResponse()->addHeader('Content-Type', $image->getMimeType());
 		$output = $image->getImage();
 		return $output;
