@@ -95,7 +95,8 @@ class _coreCrudController extends AjdeX_Acl_Controller
 	
 	public function save($crudId, $id)
 	{
-		$session = new Ajde_Session('AC.Crud');
+		$session = new Ajde_Session('AC.Crud');		
+		/* @var $crud AjdeX_Crud */
 		/* @var $crud AjdeX_Crud */
 		$crud = $session->getModel($crudId);
 		/* @var $model AjdeX_Model */
@@ -105,9 +106,10 @@ class _coreCrudController extends AjdeX_Acl_Controller
 		// Get POST params
 		$post = $_POST;
 		foreach($post as $key => $value) {
-			if (empty($value)) {
-				unset($post[$key]);
-			}
+			// Include empty values, so we can set them to null if the table structure allows us
+//			if (empty($value)) {
+//				unset($post[$key]);
+//			}
 		}
 		$id = issetor($post["id"]);
 		$operation = empty($id) ? 'insert' : 'save';
@@ -121,7 +123,8 @@ class _coreCrudController extends AjdeX_Acl_Controller
 		}
 		$success = $model->{$operation}();
 		if ($success === true) {
-			$session->destroy();
+			// Destroy reference to crud instance
+			$session->destroy($crudId);
 		}
 		return array('operation' => $operation, 'success' => $success);
 	}

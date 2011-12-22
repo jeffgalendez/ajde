@@ -22,9 +22,9 @@ AC.Crud.Edit = function() {
 		},
 		
 		equalizeForm: function() {
-			$('form.ACCrudEdit dl dt').each(function() {
-				$(this).css({height: $(this).next('dd').height()});
-			});
+//			$('form.ACCrudEdit dl dt').each(function() {
+//				$(this).css({height: $(this).next('dd').height()});
+//			});
 		},
 		
 		cancelHandler: function() {			
@@ -37,6 +37,7 @@ AC.Crud.Edit = function() {
 				form = $('form:eq(0)');
 			}
 			
+			// TODO: HTML5 validation, should be deprecated?
 			if (form[0].checkValidity) {
 				if (form[0].checkValidity() === false) {
 					alert(i18n.formError);
@@ -59,14 +60,21 @@ AC.Crud.Edit = function() {
 			});
 			AC.Crud.Edit.equalizeForm();
 			
+			// Set loading state and disable submit button
 			$('body').addClass('loading');
+			form.find('button.save').attr('disabled', 'disabled');
+			
 			if (typeof $(form[0]).data('onBeforeSubmit') === 'function') {
 				var fn = $(form[0]).data('onBeforeSubmit');
 				fn();
 			}
-			$.post(url, data, function(data) {				
-				$('body').removeClass('loading');
+			$.post(url, data, function(data) {		
+								
 				if (data.success === false) {
+					
+					$('body').removeClass('loading');
+					form.find('button.save').attr('disabled', null);
+				
 					if (data.errors) {
 						if (typeof $(form[0]).data('onError') === 'function') {
 							var fn = $(form[0]).data('onError');
@@ -88,6 +96,10 @@ AC.Crud.Edit = function() {
 					if (typeof $(form[0]).data('onSave') === 'function') {
 						var fn = $(form[0]).data('onSave');
 						if (fn(data) === false) {
+							
+							$('body').removeClass('loading');
+							form.find('button.save').attr('disabled', null);
+							
 							return;
 						}
 					}
@@ -100,7 +112,10 @@ AC.Crud.Edit = function() {
 					}
 				}
 			}, 'json').error(function(jqXHR, message, exception) {
+				
 				$('body').removeClass('loading');
+				form.find('button.save').attr('disabled', null);
+				
 				if (typeof $(form[0]).data('onError') === 'function') {
 					var fn = $(form[0]).data('onError');
 					fn();

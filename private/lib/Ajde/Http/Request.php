@@ -44,7 +44,11 @@ class Ajde_Http_Request extends Ajde_Object_Standard
 			$formToken = $_POST['_token'];
 			if (!self::verifyFormToken($formToken) || !self::verifyFormTime()) {
 				// TODO:
-				$exception = new Ajde_Exception('No matching form token or form timed out, bailing out to prevent CSRF attack');
+				if (!self::verifyFormToken($formToken)) {
+					$exception = new Ajde_Exception('No matching form token (got ' . self::_getHashFromSession($formToken) . ', expected ' . self::_tokenHash($formToken) . '), bailing out to prevent CSRF attack');
+				} else {
+					$exception = new Ajde_Exception('Form token timed out, bailing out to prevent CSRF attack');
+				}
 				if (Config::getInstance()->debug === true) {
 					Ajde_Http_Response::setResponseType(Ajde_Http_Response::RESPONSE_TYPE_FORBIDDEN);
 					throw $exception;
@@ -104,7 +108,9 @@ class Ajde_Http_Request extends Ajde_Object_Standard
 			Ajde_Cache::getInstance()->disable();
 			$token = md5(uniqid(rand(), true));
 			$session = new Ajde_Session('AC.Form');
-			$session->set('formTokenHash', md5($token . $_SERVER['REMOTE_ADDR'] . $_SERVER['HTTP_USER_AGENT'] . Config::get('secret')));
+			$tokenDictionary = self::_getTokenDictionary($session);
+			$tokenDictionary[$token] = self::_tokenHash($token);
+			$session->set('formTokens', $tokenDictionary);
 		}
 		self::markFormTime();
 		return $token;
@@ -112,9 +118,30 @@ class Ajde_Http_Request extends Ajde_Object_Standard
 	
 	public static function verifyFormToken($requestToken)
 	{
-		$session = new Ajde_Session('AC.Form');
-		$sessionTokenHash = $session->get('formTokenHash');
-		return (md5($requestToken . $_SERVER['REMOTE_ADDR'] . $_SERVER['HTTP_USER_AGENT'] . Config::get('secret')) === $sessionTokenHash);
+		return (self::_tokenHash($requestToken) === self::_getHashFromSession($requestToken));
+	}
+	
+	private static function _tokenHash($token)
+	{
+		return md5($token . $_SERVER['REMOTE_ADDR'] . $_SERVER['HTTP_USER_AGENT'] . Config::get('secret'));
+	}
+	
+	private static function _getTokenDictionary(&$session = null)
+	{
+		if (!isset($session)) {
+			$session = new Ajde_Session('AC.Form');
+		}
+		$tokenDictionary = ($session->has('formTokens') ? $session->get('formTokens') : array());
+		if (!is_array($tokenDictionary)) {
+			$tokenDictionary = array();
+		}
+		return $tokenDictionary;
+	}
+	
+	private static function _getHashFromSession($token)
+	{
+		$tokenDictionary = self::_getTokenDictionary();
+		return (issetor($tokenDictionary[$token], ''));		
 	}
 	
 	public static function markFormTime()

@@ -54,10 +54,16 @@ class Ajde_Session extends Ajde_Object_Standard
 		$this->_namespace = $namespace;
 	}
 	
-	public function destroy()
+	public function destroy($key = null)
 	{
-		$_SESSION[$this->_namespace] = null;
-		$this->reset(); 
+		if (isset($key)) {
+			if ($this->has($key)) {
+				$_SESSION[$this->_namespace][$key] = null;
+			}
+		} else {
+			$_SESSION[$this->_namespace] = null;
+			$this->reset(); 
+		}
 	}
 	
 	public function setModel($name, $object)

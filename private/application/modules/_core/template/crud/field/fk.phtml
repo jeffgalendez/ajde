@@ -4,7 +4,10 @@
 $field = $this->field;
 
 $collectionName = ucfirst($field->getName()) . 'Collection';
+$modelName = ucfirst($field->getName()) . 'Model';
 $collection = new $collectionName;
+$model = new $modelName;
+$collection->orderBy($model->getDisplayField());
 $collection->load(); 
 
 if ($field->getValue()) {
