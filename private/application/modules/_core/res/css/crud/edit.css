@@ -12,7 +12,6 @@ dl.crudEdit dt {
 	min-height: 21px;
 	padding: 15px 15px 5px 10px;
 	margin: 0;
-	margin-bottom: 1px;
 	
 	font-weight: normal;
 	text-overflow: ellipsis;
@@ -30,11 +29,9 @@ dl.crudEdit dd {
 	
 	width: 700px;
 	min-height: 21px;
-	min-height: 21px;
 	
 	padding: 10px;
 	margin: 0;
-	margin-bottom: 1px;
 	
 	border-top: 1px solid silver;
 }
@@ -63,7 +60,7 @@ dl.crudEdit dd span.help {
 	display: block;
 	float: right;
 	
-	max-width: 300px;
+	max-width: 250px;
 	padding: 3px;
 	margin: 0 0 0 10px;
 	
@@ -104,4 +101,6 @@ dl.crudEdit dd.validation_error {
 dl.crudEdit dd.validation_error div.validation_message {
 	color: white;
 	margin-bottom: 5px;
+	text-transform: uppercase;
+	font-size: 0.7em;
 }

@@ -8,7 +8,21 @@ $iconDictionary = array(
 	'jpg' => 'image', 'gif' => 'image', 'png' => 'image',
 	'xls' => 'excel', 'xlsx' => 'excel',
 	'doc' => 'word', 'docx' => 'word'
-);
+); ?>
+
+<div class='fileupload <?php if ($field->getValue()) { echo 'visuallyhidden'; } ?>'>
+	
+	<?php 
+	$options = array(
+		'saveDir' => $field->getSaveDir(),
+		'extensions' => $field->getExtensions(),
+		'multiple' => $field->getMultiple()
+	);
+	echo $this->ACAjaxUpload($field->getName(), $options); ?>
+
+</div>
+
+<?php
 
 if ($field->getValue()) {
 	$extension = pathinfo($field->getValue(), PATHINFO_EXTENSION); ?>
@@ -39,15 +53,3 @@ if ($field->getValue()) {
 	</div>
 		
 <?php } ?>
-	
-<div class='fileupload <?php if ($field->getValue()) { echo 'visuallyhidden'; } ?>'>
-	
-	<?php 
-	$options = array(
-		'saveDir' => $field->getSaveDir(),
-		'extensions' => $field->getExtensions(),
-		'multiple' => $field->getMultiple()
-	);
-	echo $this->ACAjaxUpload($field->getName(), $options); ?>
-
-</div>
