@@ -10,16 +10,19 @@ class Ajde_Session extends Ajde_Object_Standard
 		session_name(Config::get('ident') . '_session');
 		
 		// Cookie parameter
-		$lifetime	= 0;
+		$lifetime	= 20; // in minutes, 0 = session
 		$path		= Config::get('site_path');
 		$domain		= Config::get('cookieDomain');
 		$secure		= Config::get('cookieSecure');
 		$httponly	= Config::get('cookieHttponly');
-		session_set_cookie_params($lifetime, $path, $domain, $secure, $httponly);
+		session_set_cookie_params($lifetime * 60, $path, $domain, $secure, $httponly);
 		session_cache_limiter('private_no_expire');
 		
 		// Start the session!
 		session_start();
+		
+		// Force send new cookie with updated lifetime (keep-alive)
+		session_regenerate_id();
 		
 		// Strengthen session security with REMOTE_ADDR and HTTP_USER_AGENT
 		// @see http://shiflett.org/articles/session-hijacking
@@ -51,10 +54,16 @@ class Ajde_Session extends Ajde_Object_Standard
 		$this->_namespace = $namespace;
 	}
 	
-	public function destroy()
+	public function destroy($key = null)
 	{
-		$_SESSION[$this->_namespace] = null;
-		$this->reset(); 
+		if (isset($key)) {
+			if ($this->has($key)) {
+				$_SESSION[$this->_namespace][$key] = null;
+			}
+		} else {
+			$_SESSION[$this->_namespace] = null;
+			$this->reset(); 
+		}
 	}
 	
 	public function setModel($name, $object)

@@ -110,6 +110,7 @@ class Ajde_Cache extends Ajde_Object_Singleton
 		$response = Ajde::app()->getResponse();
 		if ($this->ETagMatch() && $this->isEnabled()) {			
 			$response->setResponseType(Ajde_Http_Response::RESPONSE_TYPE_NOT_MODIFIED);
+			$response->addHeader('Cache-Control', Ajde::app()->getDocument()->getCacheControl());
 			$response->addHeader('Content-Length', '0');
 			$response->setData(false);
 		} else {

@@ -31,6 +31,7 @@ class Ajde_Lang extends Ajde_Object_Singleton
 	
 	public function setLang($lang)
 	{
+		setlocale(LC_ALL, $lang, $lang.'.utf8', $lang.'.UTF8', $lang.'utf-8', $lang.'.UTF-8');
 		$this->_lang = $lang;
 	}
 
@@ -49,7 +50,13 @@ class Ajde_Lang extends Ajde_Object_Singleton
 		}
 		return false;
 	}
-	 
+	
+	public function setGlobalLang($lang)
+	{
+		$this->setLang($lang);
+		Config::getInstance()->lang_root = Config::getInstance()->site_root . $this->getShortLang() . '/';
+	}
+
 	protected function detect()
 	{		
 		if (Config::get("langAutodetect")) {
@@ -110,11 +117,18 @@ class Ajde_Lang extends Ajde_Object_Singleton
 	
 	public static function _($ident, $module = null)
 	{
-		return self::getInstance()->get($ident, $module);
+		return self::getInstance()->translate($ident, $module);
+	}
+	
+	public function translate($ident, $module = null)
+	{
+		return $this->getAdapter()->get($ident, $module);
 	}
 	
 	public function get($ident, $module = null)
 	{
+		// TODO:
+		throw new Ajde_Core_Exception_Deprecated();
 		return $this->getAdapter()->get($ident, $module);
 	}
 }

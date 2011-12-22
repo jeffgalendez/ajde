@@ -14,7 +14,7 @@ class Ajde_Component_Form extends Ajde_Component
 		return array(
 			'ajax' => 'ajax',
 			'route' => 'form',
-			'saveDir' => 'upload' 
+			'upload' => 'upload' 
 		);
 	}
 	
@@ -46,9 +46,15 @@ class Ajde_Component_Form extends Ajde_Component
 		case 'upload':
 			$controller = Ajde_Controller::fromRoute(new Ajde_Core_Route('_core/component:formUpload'));
 			
+			if (!isset($this->attributes['options']) ||
+					!isset($this->attributes['options']['saveDir']) ||
+					!isset($this->attributes['options']['extensions'])) {
+				// TODO:
+				throw new Ajde_Component_Exception('Options saveDir and extensions must be set for AC.Form.Upload');
+			}
+			
 			$controller->setName($this->attributes['name']);
-			$controller->setSaveDir($this->attributes['saveDir']);
-			$controller->setExtensions($this->attributes['extensions']);
+			$controller->setOptions($this->attributes['options']);
 			$controller->setInputId(issetor($this->attributes['id'], spl_object_hash($this)));
 			$controller->setExtraClass(issetor($this->attributes['class'], ''));
 			
