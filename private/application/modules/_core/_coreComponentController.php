@@ -29,11 +29,12 @@ class _coreComponentController extends Ajde_Controller
 	protected function _getResource($className)
 	{
 		// get resource from request
-		$hash = Ajde::app()->getRequest()->getParam('id');
+		$fingerprint = Ajde::app()->getRequest()->getRaw('id');
 		if (!Ajde_Core_Autoloader::exists($className)) {
 			throw new Ajde_Controller_Exception("Resource type could not be loaded");
 		}
-		$resource = call_user_func_array(array($className,"fromHash"), array($hash));
+		//$resource = call_user_func_array(array($className,"fromHash"), array($hash));
+		$resource = call_user_func_array(array($className,"fromFingerprint"), array($this->getFormat(), $fingerprint));
 		return $resource->getContents();
 	}
 	
@@ -116,16 +117,16 @@ class _coreComponentController extends Ajde_Controller
 	 ************************/
 	
 	public function imageHtml() {
+		/* @var $image Ajde_Resource_Image */
 		$image = $this->getImage();
-		$imageId = md5($image->getGeneratedFilename());
 		
-		$session = new Ajde_Session('AC.Image');
-		$session->set($imageId, $image);
+		//$session = new Ajde_Session('AC.Image');
+		//$session->set($imageId, $image);
 				
 		$this->setAction('image/show');
-		$this->getView()->assign('source', $this->getSource());
-		$this->getView()->assign('width', $this->getWidth());
-		$this->getView()->assign('height', $this->getHeight());
+		$this->getView()->assign('href', $image->getLinkUrl());
+		$this->getView()->assign('width', $image->getWidth());
+		$this->getView()->assign('height', $image->getHeight());
 		$this->getView()->assign('extraClass', $this->getExtraClass());
 		return $this->render();
 	}
@@ -145,14 +146,17 @@ class _coreComponentController extends Ajde_Controller
 	}
 	
 	public function imageData() {
-		$imageId = Ajde::app()->getRequest()->getId();
-		$session = new Ajde_Session('AC.Image');
-		if (!$session->has($imageId)) {
-			Ajde::app()->getResponse()->redirectNotFound();
-		}
-		/* @var $image Ajde_Image */
+		$fingerprint = Ajde::app()->getRequest()->getRaw('id');
+		$image = Ajde_Resource_Image::fromFingerprint($fingerprint);
+		
+		//$session = new Ajde_Session('AC.Image');
+		//if (!$session->has($imageId)) {
+			//Ajde::app()->getResponse()->redirectNotFound();
+		//}
+		
+		/* @var $image Ajde_Resource_Image */
 		//$image = $session->get($imageId);
-		$image = $session->getOnce($imageId);
+		//$image = $session->getOnce($imageId);
 				
 		// TODO: add crop/resize option
 		$image->crop($image->getHeight(), $image->getWidth());

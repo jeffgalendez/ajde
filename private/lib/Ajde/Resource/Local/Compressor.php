@@ -70,7 +70,7 @@ abstract class Ajde_Resource_Local_Compressor extends Ajde_Object_Standard
 	public function getFilename()
 	{
 		$hash = $this->getHash();
-		return $this->getBase() . '/' . $hash['fileName'] . '.' . $hash['fileTime'] . '.' . $this->getType();
+		return $this->getBase() . $hash['fileName'] . '.' . $hash['fileTime'] . '.' . $this->getType();
 	}
 
 	public function setFilename($filename)

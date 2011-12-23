@@ -5,7 +5,7 @@
  * @link http://code.google.com/p/cambiocms/source/browse/trunk/cms/includes/602_html.image.php
  */ 
 
-class Ajde_Image extends Ajde_Object_Standard
+class Ajde_Resource_Image extends Ajde_Resource
 {
 	protected $_cache;
 	protected $_source;
@@ -17,7 +17,40 @@ class Ajde_Image extends Ajde_Object_Standard
 		$this->_source = $file;
 		$this->_type = $this->extension();
 	}
-		
+	
+	public function getLinkUrl()
+	{
+		$url = '_core/component:image.data?id=' . urlencode($this->getFingerprint());
+
+		if (Config::get('debug') === true)
+		{
+			$url .= '&file=' . str_replace('%2F', ':', urlencode($this->_source));
+		}
+		return $url;
+	}
+	
+	public static function fromFingerprint($fingerprint)
+	{
+		$array = self::decodeFingerprint($fingerprint);
+		extract($array);
+		$image = new Ajde_Resource_Image($s);
+		$image->setWidth($w);
+		$image->setHeight($h);
+		$image->setCrop($c);
+		return $image;
+	}
+	
+	public function getFingerprint()
+	{
+		$array = array('s' => $this->_source, 'w' => $this->getWidth(), 'h' => $this->getHeight(), 'c' => $this->getCrop());
+		return $this->encodeFingerprint($array);
+	}
+	
+	public function getContents()
+	{
+		return $this->getImage();
+	}
+	
 	public function getImage()
 	{
 		if (isset($this->_cache)) {
@@ -113,8 +146,21 @@ class Ajde_Image extends Ajde_Object_Standard
 		$this->save($this->getGeneratedFilename($width, $height, $crop));
 	}
 	
+	public function getFilename()
+	{
+		return $this->getGeneratedFilename();
+	}
+	
 	public function getGeneratedFilename($width = null, $height = null, $crop = null)
 	{
+		if (
+				!isset($width) && !$this->hasWidth() &&
+				!isset($height) && !$this->hasHeight() &&
+				!isset($crop) && !$this->hasCrop()
+			) {
+			return $this->_source;
+		}
+		
 		if (!isset($width) && $this->hasWidth()) {
 			$width = $this->getWidth();
 		}

@@ -35,8 +35,23 @@ class Ajde_Resource_Local extends Ajde_Resource
 	 */
 	public static function fromHash($hash)
 	{
+		// TODO:
+		throw new Ajde_Core_Exception_Deprecated();
 		$session = new Ajde_Session('AC.Resource');
 		return $session->get($hash);
+	}
+	
+	public static function fromFingerprint($type, $fingerprint)
+	{
+		$array = self::decodeFingerprint($fingerprint);
+		extract($array);
+		return new Ajde_Resource_Local($type, $b, $a, $f);
+	}
+	
+	public function getFingerprint()
+	{
+		$array = array('b' => $this->getBase(), 'a' => $this->getAction(), 'f' => $this->getFormat());
+		return $this->encodeFingerprint($array);
 	}
 
 	public function getBase() {
@@ -94,11 +109,12 @@ class Ajde_Resource_Local extends Ajde_Resource
 
 	protected function getLinkUrl()
 	{
-		$hash = md5(serialize($this));
-		$session = new Ajde_Session('AC.Resource');
-		$session->set($hash, $this);
+		//$hash = md5(serialize($this));
+		//$session = new Ajde_Session('AC.Resource');
+		//$session->set($hash, $this);
 		
-		$url = '_core/component:resourceLocal/' . $this->getType() . '/' . $hash . '/';
+		//$url = '_core/component:resourceLocal/' . $this->getType() . '/' . $hash . '/';
+		$url = '_core/component:resourceLocal/' . $this->getType() . '/' . urlencode($this->getFingerprint()) . '/';
 
 		if (Config::get('debug') === true)
 		{

@@ -242,6 +242,11 @@ class Ajde_Http_Request extends Ajde_Object_Standard
 		return $this->getParam($key, $default, self::TYPE_FLOAT);
 	}
 	
+	public function getRaw($key, $default = null)
+	{
+		return $this->getParam($key, $default, self::TYPE_RAW);
+	}
+	
 	/**
 	 * FORM
 	 */
