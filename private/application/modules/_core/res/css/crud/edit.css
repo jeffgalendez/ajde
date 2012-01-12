@@ -52,8 +52,8 @@ dl.crudEdit dd textarea[readonly]{
 }
 
 dl.crudEdit dd textarea {
-	width: 30em;
-	height: 10em;
+	width: 50em;
+	height: 20em;
 }
 
 dl.crudEdit dd span.help {

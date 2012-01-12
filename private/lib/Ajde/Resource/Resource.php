@@ -60,7 +60,8 @@ abstract class Ajde_Resource extends Ajde_Object_Standard
 		ob_start();
 
 		// variables for use in included link template
-		$url = $this->getLinkUrl();
+		$url = $this->getLinkUrl();		
+		$arguments = $this->hasArguments() ? $this->getArguments() : '';
 
 		// create temporary resource for link filename
 		$linkFilename = $this->_getLinkTemplateFilename();

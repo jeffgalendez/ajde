@@ -22,9 +22,9 @@ class Ajde_Component_Resource extends Ajde_Component
 		$this->getParser()->getDocument()->addResource($resource, $position);
 	}
 	
-	public function requirePublicResource($type, $filename, $position = Ajde_Document_Format_Html::RESOURCE_POSITION_DEFAULT)
+	public function requirePublicResource($type, $filename, $position = Ajde_Document_Format_Html::RESOURCE_POSITION_DEFAULT, $arguments = '')
 	{
-		$resource = new Ajde_Resource_Public($type, $filename);
+		$resource = new Ajde_Resource_Public($type, $filename, $arguments);
 		$this->getParser()->getDocument()->addResource($resource, $position);
 	}
 	

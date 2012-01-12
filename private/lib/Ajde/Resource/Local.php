@@ -97,7 +97,8 @@ class Ajde_Resource_Local extends Ajde_Resource
 		}
 		if (!$this->_filename) {
 			// TODO:
-			throw new Ajde_Exception('Resource could not be found');
+			throw new Ajde_Exception(sprintf('Resource %s could not be found',
+					$this->getBase() . 'res/' . $this->getType() . '/' . $this->getAction() . '[.' . $this->getFormat() . '].' . $this->getType()));
 		}
 		return $this->_filename;
 	}

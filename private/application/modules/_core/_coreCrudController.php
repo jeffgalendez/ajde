@@ -57,6 +57,14 @@ class _coreCrudController extends AjdeX_Acl_Controller
 		$view->requireJsFirst('component/shortcut', 'html', MODULE_DIR . '_core/');		
 		$view->assign('crud', $crud);
 		
+		// Editor
+		if (Config::get('textEditor')) {
+			$editorClassName = "AjdeX_Crud_Editor_" . ucfirst(Config::get('textEditor'));
+			$textEditor = new $editorClassName();
+			/* @var $textEditor AjdeX_Crud_Editor */
+			$textEditor->getResources($view);
+		}
+		
 		return $view->render();
 	}
 	
@@ -96,7 +104,6 @@ class _coreCrudController extends AjdeX_Acl_Controller
 	public function save($crudId, $id)
 	{
 		$session = new Ajde_Session('AC.Crud');		
-		/* @var $crud AjdeX_Crud */
 		/* @var $crud AjdeX_Crud */
 		$crud = $session->getModel($crudId);
 		/* @var $model AjdeX_Model */
