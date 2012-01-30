@@ -64,10 +64,20 @@ $fieldOptions = $crud->getOptions('fields');
 				<?php } ?>			
 			<?php } ?>
 			<td class='buttons'>
-				<a href="javascript:void(null);" class='button edit'>edit</a>
-				<?php if (!(isset($listOptions['delete']) && $listOptions['delete'] === false)) { ?>
+				<?php if (!(isset($listOptions['buttons']) && isset($listOptions['buttons']['edit']) && $listOptions['buttons']['edit'] === false)) { ?>
+					<a href="javascript:void(null);" class='button edit'>edit</a>
+				<?php } ?>
+				<?php if (!(isset($listOptions['buttons']) && isset($listOptions['buttons']['delete']) && $listOptions['buttons']['delete'] === false)) { ?>
 					<a href="javascript:void(null);" class='button delete'>delete</a>
 				<?php } ?>
+				<?php if (isset($listOptions['buttons'])) {
+					foreach($listOptions['buttons'] as $button) {
+						if (is_array($button)) { ?>
+							<a href="javascript:void(null);" class='button <?php echo $button['class']; ?>'><?php echo $button['text']; ?></a>
+						<?php } 
+					}
+				}
+				?>
 			</td>
 		</tr>
 	<?php } ?>

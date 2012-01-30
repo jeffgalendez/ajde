@@ -6,8 +6,20 @@ $field = $this->field;
 $collectionName = ucfirst($field->getName()) . 'Collection';
 $modelName = ucfirst($field->getName()) . 'Model';
 $collection = new $collectionName;
+/* @var $model AjdeX_Model */
 $model = new $modelName;
+/* @var $collection AjdeX_Collection */
 $collection->orderBy($model->getDisplayField());
+
+if ($field->hasFilter()) {
+	$filter = $field->getFilter();
+	$group = new AjdeX_Filter_WhereGroup();
+	foreach($filter as $rule) {
+		$group->addFilter(new AjdeX_Filter_Where($model->getDisplayField(), AjdeX_Filter::FILTER_EQUALS, $rule, AjdeX_Query::OP_OR));
+	}
+	$collection->addFilter($group);
+}
+
 $collection->load(); 
 
 if ($field->getValue()) {

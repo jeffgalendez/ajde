@@ -9,6 +9,11 @@ $options = explode(',', $field->getLength()); ?>
 		<option value=''>(kies <?php echo strtolower($field->getLabel()); ?>)</option>
 	<?php } ?>
 	<?php foreach($options as $option) { 
+		if ($field->hasFilter()) {
+			if (!in_array(trim($option, "'"), $field->getFilter())) {
+				continue;
+			}
+		}
 		$option = trim($option, "'"); ?>
 		<option value='<?php echo $option; ?>'			
 			<?php if ($option == $field->getValue()) { echo "selected='selected'"; } ?>

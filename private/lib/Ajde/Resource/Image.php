@@ -183,6 +183,36 @@ class Ajde_Resource_Image extends Ajde_Resource
 		return $filename;
 	}
 	
+	public function getHeight()
+	{
+		if ($this->has('height') && !$this->isEmpty('height')) {
+			return $this->get('height');
+		} else {						
+			$old_y=imageSY($this->getImageResource());
+			if ($this->has('width') && !$this->isEmpty('width')) {
+				$old_x=imageSX($this->getImageResource());
+				return (int) (($old_y / $old_x) * $this->get('width'));
+			} else {
+				return $old_y;				
+			}
+		}
+	}
+	
+	public function getWidth()
+	{
+		if ($this->has('width') && !$this->isEmpty('width')) {
+			return $this->get('width');
+		} else {
+			$old_x=imageSX($this->getImageResource());			
+			if ($this->has('height') && !$this->isEmpty('height')) {
+				$old_y=imageSY($this->getImageResource());
+				return (int) (($old_x / $old_y) * $this->get('height'));
+			} else {
+				return $old_x;				
+			}
+		}
+	}
+	
 	public function crop($height, $width)
 	{
 		if ($this->imageInCache($width, $height, true)) {
