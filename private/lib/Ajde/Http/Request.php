@@ -204,7 +204,12 @@ class Ajde_Http_Request extends Ajde_Object_Standard
 				case self::TYPE_STRING:
 				default:
 					if ($this->autoEscapeString() === true) {
-						return Ajde_Component_String::escape($data[$key]);
+						if (is_array($data[$key])) {
+							array_walk($data[$key], array("Ajde_Component_String", "escape"));
+							return $data[$key];
+						} else {
+							return Ajde_Component_String::escape($data[$key]);
+						}
 					} else {
 						return $data[$key];
 					}

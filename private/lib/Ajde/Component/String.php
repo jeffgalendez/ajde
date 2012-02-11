@@ -34,9 +34,14 @@ class Ajde_Component_String extends Ajde_Component
 		throw new Ajde_Component_Exception();	
 	}
 	
-	public static function escape($var)
+	public static function escape(&$var, $key = null)
 	{
-		return htmlspecialchars($var);
+		if (isset($key)) {
+			// called from array_walk
+			$var = htmlspecialchars($var);
+		} else {
+			return htmlspecialchars($var);
+		}
 	}
 	
 	public static function clean($var)
