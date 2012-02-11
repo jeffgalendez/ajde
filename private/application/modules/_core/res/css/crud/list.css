@@ -11,14 +11,30 @@ table.crudList tr {
 	border-bottom: 1px solid silver;
 }
 
+table.crudList tbody tr {
+	cursor: pointer;
+}
+
 table.crudList th {
-	padding: 10px;
+	padding: 10px 10px 10px 5px;
 	background-color: #f1f1f1;
 	text-align: left;
 }
 
+table.crudList td.toolbar {
+	padding-top: 8px;
+}
+
+table.crudList td.toolbar .button.multiple {
+	display: none;
+}
+
+table.crudList td.toolbar .button.multiple.show {
+	display: inline-block;
+}
+
 table.crudList td {
-	padding: 10px;
+	padding: 11px 5px 8px 5px;
     text-overflow: ellipsis;
     overflow: hidden;
     vertical-align: top;
@@ -29,14 +45,41 @@ table.crudList td {
 		text-decoration: underline;
 	}
 	
-	table.crudList td.buttons {
+	table.crudList .buttons {
 		white-space: nowrap;
+		padding-top: 8px;
+	}
+	
+	table.crudList .buttons span {
+		margin-top: 3px;
+	}
+	
+	table.crudList th.buttons {
+		font-weight: normal;
+		padding-top: inherit;
+		padding-bottom: 5px;
 	}
 
-table.crudList tr:nth-child(even) td {
+table.crudList tbody tr:nth-child(even) td {
 	background-color: #f9f9f9;
 }
 
-table.crudList tr:hover td {
+table.crudList tbody tr:hover td {
 	background-color: #eee;
 }
+
+table.crudList th a.order.asc,
+table.crudList th a.order.desc {
+	background-repeat: no-repeat;
+	background-position: 0 center;	
+	padding-left: 15px;
+}
+
+table.crudList th a.order.asc {
+	background-image: url('../../../../public/images/_core/crud/down_16.png');
+}
+
+table.crudList th a.order.desc {
+	background-image: url('../../../../public/images/_core/crud/up_16.png');
+}
+

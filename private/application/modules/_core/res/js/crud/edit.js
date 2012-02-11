@@ -14,11 +14,25 @@ AC.Crud.Edit = function() {
 			var self = this;
 			$('form.ACCrudEdit a.cancel').click(AC.Crud.Edit.cancelHandler);
 			$('form.ACCrudEdit button.save').click(AC.Crud.Edit.saveHandler);
+			$('form.ACCrudEdit button.apply').click(function(e) {
+				var self = this;
+				AC.Crud.Edit.saveHandler.call(self, e, 'edit');
+			});
 			
 			AC.Shortcut.add('Ctrl+S', AC.Crud.Edit.saveHandler);
 			$(window).load(function() {
 				self.equalizeForm();
 			});
+			
+			var $window = $(window);
+			var $crudEdit = $('dl.crudEdit');
+			$(window).resize(function() {
+				if ($window.width() < 945 && !$crudEdit.hasClass('small')) {
+					$crudEdit.addClass('small');
+				} else if ($window.width() > 944 && $crudEdit.hasClass('small')) {
+					$crudEdit.removeClass('small');
+				}
+			}).resize();
 		},
 		
 		equalizeForm: function() {
@@ -29,8 +43,11 @@ AC.Crud.Edit = function() {
 			window.location.href = window.location.pathname;
 		},
 		
-		saveHandler: function() {
+		saveHandler: function(e, returnTo) {
+			returnTo = returnTo || 'list';
 			var form = $(this).parents('form.ACCrudEdit');
+			var disableOnSave = 'button.save, button.apply, button.cancel';
+			
 			if (!form.length) {
 				form = $('form.ACCrudEdit:eq(0)');
 			}
@@ -58,7 +75,7 @@ AC.Crud.Edit = function() {
 			
 			// Set loading state and disable submit button
 			$('body').addClass('loading');
-			form.find('button.save').attr('disabled', 'disabled');
+			form.find(disableOnSave).attr('disabled', 'disabled');
 			
 			if (typeof $(form[0]).data('onBeforeSubmit') === 'function') {
 				var fn = $(form[0]).data('onBeforeSubmit');
@@ -69,7 +86,7 @@ AC.Crud.Edit = function() {
 				if (data.success === false) {
 					
 					$('body').removeClass('loading');
-					form.find('button.save').attr('disabled', null);
+					form.find(disableOnSave).attr('disabled', null);
 				
 					if (data.errors) {
 						if (typeof $(form[0]).data('onError') === 'function') {
@@ -95,23 +112,23 @@ AC.Crud.Edit = function() {
 						if (fn(data) === false) {
 							
 							$('body').removeClass('loading');
-							form.find('button.save').attr('disabled', null);
+							form.find(disableOnSave).attr('disabled', null);
 							
 							return;
 						}
 					}
 					if (data.operation === 'save') {
 						//$('dl.crudEdit > *', form[0]).css({backgroundColor:'orange'});
-						window.location.href = window.location.pathname + '?list';
+						window.location.href = window.location.pathname + '?' + returnTo + '=' + data.id;
 					} else {
 						//$('dl.crudEdit > *', form[0]).css({backgroundColor:'green'});
-						window.location.href = window.location.pathname + '?list';						
+						window.location.href = window.location.pathname + '?' + returnTo + '=' + data.id;						
 					}
 				}
 			}, 'json').error(function(jqXHR, message, exception) {
 				
 				$('body').removeClass('loading');
-				form.find('button.save').attr('disabled', null);
+				form.find(disableOnSave).attr('disabled', null);
 				
 				if (typeof $(form[0]).data('onError') === 'function') {
 					var fn = $(form[0]).data('onError');

@@ -19,6 +19,17 @@ dl.crudEdit dt {
 	white-space: nowrap;
 }
 
+dl.crudEdit.small dt {
+	text-align: left;
+	padding: 10px 15px 0 10px;
+	min-height: 20px;
+}
+
+dl.crudEdit.small dd {
+	padding: 7px 10px 5px 10px;
+	width: 95%;
+}
+
 dl.crudEdit dt.required {
 	color: #e43c3c;
 	font-weight: bold;

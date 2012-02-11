@@ -93,7 +93,7 @@ $expand = false;
 		        	if ($entry['level'] >= 0) {
 		        		$table .= '<tr><td>';
 		        		if ($entry['level'] > 0) {
-		        			$table .= str_repeat('&nbsp;&nbsp;&nbsp;', $entry['level']) . '<span style="color: gray;">â””</span>&nbsp;';
+		        			$table .= str_repeat('&nbsp;&nbsp;&nbsp;', $entry['level']) . '<span style="color: gray;">└</span>&nbsp;';
 						}
 		            	$table .= $entry['description'] . '</td><td style=\'text-align: right;\'>';
 						if (array_key_exists($key, $childrenTime)) {
