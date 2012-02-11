@@ -3,6 +3,9 @@
 $crud = $this->crud;
 $listOptions = $crud->getOptions('list');
 $fieldOptions = $crud->getOptions('fields');
+/* @var $crudView AjdeX_Collection_View */
+$crudView = $crud->getCollection()->getView();
+$columnCount = 0;
 ?>
 
 <?php echo $this->ACAjaxForm('_core/crud:commit', $crud->getHash(), 'ACCrudList'); ?>
@@ -10,22 +13,49 @@ $fieldOptions = $crud->getOptions('fields');
 	<table class='crudList'>
 	<thead>
 		<tr>
-			<th width="25"></th>
+			<th width="10">
+				<input type="hidden" name="view[orderBy]" value="<?php echo $crudView->getOrderBy(); ?>" />
+				<input type="hidden" name="view[orderDir]" value="<?php echo $crudView->getOrderDir(); ?>" />
+			</th>
 			<?php foreach($crud->getFields() as $field) {
-				if (isset($listOptions['show']) && (!in_array($field->getName(), $listOptions['show']))) { continue; } ?>
-				<th><?php echo $field->getLabel(); ?></th>
+				if (isset($listOptions['show']) && (!in_array($field->getName(), $listOptions['show']))) { continue; }
+				$columnCount++;
+				$orderDir = AjdeX_Query::ORDER_ASC;
+				$class = ($crudView->getOrderBy() == $field->getName()) ? 'desc' : '';
+				if ($crudView->getOrderBy() == $field->getName() &&
+						$crudView->getOrderDir() == AjdeX_Query::ORDER_ASC) {
+					$orderDir = AjdeX_Query::ORDER_DESC;
+					$class = 'asc';
+				}
+				?>
+				<th>
+					<a href="javascript:void(null);" class='order <?php echo $class; ?>' data-orderBy='<?php echo $field->getName(); ?>' data-orderDir='<?php echo $orderDir; ?>'><?php echo $field->getLabel(); ?></a>
+				</th>
 			<?php } ?>
-			<th width="120">
-				<?php if (!(isset($listOptions['new']) && $listOptions['new'] === false)) { ?>
+			<th class="buttons">
+				<span>
+					<?php echo __("Filter"); ?>:
+				</span>
+				<input type="text" name="view[search]" class="search" value="<?php echo $crudView->getSearch(); ?>" />
+				<a href="javascript:void(null);" class='button search'>Search</a>
+			</th>
+		</tr>
+		<tr>
+			<td><input type="checkbox" class="toggleSelect" /></td>
+			<td class="toolbar" colspan="<?php echo $columnCount + 1; ?>">
+				<?php if ($crud->getOption('list.buttons.new', true)) { ?>
 					<a href="javascript:void(null);" class='button new'>new</a>
 				<?php } ?>
-			</th>
+				<?php if ($crud->getOption('list.buttons.delete', true)) { ?>
+					<a href="javascript:void(null);" class='button delete multiple'>delete selected</a>
+				<?php } ?>
+			</td>
 		</tr>
 	</thead>
 	<tbody>
-	<?php foreach($crud->getItems() as $model) {?>
+	<?php foreach($items = $crud->getItems() as $model) {?>
 		<tr>
-			<td><input type="checkbox" name="chk_<?php echo $model->getPK(); ?>" value="<?php echo $model->getPK(); ?>" /></td>
+			<td><input type="checkbox" class="id" name="id[]" value="<?php echo $model->getPK(); ?>" /></td>
 			<?php foreach($model->values() as $fieldName => $value) {
 				if (isset($listOptions['show']) && (!in_array($fieldName, $listOptions['show']))) { continue; } ?>
 				<?php
@@ -64,14 +94,58 @@ $fieldOptions = $crud->getOptions('fields');
 				<?php } ?>			
 			<?php } ?>
 			<td class='buttons'>
-				<a href="javascript:void(null);" class='button edit'>edit</a>
-				<?php if (!(isset($listOptions['delete']) && $listOptions['delete'] === false)) { ?>
+				<?php if ($crud->getOption('list.buttons.edit', true)) { ?>
+					<a href="javascript:void(null);" class='button edit'>edit</a>
+				<?php } ?>
+				<?php if ($crud->getOption('list.buttons.delete', true)) { ?>
 					<a href="javascript:void(null);" class='button delete'>delete</a>
 				<?php } ?>
+				<?php if ($buttons = $crud->getOption('list.buttons')) {
+					foreach($buttons as $button) {
+						if (is_array($button)) { ?>
+							<a href="javascript:void(null);" class='button <?php echo $button['class']; ?>'><?php echo $button['text']; ?></a>
+						<?php } 
+					}
+				}
+				?>
 			</td>
 		</tr>
 	<?php } ?>
+	<?php if (count($items) == 0) { ?>
+		<tr>
+			<td></td>			
+			<td colspan="<?php echo $columnCount + 1; ?>">				
+				<?php echo __("No items found"); ?>
+			</td>			
+		</tr>
+	<?php } ?>
 	</tbody>
+	<tfoot>
+		<tr>
+			<td></td>			
+			<td class='buttons' colspan="<?php echo $columnCount; ?>">				
+				<input type="hidden" name="view[page]" value="<?php echo $crudView->getPage(); ?>" />
+				<a href="javascript:void(null);" class='button prev <?php if ($crudView->getPage() == 1) { echo 'disabled'; } ?>'>Previous</a>
+				<a href="javascript:void(null);" class='button next <?php if ($crudView->getPage() == $crudView->getPageCount()) { echo 'disabled'; } ?>' icon-right'>Next</a>
+				<span>
+					<?php echo sprintf(__('Page %s of %s'), 
+						$crudView->getPage(),
+						$crudView->getPageCount($crud->getCollection())
+					); ?>
+				</span>
+			</td>
+			<td class="buttons">
+				<span>
+					<?php echo __("Page size"); ?>:
+				</span>
+				<select name="view[pageSize]" class="pageSize">
+					<?php foreach(array(5, 10, 25, 50, 100) as $pageSize) { ?>
+					<option <?php if ($crudView->getPageSize() == $pageSize) { echo 'selected'; } ?> value="<?php echo $pageSize; ?>"><?php echo $pageSize; ?></option>
+					<?php } ?>
+				</select>
+			</td>
+		</tr>
+	</tfoot>
 	</table>
 
 </form>

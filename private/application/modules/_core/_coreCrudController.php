@@ -9,7 +9,7 @@ class _coreCrudController extends AjdeX_Acl_Controller
 	 * Ajde_Component_Crud
 	 ************************/
 	
-	public function listDefault()
+	public function listHtml()
 	{
 		$cache = Ajde_Cache::getInstance();
 		$cache->disable();
@@ -18,10 +18,28 @@ class _coreCrudController extends AjdeX_Acl_Controller
 			return $this->editDefault();			
 		}
 		
+		if (Ajde::app()->getRequest()->has('output') && Ajde::app()->getRequest()->get('output') == 'table') {
+			Ajde::app()->getDocument()->setLayout(new Ajde_Layout('empty'));
+		}
+				
 		$crud = $this->getCrudInstance();
-		
+		/* @var $crud AjdeX_Crud */
+				
 		$session = new Ajde_Session('AC.Crud');
 		$session->setModel($crud->getHash(), $crud);
+		
+		$viewSession = new Ajde_Session('AC.Crud.View');
+		$tableName = (string) $crud->getModel()->getTable();
+		if ($viewSession->has($tableName)) {
+			$crudView = $viewSession->get($tableName);
+		} else {
+			$crudView = new AjdeX_Collection_View($tableName);
+		}
+		$viewParams = Ajde::app()->getRequest()->getParam('view', array());
+		$crudView->setOptions($viewParams);
+		$viewSession->set($tableName, $crudView);
+		
+		$crud->getCollection()->setView($crudView);
 		
 		$view = $crud->getTemplate();		
 		$view->assign('crud', $crud);
@@ -57,6 +75,14 @@ class _coreCrudController extends AjdeX_Acl_Controller
 		$view->requireJsFirst('component/shortcut', 'html', MODULE_DIR . '_core/');		
 		$view->assign('crud', $crud);
 		
+		// Editor
+		if (Config::get('textEditor')) {
+			$editorClassName = "AjdeX_Crud_Editor_" . ucfirst(Config::get('textEditor'));
+			$textEditor = new $editorClassName();
+			/* @var $textEditor AjdeX_Crud_Editor */
+			$textEditor->getResources($view);
+		}
+		
 		return $view->render();
 	}
 	
@@ -86,11 +112,18 @@ class _coreCrudController extends AjdeX_Acl_Controller
 		$session = new Ajde_Session('AC.Crud');
 		$crud = $session->getModel($crudId);
 		$model = $crud->getModel();
-				
-		$model->loadByPK($id);
-		$success = $model->delete();
 		
-		return array('operation' => 'delete', 'success' => $success);
+		if (!is_array($id)) {
+			$id = array($id);
+		}
+		
+		$success = true;
+		foreach($id as $elm) {
+			$model->loadByPK($elm);
+//			$success = $success * $model->delete();
+		}
+		
+		return array('operation' => 'delete', 'success' => (bool) $success);
 	}
 	
 	public function save($crudId, $id)
@@ -125,6 +158,6 @@ class _coreCrudController extends AjdeX_Acl_Controller
 			// Destroy reference to crud instance
 			$session->destroy($crudId);
 		}
-		return array('operation' => $operation, 'success' => $success);
+		return array('operation' => $operation, 'id' => $model->getPK(), 'success' => $success);
 	}
 }

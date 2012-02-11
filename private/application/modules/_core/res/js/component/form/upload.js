@@ -59,10 +59,6 @@ AC.Form.Upload = function() {
 	};
 }();
 
-$(document).ready(function() {
-	AC.Form.Upload.init();
-});
-
 /**
  * http://github.com/valums/file-uploader
  * 
