@@ -34,15 +34,20 @@ class Ajde_Component_String extends Ajde_Component
 		throw new Ajde_Component_Exception();	
 	}
 	
-	public static function escape($var)
+	public static function escape(&$var, $key = null)
 	{
-		return htmlspecialchars($var);
+		if (isset($key)) {
+			// called from array_walk
+			$var = htmlspecialchars($var);
+		} else {
+			return htmlspecialchars($var);
+		}
 	}
 	
 	public static function clean($var)
 	{		
 		$clean = strip_tags($var, self::$_allowedTags);
-		$clean = str_replace('<a ', '<a target=\'_blank\'', $clean);
+		$clean = str_replace('<a href="http', '<a target=\'_blank\'  href="http', $clean);
 		return $clean;
 	}
 	

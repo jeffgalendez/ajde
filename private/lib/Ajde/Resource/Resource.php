@@ -38,13 +38,30 @@ abstract class Ajde_Resource extends Ajde_Object_Standard
 		$format = issetor($format, 'html');
 		return LAYOUT_DIR . $layout->getName() . '/link/' . $type . '.' . $format . '.php';
 	}
+	
+	public static function encodeFingerprint($array)
+	{
+		return self::_rotUrl(serialize($array));
+	}
+	
+	public static function decodeFingerprint($fingerprint)
+	{
+		return unserialize(self::_rotUrl($fingerprint));
+	}
+	
+	public static function _rotUrl($string) { 
+		return strtr($string, 
+			'./-:?=&%#{}"; ZQXJKVWPYRHGB abcdefghijklmnopqrstuv123456789ACDEFILMNOSTUwxyz', 
+			'ZQXJKVWPYRHGB ./-:?=&%#{}"; 123456789ACDEFILMNOSTUabcdefghijklmnopqrstuvwxyz'); 
+	}
 
 	public function getLinkCode()
 	{
 		ob_start();
 
 		// variables for use in included link template
-		$url = $this->getLinkUrl();
+		$url = $this->getLinkUrl();		
+		$arguments = $this->hasArguments() ? $this->getArguments() : '';
 
 		// create temporary resource for link filename
 		$linkFilename = $this->_getLinkTemplateFilename();

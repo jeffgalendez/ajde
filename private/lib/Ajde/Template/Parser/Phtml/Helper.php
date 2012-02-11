@@ -85,9 +85,9 @@ class Ajde_Template_Parser_Phtml_Helper extends Ajde_Object_Standard
 	 * @param integer $position
 	 * @return void
 	 */
-	public function requireJsPublic($filename, $position = Ajde_Document_Format_Html::RESOURCE_POSITION_DEFAULT)
+	public function requireJsPublic($filename, $position = Ajde_Document_Format_Html::RESOURCE_POSITION_DEFAULT, $arguments = '')
 	{
-		return Ajde_Component_Js::processStatic($this->getParser(), array('filename' => $filename, 'position' => $position));
+		return Ajde_Component_Js::processStatic($this->getParser(), array('filename' => $filename, 'position' => $position, 'arguments' => $arguments));
 	}
 	
 	/**

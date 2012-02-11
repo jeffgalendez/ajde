@@ -15,7 +15,7 @@ class Ajde_Core_Route extends Ajde_Object_Standard
 				$this->set("lang", $lang);
 				$route = substr($route, 3); 
 			}
-		}		
+		}
 		if (!$route) {
 			$route = Config::get('homepageRoute');
 		}

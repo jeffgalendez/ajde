@@ -21,7 +21,7 @@ class Ajde_Component_Image extends Ajde_Component
 	{
 		switch($this->_attributeParse()) {
 		case 'base64':			
-			$image = new Ajde_Image($this->attributes['filename']);
+			$image = new Ajde_Resource_Image($this->attributes['filename']);
 			$image->setWidth($this->attributes['width']);
 			$image->setHeight($this->attributes['height']);
 			$image->setCrop($this->attributes['crop']);
@@ -35,19 +35,13 @@ class Ajde_Component_Image extends Ajde_Component
 			return $controller->invoke();
 			break;
 		case 'html':			
-			$image = new Ajde_Image($this->attributes['filename']);
+			$image = new Ajde_Resource_Image($this->attributes['filename']);
 			$image->setWidth($this->attributes['width']);
 			$image->setHeight($this->attributes['height']);
 			$image->setCrop($this->attributes['crop']);
 			
-			$id = md5($image->getGeneratedFilename());
-			$source = '_core/component:image.data?id=' . $id;
-			
 			$controller = Ajde_Controller::fromRoute(new Ajde_Core_Route('_core/component:image'));
-			$controller->setImage($image);
-			$controller->setSource($source);
-			$controller->setWidth(issetor($this->attributes['width'], null));
-			$controller->setHeight(issetor($this->attributes['height'], null));
+			$controller->setImage($image);			
 			$controller->setExtraClass(issetor($this->attributes['class'], ''));
 					
 			return $controller->invoke();
