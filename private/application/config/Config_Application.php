@@ -21,7 +21,10 @@ class Config_Application extends Config_Default
 	//public $langAdapter;
 	//public $timezone;
 	//public $layout;
-	//public $responseCodeRoute;
+	public $responseCodeRoute	= array(
+									'404' => 'main/code404.html',
+									'401' => 'user/logon.html'
+									);
 	
 	//public $autoEscapeString;
 	//public $autoCleanHtml;

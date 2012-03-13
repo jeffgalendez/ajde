@@ -32,9 +32,10 @@ class Ajde_Exception_Handler extends Ajde_Object_Static
 			if (Config::getInstance()->debug === true)
 			{
 				if (!((get_class($exception) == 'Ajde_Exception' || is_subclass_of($exception, 'Ajde_Exception')) && !$exception->traceOnOutput())) {
+					Ajde_Exception_Log::logException($exception);				
 					echo self::trace($exception);
 				} else {
-					Ajde_Exception_Log::logException($exception);				
+					Ajde_Exception_Log::logException($exception);
 					Ajde_Http_Response::redirectServerError();
 				}
 			}
@@ -139,7 +140,7 @@ class Ajde_Exception_Handler extends Ajde_Object_Static
 				$message = $style . $exceptionDump . $exceptionMessage . $traceMessage;
 				break;
 			case self::EXCEPTION_TRACE_LOG:
-				$message = 'Request ' . $_SERVER["REQUEST_URI"] . " triggered:\n\r";
+				$message = 'Request ' . $_SERVER["REQUEST_URI"] . " triggered:" . PHP_EOL;
 				$message .= sprintf("%s: %s in %s on line %s",
 						$type,
 						$exception->getMessage(),
@@ -147,7 +148,7 @@ class Ajde_Exception_Handler extends Ajde_Object_Static
 						$exception->getLine()
 				);
 				foreach(array_reverse($exception->getTrace()) as $i => $line) {
-					$message .= "\n\r";
+					$message .= PHP_EOL;
 					$message .= $i . '. ' . $line['file'] . ' on line ' . $line['line'];
 				}				
 				break;

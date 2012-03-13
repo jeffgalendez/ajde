@@ -1,0 +1,20 @@
+<h2>Blog</h2>
+
+<p>
+	<a href='samples/edit.html?new'>Add post</a> | 
+	<a href='samples/edit.html'>Edit posts</a>
+</p>
+
+<hr/>
+
+<?php foreach($this->blog as $entry) { ?>
+	
+	<h3><?php echo $this->escape( $entry->title ); ?></h3>
+	<p>
+		<em>Written on <?php echo $this->escape( $entry->date ); ?></em> :
+	</p>
+	<p><?php echo $this->escape( $entry->content ); ?></p>
+	
+	<hr/>
+	
+<?php } ?>

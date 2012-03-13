@@ -208,9 +208,12 @@ class Ajde_Crud extends Ajde_Object_Standard
 		}
 		if (!$this->getModel()->getPK()) {
 			$model = $this->getModel();
-			$model->loadByPK($this->getId());
-			if (!$model->getAutoloadParents()) {
-				$model->loadParents();
+			if (!$model->loadByPK($this->getId())) {
+				Ajde_Http_Response::redirectNotFound();
+			} else {
+				if (!$model->getAutoloadParents()) {
+					$model->loadParents();
+				}
 			}
 		}
 		return $this->getModel();
