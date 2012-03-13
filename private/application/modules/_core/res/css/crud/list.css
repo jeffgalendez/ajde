@@ -39,6 +39,8 @@ table.crudList td {
     overflow: hidden;
     vertical-align: top;
 	background-color: white;
+	white-space: nowrap;
+	max-width: 350px;
 }
 
 	table.crudList td.linkedModel {

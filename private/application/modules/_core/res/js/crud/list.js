@@ -12,6 +12,7 @@ AC.Crud.List = function() {
 		
 		init: function() {
 			$('form.ACCrudList tbody tr').live('click', AC.Crud.List.trHandler);
+			$('form.ACCrudList tbody tr').live('dblclick', AC.Crud.List.editHandler);
 			
 			$('form.ACCrudList input.id').live('click', AC.Crud.List.checkboxHandler);
 			$('form.ACCrudList input.toggleSelect').live('click', AC.Crud.List.toggleSelectHandler);
@@ -89,7 +90,11 @@ AC.Crud.List = function() {
 		
 		editHandler: function(e) {
 			e.stopPropagation();
-			var row = $(this).parents('tr');
+			if ($(this)[0].nodeName == 'TR' || $(this)[0].nodeName == 'tr') {
+				var row = $(this);
+			} else {
+				var row = $(this).parents('tr');
+			}
 			var id = row.find('input[type=checkbox]').attr('value');			
 			var form = $(this).parents('form');
 			
@@ -156,6 +161,9 @@ AC.Crud.List = function() {
 		},
 		
 		prevHandler: function(e) {
+			if ($(this).hasClass('disabled')) {
+				return;
+			}
 			var form = $(this).parents('form');
 			var $page = form.find('input[name=\'view[page]\']');
 			$page.val(parseInt($page.val()) - 1);
@@ -163,6 +171,9 @@ AC.Crud.List = function() {
 		},
 		
 		nextHandler: function(e) {
+			if ($(this).hasClass('disabled')) {
+				return;
+			}
 			var form = $(this).parents('form');
 			var $page = form.find('input[name=\'view[page]\']');
 			$page.val(parseInt($page.val()) + 1);
@@ -215,7 +226,7 @@ AC.Crud.List = function() {
 			
 			form.find('tbody').animate({
 				opacity: 0
-			}, 1000);
+			}, 'fast');
 			
 			data.push({
 				name: 'output',

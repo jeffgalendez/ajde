@@ -68,7 +68,7 @@ button.button {
 .button[disabled], .button.disabled {
 	border: 1px solid silver !important;
 	background-color: #eee;
-	background-image: inherit;
+	background-image: inherit !important;
 	color: silver;
 }
 .button[disabled]:hover, .button.disabled:hover {

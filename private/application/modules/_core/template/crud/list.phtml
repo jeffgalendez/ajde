@@ -1,9 +1,9 @@
 <?php
-/* @var $crud AjdeX_Crud */
+/* @var $crud Ajde_Crud */
 $crud = $this->crud;
 $listOptions = $crud->getOptions('list');
 $fieldOptions = $crud->getOptions('fields');
-/* @var $crudView AjdeX_Collection_View */
+/* @var $crudView Ajde_Collection_View */
 $crudView = $crud->getCollection()->getView();
 $columnCount = 0;
 ?>
@@ -20,11 +20,11 @@ $columnCount = 0;
 			<?php foreach($crud->getFields() as $field) {
 				if (isset($listOptions['show']) && (!in_array($field->getName(), $listOptions['show']))) { continue; }
 				$columnCount++;
-				$orderDir = AjdeX_Query::ORDER_ASC;
+				$orderDir = Ajde_Query::ORDER_ASC;
 				$class = ($crudView->getOrderBy() == $field->getName()) ? 'desc' : '';
 				if ($crudView->getOrderBy() == $field->getName() &&
-						$crudView->getOrderDir() == AjdeX_Query::ORDER_ASC) {
-					$orderDir = AjdeX_Query::ORDER_DESC;
+						$crudView->getOrderDir() == Ajde_Query::ORDER_ASC) {
+					$orderDir = Ajde_Query::ORDER_DESC;
 					$class = 'asc';
 				}
 				?>
@@ -60,11 +60,11 @@ $columnCount = 0;
 				if (isset($listOptions['show']) && (!in_array($fieldName, $listOptions['show']))) { continue; } ?>
 				<?php
 				// Linked Model
-				if ($value instanceof AjdeX_Model && $value->hasLoaded()) { ?>
+				if ($value instanceof Ajde_Model && $value->hasLoaded()) { ?>
 					<td class="linkedModel" title="<?php echo $value->get($value->getDisplayField()); ?>"><?php echo $value->get($value->getDisplayField()); ?></td>
 				<?php
 				// File
-				} elseif ($crud->getField($fieldName) instanceof AjdeX_Crud_Field_File) { 
+				} elseif ($crud->getField($fieldName) instanceof Ajde_Crud_Field_File) { 
 					$field = $crud->getField($fieldName) ?>
 					<td title="<?php echo $this->escape($value); ?>">
 						<?php
@@ -126,11 +126,11 @@ $columnCount = 0;
 			<td class='buttons' colspan="<?php echo $columnCount; ?>">				
 				<input type="hidden" name="view[page]" value="<?php echo $crudView->getPage(); ?>" />
 				<a href="javascript:void(null);" class='button prev <?php if ($crudView->getPage() == 1) { echo 'disabled'; } ?>'>Previous</a>
-				<a href="javascript:void(null);" class='button next <?php if ($crudView->getPage() == $crudView->getPageCount()) { echo 'disabled'; } ?>' icon-right'>Next</a>
+				<a href="javascript:void(null);" class='button next <?php if ($crudView->getPage() >= ($pageCount = $crudView->getPageCount($crud->getCollection())) ) { echo 'disabled'; } ?> icon-right'>Next</a>
 				<span>
 					<?php echo sprintf(__('Page %s of %s'), 
 						$crudView->getPage(),
-						$crudView->getPageCount($crud->getCollection())
+						$pageCount
 					); ?>
 				</span>
 			</td>

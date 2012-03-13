@@ -21,14 +21,14 @@ class Ajde_Component_Crud extends Ajde_Component
 		switch($this->_attributeParse()) {
 		case 'list':
 			$options = issetor($this->attributes['options'], array());
-			$crud = new AjdeX_Crud($this->attributes['model'], $options);
+			$crud = new Ajde_Crud($this->attributes['model'], $options);
 			$crud->setAction('list');
 			return $crud;				
 			break;
 		case 'edit':
 			$options = issetor($this->attributes['options'], array());
 			$id = issetor($this->attributes['id'], null);
-			$crud = new AjdeX_Crud($this->attributes['model'], $options);
+			$crud = new Ajde_Crud($this->attributes['model'], $options);
 			$crud->setId($id);
 			$crud->setAction('edit');
 			return $crud;

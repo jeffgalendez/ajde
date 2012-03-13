@@ -224,7 +224,7 @@ class Ajde_Template_Parser_Phtml_Helper extends Ajde_Object_Standard
 	/**
 	 *
 	 * @param mixed $model
-	 * @return AjdeX_Crud
+	 * @return Ajde_Crud
 	 */
 	public function ACCrudList($model, $options = array())
 	{
@@ -240,7 +240,7 @@ class Ajde_Template_Parser_Phtml_Helper extends Ajde_Object_Standard
 	/**
 	 *
 	 * @param mixed $model
-	 * @return AjdeX_Crud
+	 * @return Ajde_Crud
 	 */
 	public function ACCrudEdit($model, $id, $options = array())
 	{

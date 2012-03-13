@@ -87,7 +87,7 @@ class Ajde_Session extends Ajde_Object_Standard
 	public function set($key, $value)
 	{
 		parent::set($key, $value);
-		if ($value instanceof AjdeX_Model) {
+		if ($value instanceof Ajde_Model) {
 			// TODO:
 			throw new Ajde_Exception('It is not allowed to store a Model directly in the session, use Ajde_Session::setModel() instead.');
 		}

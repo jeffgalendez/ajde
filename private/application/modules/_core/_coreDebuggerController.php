@@ -19,8 +19,8 @@ class _coreDebuggerController extends Ajde_Controller
 		$view->assign('configstage', Config::$stage);
 		
 		// Get database queries 
-		if (Ajde_Core_Autoloader::exists('AjdeX_Db_PDO')) {
-			$view->assign('database', AjdeX_Db_PDO::getLog());
+		if (Ajde_Core_Autoloader::exists('Ajde_Db_PDO')) {
+			$view->assign('database', Ajde_Db_PDO::getLog());
 		}
 		
 		// Get language 
@@ -30,8 +30,8 @@ class _coreDebuggerController extends Ajde_Controller
 		$view->assign('session', $_SESSION);
 		
 		// Get ACL
-		if (Ajde_Core_Autoloader::exists('AjdeX_Acl')) {
-			$view->assign('acl', AjdeX_Acl::getLog());
+		if (Ajde_Core_Autoloader::exists('Ajde_Acl')) {
+			$view->assign('acl', Ajde_Acl::getLog());
 		}
 		
 		// Get the application timer

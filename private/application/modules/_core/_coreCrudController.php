@@ -1,9 +1,9 @@
 <?php
 
 /**
- * Default to extend AjdeX_Acl_Controller for enhanced security
+ * Default to extend Ajde_Acl_Controller for enhanced security
  */
-class _coreCrudController extends AjdeX_Acl_Controller
+class _coreCrudController extends Ajde_Acl_Controller
 {
 	/************************
 	 * Ajde_Component_Crud
@@ -23,7 +23,7 @@ class _coreCrudController extends AjdeX_Acl_Controller
 		}
 				
 		$crud = $this->getCrudInstance();
-		/* @var $crud AjdeX_Crud */
+		/* @var $crud Ajde_Crud */
 				
 		$session = new Ajde_Session('AC.Crud');
 		$session->setModel($crud->getHash(), $crud);
@@ -33,7 +33,7 @@ class _coreCrudController extends AjdeX_Acl_Controller
 		if ($viewSession->has($tableName)) {
 			$crudView = $viewSession->get($tableName);
 		} else {
-			$crudView = new AjdeX_Collection_View($tableName);
+			$crudView = new Ajde_Collection_View($tableName);
 		}
 		$viewParams = Ajde::app()->getRequest()->getParam('view', array());
 		$crudView->setOptions($viewParams);
@@ -49,7 +49,7 @@ class _coreCrudController extends AjdeX_Acl_Controller
 	
 	public function editDefault()
 	{
-		/* @var $crud AjdeX_Crud */
+		/* @var $crud Ajde_Crud */
 		$this->setAction('edit');
 		
 		$crud = $this->getCrudInstance();
@@ -77,9 +77,9 @@ class _coreCrudController extends AjdeX_Acl_Controller
 		
 		// Editor
 		if (Config::get('textEditor')) {
-			$editorClassName = "AjdeX_Crud_Editor_" . ucfirst(Config::get('textEditor'));
+			$editorClassName = "Ajde_Crud_Editor_" . ucfirst(Config::get('textEditor'));
 			$textEditor = new $editorClassName();
-			/* @var $textEditor AjdeX_Crud_Editor */
+			/* @var $textEditor Ajde_Crud_Editor */
 			$textEditor->getResources($view);
 		}
 		
@@ -92,7 +92,7 @@ class _coreCrudController extends AjdeX_Acl_Controller
 		$crudId = Ajde::app()->getRequest()->getParam('crudId');
 		$id = Ajde::app()->getRequest()->getPostParam('id', false);
 		
-		AjdeX_Model::registerAll();
+		Ajde_Model::registerAll();
 		
 		switch ($operation) {
 			case 'delete':
@@ -129,9 +129,9 @@ class _coreCrudController extends AjdeX_Acl_Controller
 	public function save($crudId, $id)
 	{
 		$session = new Ajde_Session('AC.Crud');		
-		/* @var $crud AjdeX_Crud */
+		/* @var $crud Ajde_Crud */
 		$crud = $session->getModel($crudId);
-		/* @var $model AjdeX_Model */
+		/* @var $model Ajde_Model */
 		$model = $crud->getModel();		
 		$model->setOptions($crud->getOptions('model'));
 		
