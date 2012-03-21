@@ -65,7 +65,13 @@ class Config_Default
 	public $dbPassword 			= "ajde";	
 	public $registerNamespaces	= array();
 	public $overrideClass		= array();
-	public $textEditor			= 'aloha';
+	
+	/**
+	 * Use this text editor for CRUD operations 
+	 * 
+	 * @var string (aloha|jwysiwyg|ckeditor) 
+	 */
+	public $textEditor			= 'ckeditor';
 
 
 	// Which modules should we call on bootstrapping?
