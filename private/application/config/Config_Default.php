@@ -33,6 +33,7 @@ class Config_Default
 									);
 									
 	// Presentation
+	public $titleFormat			= '%2$s - %1$s'; // %1$s is project title, %2$s is document title
 	public $lang 				= "en_GB";
 	public $langAutodetect		= true;
 	public $langAdapter			= "ini";

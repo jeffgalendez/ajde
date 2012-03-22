@@ -6,6 +6,12 @@ class SamplesController extends Ajde_Acl_Controller
 		'view',
 	);
 	
+	public function beforeInvoke()
+	{
+		Ajde::app()->getDocument()->setTitle("Samples");
+		return true;
+	}
+	
 	function view()
     {
     	Ajde_Model::register($this);
@@ -17,6 +23,7 @@ class SamplesController extends Ajde_Acl_Controller
 			->load();
 		$this->getView()->assign('blog', $blog);
 		Ajde_Dump::warn('This is a test warning');
+		Ajde::app()->getDocument()->setDescription("This is the samples module");
         return $this->render();
     }
 		

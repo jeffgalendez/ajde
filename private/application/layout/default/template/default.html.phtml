@@ -17,9 +17,9 @@ $this->requireJsLibrary('jquery', '1.7');
 	<head>
 		<meta charset='utf-8'>
 		<!--[if IE]><![endif]-->
-		<title><?php echo Config::get('sitename'); ?></title>		
-		<meta name='description' content='' />
-		<meta name='author' content='' />
+		<title><?php echo Ajde::app()->getDocument()->getTitle(); ?></title>		
+		<meta name='description' content='<?php echo Ajde::app()->getDocument()->getDescription(); ?>' />
+		<meta name='author' content='<?php echo Config::get('author'); ?>' />
 		<?php echo Ajde::app()->getDocument()->getMeta(); ?>
 		<base href='http://<?php echo Config::get('lang_root'); ?>' />
 		<!-- require JavaScript and cookies -->		

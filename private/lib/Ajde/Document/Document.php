@@ -66,6 +66,39 @@ abstract class Ajde_Document extends Ajde_Object_Standard
 		}
 	}
 	
+	public function setTitle($title)
+	{
+		$this->set('title', $title);
+	}
+	
+	public function getTitle()
+	{
+		$projectTitle = Config::get('sitename');
+		if ($this->has('title')) {
+			return sprintf(Config::get('titleFormat'),
+				$projectTitle,
+				$this->get('title')
+			);
+		} else {
+			return $projectTitle;
+		}
+	}
+	
+	public function setDescription($description)
+	{
+		$this->set('description', $description);
+	}
+	
+	public function getDescription()
+	{
+		$projectDescription = Config::get('description');
+		if ($this->has('description')) {
+			return $this->get('description');
+		} else {
+			return $projectDescription;
+		}
+	}
+	
 	public function setContentType($mimeType)
 	{
 		$this->_contentType = $mimeType;

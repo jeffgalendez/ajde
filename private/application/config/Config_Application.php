@@ -18,6 +18,7 @@ class Config_Application extends Config_Default
 	//public $aliases;
 	//public $routes;
 	
+	//public $titleFormat;
 	//public $lang;
 	//public $langAutodetect;
 	//public $langAdapter;
