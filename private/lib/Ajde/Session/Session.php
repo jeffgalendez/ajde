@@ -9,19 +9,27 @@ class Ajde_Session extends Ajde_Object_Standard
 		// Session name
 		session_name(Config::get('ident') . '_session');
 		
+		// Security
+		$garbageCollectionTimeout = 60; // PHP session garbage collection timeout in minutes
+		ini_set('gc_maxlifetime', $garbageCollectionTimeout * 60);
+		ini_set('use_only_cookies', 1);
+		
+		
 		// Cookie parameter
-		$lifetime	= 20; // in minutes, 0 = session
+		$lifetime	= 0; // in minutes, 0 = session
 		$path		= Config::get('site_path');
 		$domain		= Config::get('cookieDomain');
 		$secure		= Config::get('cookieSecure');
-		$httponly	= Config::get('cookieHttponly');
+		$httponly	= Config::get('cookieHttponly');		
+		
 		session_set_cookie_params($lifetime * 60, $path, $domain, $secure, $httponly);
 		session_cache_limiter('private_no_expire');
 		
 		// Start the session!
 		session_start();
 		
-		// Force send new cookie with updated lifetime (keep-alive)
+		// Force send new cookie with updated lifetime (forcing keep-alive)
+		// @see http://www.php.net/manual/en/function.session-set-cookie-params.php#100672
 		session_regenerate_id();
 		
 		// Strengthen session security with REMOTE_ADDR and HTTP_USER_AGENT
@@ -73,6 +81,7 @@ class Ajde_Session extends Ajde_Object_Standard
 	
 	public function getModel($name)
 	{
+		// TODO: If during the session class definitions has changed, this will throw an exception.
 		return unserialize($this->get($name));
 	}
 	

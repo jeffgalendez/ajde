@@ -32,7 +32,7 @@ class UserController extends Ajde_User_Controller
 		if (($user = $this->getLoggedInUser())) {
 			if (($returnto = Ajde::app()->getRequest()->getParam('returnto', false))) {
 				return $this->redirect($returnto);
-			}	
+			}
 			$this->setAction('relogon');
 			$message = Ajde::app()->getRequest()->getParam('message', '');
 			$this->getView()->assign('message', $message);			

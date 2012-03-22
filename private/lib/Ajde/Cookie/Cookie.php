@@ -26,7 +26,12 @@ class Ajde_Cookie extends Ajde_Object_Standard
 	
 	public function getModel($name)
 	{
-		return unserialize($this->get($name));
+		// TODO: If during the session class definitions has changed, this will throw an exception.
+		try {
+			return unserialize($this->get($name));
+		} catch(Exception $e) {
+			return false;
+		}
 	}
 	
 	public function setLifetime($days)

@@ -11,6 +11,8 @@ class Config_Default
 	// Site parameters, defined in Config_Application
 	public $ident				= null;
 	public $sitename 			= null;	
+	public $description			= null;	
+	public $author				= null;
 	public $version 			= array(
 									"number" => null,
 									"name" => null
@@ -34,7 +36,7 @@ class Config_Default
 	public $lang 				= "en_GB";
 	public $langAutodetect		= true;
 	public $langAdapter			= "ini";
-	public $timezone			= "UTC";
+	public $timezone			= "Europe/Amsterdam"; // "UTC" for Greenwich Mean Time
 	public $layout 				= "default";
 	public $responseCodeRoute	= array(
 									'404' => 'main/code404.html'
@@ -78,7 +80,8 @@ class Config_Default
 	public $bootstrap			= array(									
 									"Ajde_Exception_Handler",
 									"Ajde_Session",
-									"Ajde_Core_ExternalLibs"						
+									"Ajde_Core_ExternalLibs",
+									"Ajde_User_Autologon"
 									);
 
 	function __construct()

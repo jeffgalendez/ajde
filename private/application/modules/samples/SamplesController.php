@@ -16,6 +16,7 @@ class SamplesController extends Ajde_Acl_Controller
 			->orderBy('date', Ajde_Query::ORDER_DESC)
 			->load();
 		$this->getView()->assign('blog', $blog);
+		Ajde_Dump::warn('This is a test warning');
         return $this->render();
     }
 		
@@ -23,5 +24,31 @@ class SamplesController extends Ajde_Acl_Controller
 	{
 		Ajde_Model::register($this);
 		return $this->render();
+	}
+	
+	function sessionTest()
+	{		
+		$t = new Foo();
+		$session = new Ajde_Session("foo");
+		$session->setModel('t', $t);
+		return 'set in session';
+	}
+	
+	function retrieve()
+	{
+		$session = new Ajde_Session("foo");
+		$t = $session->getModel('t', $t);
+		return (string) $t;
+	}
+	
+	function error()
+	{
+		echo (string) new Foo();
+	}
+}
+
+class Bar {
+	function __toString() {
+		return 'bar';
 	}
 }

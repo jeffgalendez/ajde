@@ -4,7 +4,9 @@ class Config_Application extends Config_Default
 {	
 	// Site parameters
 	public $ident				= "project";
-	public $sitename 			= "Project Name";	
+	public $sitename 			= "Project name";
+	public $description			= "Project description";	
+	public $author				= "Author name";
 	public $version 			= array(
 									"number" => "0.1",
 									"name" => "alpha"
@@ -45,6 +47,7 @@ class Config_Application extends Config_Default
 	//public $dbPassword;	
 	//public $registerNamespaces;
 	//public $overrideClass;
+	//public $textEditor;
 	
 	//public $bootstrap;
 	

@@ -45,8 +45,7 @@ class Ajde_User extends Ajde_Model
 	{
 		// @see http://net.tutsplus.com/tutorials/php/understanding-hash-functions-and-keeping-passwords-safe/
 		if (CRYPT_BLOWFISH !== 1) {
-			// TODO:
-			//throw new Ajde_Exception('BLOWFISH algorithm not available for hashing');
+			Ajde_Dump::warn('BLOWFISH algorithm not available for hashing');
 			// Use MD5
 			$algo = '$1';
 			$cost = '';

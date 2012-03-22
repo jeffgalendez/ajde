@@ -33,6 +33,16 @@ $this->requireJsLibrary('jquery', '1.7');
 		</script>
 		<link rel="shortcut icon" type="image/x-icon" href="favicon.ico" />
 		<?php echo $this->getDocument()->getHead('css'); ?>
+		<script type="text/javascript">
+			var _gaq = _gaq || [];
+			_gaq.push(['_setAccount', 'UA-XXXXX-X']);
+			_gaq.push(['_trackPageview']);
+			(function() {
+				var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+				ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+				var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+			})();
+		</script>
 	</head>
 	<!--[if lt IE 7 ]> <body class='ie6'> <![endif]-->
 	<!--[if IE 7 ]>    <body class='ie7'> <![endif]-->
@@ -46,3 +56,8 @@ $this->requireJsLibrary('jquery', '1.7');
 		<?php echo $this->getDocument()->getScripts(); ?>
 	</body>
 </html>
+<!--[<pre>
+	<?php $version = Config::get('version'); echo Config::get('ident') . ', v' . $version['number'] . ' (' . $version['name'] . ')'; ?> 
+	Cache <?php echo Ajde_Cache::getInstance()->isEnabled() ? 'enabled' : 'disabled' ?> 
+	Last modified on <?php echo date("r", Ajde_Cache::getInstance()->getLastModified()); ?> 
+</pre><![-->

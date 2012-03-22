@@ -10,6 +10,7 @@ AC.Crud.Edit.Text = function() {
 		elm.ckeditor( function() { /* callback code */ }, {
 			skin : 'kama',
 			toolbar : 'Ajde',
+			format_tags : 'p;h1;h2;h3;pre'
 		});
 		
 	};
@@ -20,7 +21,7 @@ AC.Crud.Edit.Text = function() {
 			
 			CKEDITOR.config.toolbar_Ajde =
 			[
-				{ name: 'basicstyles',	items : [ 'Format','-','Bold','Italic','Underline','Strike','Subscript','Superscript','-','RemoveFormat' ] },
+				{ name: 'basicstyles',	items : [ 'Format','Bold','Italic','Underline','Strike','Subscript','Superscript','-','RemoveFormat' ] },
 				{ name: 'paragraph',	items : [ 'NumberedList','BulletedList','-','Outdent','Indent' ] },
 				{ name: 'links',		items : [ 'Link','Unlink' ] },
 				{ name: 'insert',		items : [ 'Image','Table','SpecialChar' ] },

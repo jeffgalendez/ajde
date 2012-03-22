@@ -5,10 +5,17 @@ $this->requireJsLibrary('jquery', '1.7');
 $expand = false;
 ?>
 
-<div id="ajdeDebugger">
+<div id="ajdeDebugger" <?php if (isset($this->warn)) { echo 'class="warning"'; } ?>>
 	<div id="ajdeDebuggerHeader"></div>
 	<div id="ajdeDebuggerContent">
 		<h4>Ajde Debugger</h4>
+		<?php if (isset($this->warn)) { ?>
+			<?php foreach($this->warn as $message) { ?>
+				<div class="warn">
+					<?php echo $message; ?>
+				</div>
+			<?php } ?>
+		<?php } ?>
 		<dl>
 			<dt>1. Variables</dt>
 			<?php if (isset($this->dump)) { ?>

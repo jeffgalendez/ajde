@@ -7,6 +7,11 @@ class _coreDebuggerController extends Ajde_Controller
 		// Grab the view to easily assign variables
 		$view = $this->getView();
 		
+		// Get all warnings from Ajde_Dump::warn()
+		if (Ajde_Dump::getWarnings()) {
+			$view->assign('warn', Ajde_Dump::getWarnings());			
+		}
+		
 		// Get all dumps from Ajde_Dump::dump() [Aliased as a global function dump()]
 		if (Ajde_Dump::getAll()) {
 			$view->assign('dump', Ajde_Dump::getAll());			
