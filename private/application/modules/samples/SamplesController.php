@@ -54,6 +54,12 @@ class SamplesController extends Ajde_Acl_Controller
 	}
 }
 
+class Foo extends Bar {
+	function __construct() {
+		
+	}
+}
+
 class Bar {
 	function __toString() {
 		return 'bar';

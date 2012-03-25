@@ -26,10 +26,11 @@ class Ajde_Cookie extends Ajde_Object_Standard
 	
 	public function getModel($name)
 	{
-		// TODO: If during the session class definitions has changed, this will throw an exception.
+		// If during the session class definitions has changed, this will throw an exception.
 		try {
 			return unserialize($this->get($name));
 		} catch(Exception $e) {
+			Ajde_Dump::warn('Model definition changed during cookie period');
 			return false;
 		}
 	}

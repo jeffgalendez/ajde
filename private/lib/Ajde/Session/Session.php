@@ -81,8 +81,13 @@ class Ajde_Session extends Ajde_Object_Standard
 	
 	public function getModel($name)
 	{
-		// TODO: If during the session class definitions has changed, this will throw an exception.
-		return unserialize($this->get($name));
+		// If during the session class definitions has changed, this will throw an exception.
+		try {
+			return unserialize($this->get($name));
+		} catch(Exception $e) {
+			Ajde_Dump::warn('Model definition changed during session');
+			return false;
+		}
 	}
 	
 	public function has($key)

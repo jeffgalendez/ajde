@@ -197,6 +197,7 @@ AC.Crud.List = function() {
 		
 		searchBoxHandler: function(e) {
 			if (e.which == 13) {
+				e.preventDefault();
 				AC.Crud.List.resetPage(this);
 				AC.Crud.List.updateView(this);
 			}
