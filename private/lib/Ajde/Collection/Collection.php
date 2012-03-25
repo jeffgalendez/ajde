@@ -250,14 +250,18 @@ class Ajde_Collection extends Ajde_Object_Standard implements Iterator, Countabl
 	}
 	
 	
-	public function applyView()
+	public function applyView(Ajde_Collection_View $view = null)
 	{
-		if (!$this->hasView()) {
+		if (!$this->hasView() && !isset($view)) {
 			// TODO:
 			throw new Ajde_Exception();
 		}
 		
-		$view = $this->getView();
+		if (isset($view)) {
+			$this->setView($view);
+		} else {
+			$view = $this->getView();
+		}
 		
 		//LIMIT
 		$this->limit($view->getPageSize(), $view->getRowStart());
@@ -274,20 +278,25 @@ class Ajde_Collection extends Ajde_Object_Standard implements Iterator, Countabl
 		
 		// FILTER
 		if (!$view->isEmpty('search')) {
-			$searchFilter = new Ajde_Filter_WhereGroup;
-			$fieldOptions = $this->getTable()->getFieldProperties();			
-			foreach($fieldOptions as $fieldName => $fieldProperties) {
-				switch ($fieldProperties['type']) {
-					case Ajde_Db::FIELD_TYPE_TEXT:						
-					case Ajde_Db::FIELD_TYPE_ENUM:
-						$searchFilter->addFilter(new Ajde_Filter_Where($fieldName, Ajde_Filter::FILTER_LIKE, '%' . $view->getSearch() . '%', Ajde_Query::OP_OR));						
-						break;					
-					default:
-						break;
-				}
-			}
-			$this->addFilter($searchFilter);			
+			$this->addTextFilter($view->getSearch());
 		}
+	}
+	
+	public function addTextFilter($text)
+	{
+		$searchFilter = new Ajde_Filter_WhereGroup;
+		$fieldOptions = $this->getTable()->getFieldProperties();			
+		foreach($fieldOptions as $fieldName => $fieldProperties) {
+			switch ($fieldProperties['type']) {
+				case Ajde_Db::FIELD_TYPE_TEXT:						
+				case Ajde_Db::FIELD_TYPE_ENUM:
+					$searchFilter->addFilter(new Ajde_Filter_Where($fieldName, Ajde_Filter::FILTER_LIKE, '%' . $text . '%', Ajde_Query::OP_OR));						
+					break;					
+				default:
+					break;
+			}
+		}
+		$this->addFilter($searchFilter);		
 	}
 	
 	public function getSql()
