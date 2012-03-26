@@ -40,12 +40,13 @@
 //	Try to catch fatal errors
 //	--------------------
 	function shutdown()
-	{
-		$traceOn = array(E_ERROR, E_CORE_ERROR, E_COMPILE_ERROR, E_USER_ERROR);
-		if ($error = error_get_last()) if (in_array($error['type'], $traceOn))
-		{
-			$error = new ErrorException($error['message'], 0, $error['type'], $error['file'], $error['line']);
-			echo Ajde_Exception_Handler::trace($error);
+	{		
+		if ($error = error_get_last()) {
+			$traceOn = (Config::get('debug') === true ? array(E_ERROR, E_CORE_ERROR, E_COMPILE_ERROR, E_USER_ERROR) : array());
+			if (in_array($error['type'], $traceOn)) {
+				$error = new ErrorException($error['message'], 0, $error['type'], $error['file'], $error['line']);
+				echo Ajde_Exception_Handler::trace($error);
+			}
 		}
 	}
 	register_shutdown_function('shutdown');
