@@ -52,6 +52,11 @@ class SamplesController extends Ajde_Acl_Controller
 	{
 		echo (string) new Foo();
 	}
+	
+	function payment()
+	{
+		return $this->render();
+	}
 }
 
 class Foo extends Bar {

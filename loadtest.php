@@ -25,8 +25,10 @@ if (isset($_GET['c'])) {
 	
 	<?php 
 	
-	@apache_setenv('no-gzip', 1);
-    @ini_set('zlib.output_compression', 0);
+	try {
+		//@apache_setenv('no-gzip', 1);
+	} catch(Exception $e) {}
+	@ini_set('zlib.output_compression', 0);
     @ini_set('implicit_flush', 1);
     for ($i = 0; $i < ob_get_level(); $i++) { ob_end_flush(); }
     ob_implicit_flush(1);

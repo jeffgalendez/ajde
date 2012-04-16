@@ -28,11 +28,14 @@
 	ini_set('short_open_tag', 0);
 	ini_set('magic_quotes_gpc', 0);
 	ini_set('register_globals', 0);
+	
 	// Max upload size
 	ini_set('upload_max_filesize', '15M');
+	
 	// Force PHP errors
 	ini_set('display_errors', 1);
 	ini_set('display_startup_errors', 1);
+	
 	// Uncomment to hide uncatchable fatal errors
 	//ini_set('display_errors', 0);
 
