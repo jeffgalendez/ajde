@@ -15,13 +15,17 @@ abstract class Ajde_User_Controller extends Ajde_Controller
 		foreach($this->_registerUserModels as $model) {
 			Ajde_Model::register($model);
 		}
+		// Add timeout warning to layout
+		if ($this->_getUser() !== false) {
+			Ajde_Event::register('Ajde_Layout', 'beforeGetContents', 'requireTimeoutWarning');
+		}
 		// TODO: possible undesired behaviour when called by Ajde_Acl_Controller,
 		// when that controller is invoked with a allowed action like 'login'
 		if (in_array($this->getAction(), $this->_allowedActions) || $this->_getUser() !== false) {
 			return true;
 		} else {
 			Ajde::app()->getRequest()->set('message', __('Please log on to view this page'));
-			Ajde::app()->getResponse()->dieOnCode(401);
+			Ajde::app()->getResponse()->dieOnCode(Ajde_Http_Response::RESPONSE_TYPE_UNAUTHORIZED);
 		}
 	}
 	

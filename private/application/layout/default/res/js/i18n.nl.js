@@ -8,6 +8,9 @@ i18n = function() {
 		confirmDelete : "Weet je zeker dat je dit item wilt verwijderen?",
 		timedOut : "OK, dit duurt te lang, probeer a.u.b. opnieuw",
 		loading : "Bezig met laden...",
-		saving: "Bezig met opslaan..."
+		saving: "Bezig met opslaan...",
+		timeoutWarning: "De huidige pagina is bijna verlopen",
+		timeoutCountdown: "De huidige pagina is bijna verlopen, klik op 'Verder' binnen %s seconde om dit te voorkomen",
+		timedout: "Pagina is verlopen"
 	}
 }();

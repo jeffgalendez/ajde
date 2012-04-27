@@ -44,11 +44,15 @@
 //	--------------------
 	function shutdown()
 	{		
-		if ($error = error_get_last()) {
+		if ($error = error_get_last()) {			
+			$exception = new ErrorException($error['message'], 0, $error['type'], $error['file'], $error['line']);
 			$traceOn = (Config::get('debug') === true ? array(E_ERROR, E_CORE_ERROR, E_COMPILE_ERROR, E_USER_ERROR) : array());
-			if (in_array($error['type'], $traceOn)) {
-				$error = new ErrorException($error['message'], 0, $error['type'], $error['file'], $error['line']);
-				echo Ajde_Exception_Handler::trace($error);
+			if (in_array($error['type'], $traceOn)) {				
+				echo Ajde_Exception_Handler::trace($exception);
+			} else {
+				// Use native PHP error log function, as Ajde_Exception_Log does not work
+				error_log($error['message'] . ', ' . $error['type'] . ', ' . $error['file'] . ', ' . $error['line']);
+				Ajde_Http_Response::dieOnCode(Ajde_Http_Response::RESPONSE_TYPE_SERVERERROR);				
 			}
 		}
 	}

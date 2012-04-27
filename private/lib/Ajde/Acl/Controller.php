@@ -17,9 +17,10 @@ abstract class Ajde_Acl_Controller extends Ajde_User_Controller
 		foreach($this->_registerAclModels as $model) {
 			Ajde_Model::register($model);
 		}
+		Ajde_Acl::$access = false;
 		if (!in_array($this->getAction(), $this->_allowedActions) && $this->hasAccess() === false) {
 			Ajde::app()->getRequest()->set('message', __('No access'));
-			Ajde::app()->getResponse()->dieOnCode(401);
+			Ajde::app()->getResponse()->dieOnCode(Ajde_Http_Response::RESPONSE_TYPE_UNAUTHORIZED);
 		} else {			
 			return true;
 		}
@@ -60,6 +61,8 @@ abstract class Ajde_Acl_Controller extends Ajde_User_Controller
 			$uid = $user->getPK();
 			$usergroup = $user->getUsergroup();	
 		} else {
+			// We should never get here, see remark at self::getUser()
+			Ajde_Dump::warn("No logged in user found when validating ACL access");
 			$uid = null;
 			$usergroup = null;
 		}
@@ -72,12 +75,12 @@ abstract class Ajde_Acl_Controller extends Ajde_User_Controller
 	private function validateAclFor($uid, $usergroup, $module, $action)
 	{
 		/**
-		 * TODO: Goddammit this code is ugly (sorry)...
+		 * TODO: Nasty code...
 		 */
 		
 		/**
 		 * Allright, this is how things go down here:
-		 * We want to check for at least on allowed or owner record in this direction:
+		 * We want to check for at least one allowed or owner record in this direction:
 		 * 
 		 * 1. Wildcard usergroup AND module/action
 		 * 2. Wildcard user AND module/action
@@ -154,6 +157,10 @@ abstract class Ajde_Acl_Controller extends Ajde_User_Controller
 		
 		/**
 		 * Oempfff... now let's traverse and set the order
+		 * 
+		 * TODO: It seems that we can just load the entire ACL table in the collection
+		 * and use this traversal to find matching rules instead of executing this
+		 * overly complicated SQL query constructed above...
 		 */
 		
 		$orderedRules = array();

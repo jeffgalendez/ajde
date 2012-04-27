@@ -36,7 +36,12 @@ class Ajde_Application extends Ajde_Object_Singleton
 	
 	public function addTimer($description)
 	{		
-		$this->_timers[] = array('description' => $description, 'level' => $this->_timerLevel, 'start' => microtime(true));
+		$this->_timers[] = array(
+			'description' => $description,
+			'level' => $this->_timerLevel,
+			'start' => microtime(true),
+			'end' => null,
+			'total' => null);
 		$this->_timerLevel++;		
 		return $this->getLastTimerKey();
 	}

@@ -24,10 +24,7 @@ class Config_Application extends Config_Default
 	//public $langAdapter;
 	//public $timezone;
 	//public $layout;
-	public $responseCodeRoute	= array(
-									'404' => 'main/code404.html',
-									'401' => 'user/logon.html'
-									);
+	//public $responseCodeRoute;
 	
 	//public $autoEscapeString;
 	//public $autoCleanHtml;
@@ -36,6 +33,9 @@ class Config_Application extends Config_Default
 	//public $cookieDomain;
 	//public $cookieSecure;
 	//public $cookieHttponly;
+	
+	//public $cookieLifetime;
+	//public $gcLifetime;
 	
 	//public $compressResources;
 	//public $debug;
@@ -46,9 +46,10 @@ class Config_Application extends Config_Default
 	//public $dbDsn;	
 	//public $dbUser;
 	//public $dbPassword;	
+	//public $textEditor;
+	
 	//public $registerNamespaces;
 	//public $overrideClass;
-	//public $textEditor;
 	
 	//public $bootstrap;
 	

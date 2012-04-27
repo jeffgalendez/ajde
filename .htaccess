@@ -3,7 +3,10 @@
 # Reveal only the server name in header (httpd.conf) 
 #ServerTokens Prod
 
-# You might want to enable eAccelerator or APC (php.ini)
+# You might want to enable a PHP opcode cache (php.ini)
+# Zend Optimizer+:	http://www.zend.com/products/server/
+# XCache:			http://xcache.lighttpd.net/
+# APC:				http://php.net/manual/en/book.apc.php
 
 ###### Ajde specific
 

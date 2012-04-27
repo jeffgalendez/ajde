@@ -154,7 +154,7 @@ $expand = false;
 			<dt>7. ACL</dt>
 			<dd class='summary'>		
 				<a href='javascript:void(0)' onclick='$("#ajdeDebuggerACL").slideToggle("fast");'>
-					Access <?php echo Ajde_Acl::$access ? 'granted' : 'denied'; ?>
+					Access <?php echo is_null(Ajde_Acl::$access) ? 'undetermined' : (Ajde_Acl::$access ? 'granted' : 'denied'); ?>
 				</a>
 			</dd>
 			<dd id='ajdeDebuggerACL' class='details'>

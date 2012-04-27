@@ -8,27 +8,32 @@ class Ajde_Http_Response extends Ajde_Object_Standard
 	const RESPONSE_TYPE_NOT_MODIFIED = 304;
 	const RESPONSE_TYPE_UNAUTHORIZED = 401;
 	const RESPONSE_TYPE_FORBIDDEN = 403;
+	const RESPONSE_TYPE_NOTFOUND = 404;
+	const RESPONSE_TYPE_SERVERERROR = 500;
 	
 	public static function redirectNotFound()
 	{
-		self::dieOnCode("404");
+		self::dieOnCode(self::RESPONSE_TYPE_NOTFOUND);
 	}
 
 	public static function redirectServerError()
 	{
-		self::dieOnCode("500");
+		self::dieOnCode(self::RESPONSE_TYPE_SERVERERROR);
 	}
 
 	public static function dieOnCode($code)
 	{		
-		self::setResponseType($code);
-		header("Content-type: text/html; charset=UTF-8");
+		self::setResponseType($code);		
+		
+		header("Content-type: text/html; charset=UTF-8");		
+		
 		$_SERVER['REDIRECT_STATUS'] = $code;
+		
 		if (array_key_exists($code, Config::getInstance()->responseCodeRoute)) {
 			self::dieOnRoute(Config::getInstance()->responseCodeRoute[$code]);
 		} else {
 			ob_get_clean();
-			include("errordocument.php");
+			include(Config::get('local_root') . '/errordocument.php');
 			die();
 		}
 	}

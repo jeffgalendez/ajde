@@ -38,7 +38,7 @@ class Ajde_Http_Request extends Ajde_Object_Standard
 					unset($_POST);
 					// Rewrite
 					Ajde_Exception_Log::logException($exception);	
-					Ajde_Http_Response::dieOnCode(403);
+					Ajde_Http_Response::dieOnCode(Ajde_Http_Response::RESPONSE_TYPE_FORBIDDEN);
 				}
 			}
 			$formToken = $_POST['_token'];
@@ -57,7 +57,7 @@ class Ajde_Http_Request extends Ajde_Object_Standard
 					unset($_POST);
 					// Rewrite
 					Ajde_Exception_Log::logException($exception);	
-					Ajde_Http_Response::dieOnCode(403);
+					Ajde_Http_Response::dieOnCode(Ajde_Http_Response::RESPONSE_TYPE_FORBIDDEN);
 				}
 			}
 		}

@@ -56,4 +56,12 @@ class Ajde_Layout extends Ajde_Template
 	{
 		return Ajde_Document_Format_Html::RESOURCE_POSITION_FIRST;
 	}
+	
+	public function requireTimeoutWarning()
+	{
+		$this->requireCss('core.alert');
+		$this->requireJs('core.alert');
+		
+		$this->requireJs('core.timeout');
+	}	
 }

@@ -26,8 +26,12 @@ class Ajde_Core_Autoloader
 		// Get namespaces from Config
 		$defaultNamespaces = array('Ajde', 'AjdeX', 'Zend', 'HTMLPurifier');
 		if (!self::exists('Config')) {
-			require_once(array_shift(glob(CONFIG_DIR . 'Config_Default.php'))); 
-			require_once(array_shift(glob(CONFIG_DIR . 'Config_Application.php')));			
+			// Two intermediate variables 
+			// @see http://stackoverflow.com/questions/2354609/strict-standards-only-variables-should-be-passed-by-reference
+			$configDefault = glob(CONFIG_DIR . 'Config_Default.php');
+			$configApplication = glob(CONFIG_DIR . 'Config_Application.php');
+			require_once array_shift($configDefault);
+			require_once array_shift($configApplication);
 			foreach (glob(CONFIG_DIR . '*.php') as $filename) {
 				require_once($filename); 
 			}		

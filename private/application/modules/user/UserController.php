@@ -14,6 +14,11 @@ class UserController extends Ajde_User_Controller
 		return $this->profile();
 	}
 	
+	public function keepaliveJson()
+	{
+		return array('success' => true);
+	}
+	
 	// Profile
 	public function profile()
 	{

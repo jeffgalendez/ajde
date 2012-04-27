@@ -32,7 +32,7 @@ class Config_Default
 	public $routes				= array(
 									);
 									
-	// Presentation
+	// Front-end
 	public $titleFormat			= '%2$s - %1$s'; // %1$s is project title, %2$s is document title
 	public $lang 				= "en_GB";
 	public $langAutodetect		= true;
@@ -40,8 +40,9 @@ class Config_Default
 	public $timezone			= "Europe/Amsterdam"; // "UTC" for Greenwich Mean Time
 	public $layout 				= "default";
 	public $responseCodeRoute	= array(
-									'404' => 'main/code404.html'
-									);			
+									'404' => 'main/code404.html',
+									'401' => 'user/logon.html'
+								);		
 	
 	// Security
 	public $autoEscapeString	= true;
@@ -52,13 +53,17 @@ class Config_Default
 	public $cookieSecure		= false;
 	public $cookieHttponly		= true;
 	
+	// Session
+	public $cookieLifetime		= 0; // in minutes, 0 = session
+	public $gcLifetime			= 10; // PHP session garbage collection timeout in minutes
+	
 	// Performance
 	public $compressResources	= true;
 	public $debug 				= false;
 	public $useCache			= true;
 	public $documentProcessors	= array();
 	
-	// Extension settings
+	// Database
 	public $dbAdapter			= "mysql";
 	public $dbDsn				= array(
 									"host" 		=> "localhost",
@@ -66,17 +71,13 @@ class Config_Default
 									);
 	public $dbUser 				= "ajde";
 	public $dbPassword 			= "ajde";	
+	public $textEditor			= 'ckeditor'; // Use this text editor for CRUD operations (aloha|jwysiwyg|ckeditor) 
+
+	// Custom libraries
 	public $registerNamespaces	= array();
 	public $overrideClass		= array();
+
 	
-	/**
-	 * Use this text editor for CRUD operations 
-	 * 
-	 * @var string (aloha|jwysiwyg|ckeditor) 
-	 */
-	public $textEditor			= 'ckeditor';
-
-
 	// Which modules should we call on bootstrapping?
 	public $bootstrap			= array(									
 									"Ajde_Exception_Handler",

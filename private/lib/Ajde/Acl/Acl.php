@@ -3,7 +3,7 @@
 class Ajde_Acl extends Ajde_Model
 {
 	public static $log = array(); 
-	public static $access = false;
+	public static $access = null;
 	
 	protected $_autoloadParents = false;
 		

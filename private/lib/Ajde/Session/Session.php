@@ -10,13 +10,12 @@ class Ajde_Session extends Ajde_Object_Standard
 		session_name(Config::get('ident') . '_session');
 		
 		// Security
-		$garbageCollectionTimeout = 60; // PHP session garbage collection timeout in minutes
-		ini_set('gc_maxlifetime', $garbageCollectionTimeout * 60);
-		ini_set('use_only_cookies', 1);
-		
-		
+		ini_set('session.gc_maxlifetime', Config::get("gcLifetime") * 60); // PHP session garbage collection timeout in minutes
+		ini_set('session.use_cookies', 1);
+		ini_set('session.use_only_cookies', 1); // @see http://www.php.net/manual/en/session.configuration.php#ini.session.use-only-cookies
+				
 		// Cookie parameter
-		$lifetime	= 0; // in minutes, 0 = session
+		$lifetime	= Config::get("cookieLifetime");
 		$path		= Config::get('site_path');
 		$domain		= Config::get('cookieDomain');
 		$secure		= Config::get('cookieSecure');
@@ -44,7 +43,7 @@ class Ajde_Session extends Ajde_Object_Standard
 				throw $exception;
 			} else {
 				Ajde_Exception_Log::logException($exception);	
-				Ajde_Http_Response::dieOnCode(403);
+				Ajde_Http_Response::dieOnCode(Ajde_Http_Response::RESPONSE_TYPE_FORBIDDEN);
 			}
 		} else {
 			$_SESSION['client'] = md5($_SERVER['REMOTE_ADDR'] . $_SERVER['HTTP_USER_AGENT'] . Config::get('secret'));

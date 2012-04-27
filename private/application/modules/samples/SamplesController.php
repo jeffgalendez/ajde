@@ -9,10 +9,10 @@ class SamplesController extends Ajde_Acl_Controller
 	public function beforeInvoke()
 	{
 		Ajde::app()->getDocument()->setTitle("Samples");
-		return true;
+		return parent::beforeInvoke();
 	}
-	
-	function view()
+		
+	public function view()
     {
     	Ajde_Model::register($this);
 		/* @var $blog BlogCollection */
