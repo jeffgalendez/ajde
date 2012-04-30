@@ -62,9 +62,9 @@ class Ajde_Template_Parser_Phtml_Helper extends Ajde_Object_Standard
 	 * @param integer $position
 	 * @return void
 	 */
-	public function requireJs($action, $format = 'html', $base = null, $position = Ajde_Document_Format_Html::RESOURCE_POSITION_DEFAULT)
+	public function requireJs($action, $format = 'html', $base = null, $position = Ajde_Document_Format_Html::RESOURCE_POSITION_DEFAULT, $arguments = '')
 	{
-		return Ajde_Component_Js::processStatic($this->getParser(), array('action' => $action, 'format' => $format, 'base' => $base, 'position' => $position));
+		return Ajde_Component_Js::processStatic($this->getParser(), array('action' => $action, 'format' => $format, 'base' => $base, 'position' => $position, 'arguments' => $arguments));
 	}
 	
 	/**
@@ -74,9 +74,9 @@ class Ajde_Template_Parser_Phtml_Helper extends Ajde_Object_Standard
 	 * @param string $base
 	 * @return void
 	 */
-	public function requireJsFirst($action, $format = 'html', $base = null)
+	public function requireJsFirst($action, $format = 'html', $base = null, $arguments = '')
 	{
-		return $this->requireJs($action, $format, $base, Ajde_Document_Format_Html::RESOURCE_POSITION_FIRST);
+		return $this->requireJs($action, $format, $base, Ajde_Document_Format_Html::RESOURCE_POSITION_FIRST, $arguments);
 	}
 	
 	/**
@@ -96,9 +96,9 @@ class Ajde_Template_Parser_Phtml_Helper extends Ajde_Object_Standard
 	 * @param integer $position
 	 * @return void
 	 */
-	public function requireJsRemote($url, $position = Ajde_Document_Format_Html::RESOURCE_POSITION_DEFAULT)
+	public function requireJsRemote($url, $position = Ajde_Document_Format_Html::RESOURCE_POSITION_DEFAULT, $arguments = '')
 	{
-		return Ajde_Component_Js::processStatic($this->getParser(), array('url' => $url, 'position' => $position));
+		return Ajde_Component_Js::processStatic($this->getParser(), array('url' => $url, 'position' => $position, 'arguments' => $arguments));
 	}
 	
 	/************************
@@ -113,9 +113,9 @@ class Ajde_Template_Parser_Phtml_Helper extends Ajde_Object_Standard
 	 * @param integer $position
 	 * @return void
 	 */
-	public function requireCss($action, $format = 'html', $base = null, $position = Ajde_Document_Format_Html::RESOURCE_POSITION_DEFAULT)
+	public function requireCss($action, $format = 'html', $base = null, $position = Ajde_Document_Format_Html::RESOURCE_POSITION_DEFAULT, $arguments = '')
 	{
-		return Ajde_Component_Css::processStatic($this->getParser(), array('action' => $action, 'format' => $format, 'base' => $base, 'position' => $position));
+		return Ajde_Component_Css::processStatic($this->getParser(), array('action' => $action, 'format' => $format, 'base' => $base, 'position' => $position, 'arguments' => $arguments));
 	}
 
 	/**
@@ -125,9 +125,9 @@ class Ajde_Template_Parser_Phtml_Helper extends Ajde_Object_Standard
 	 * @param string $base
 	 * @return void
 	 */
-	public function requireCssFirst($action, $format = 'html', $base = null)
+	public function requireCssFirst($action, $format = 'html', $base = null, $arguments = '')
 	{
-		return $this->requireCss($action, $format, $base, Ajde_Document_Format_Html::RESOURCE_POSITION_FIRST);
+		return $this->requireCss($action, $format, $base, Ajde_Document_Format_Html::RESOURCE_POSITION_FIRST, $arguments);
 	}
 	
 	/**
@@ -137,9 +137,9 @@ class Ajde_Template_Parser_Phtml_Helper extends Ajde_Object_Standard
 	 * @param string $base
 	 * @return void
 	 */
-	public function requireCssTop($action, $format = 'html', $base = null)
+	public function requireCssTop($action, $format = 'html', $base = null, $arguments = '')
 	{
-		return $this->requireCss($action, $format, $base, Ajde_Document_Format_Html::RESOURCE_POSITION_TOP);
+		return $this->requireCss($action, $format, $base, Ajde_Document_Format_Html::RESOURCE_POSITION_TOP, $arguments);
 	}
 	
 	/**
@@ -148,9 +148,9 @@ class Ajde_Template_Parser_Phtml_Helper extends Ajde_Object_Standard
 	 * @param integer $position
 	 * @return void
 	 */
-	public function requireCssPublic($filename, $position = Ajde_Document_Format_Html::RESOURCE_POSITION_DEFAULT)
+	public function requireCssPublic($filename, $position = Ajde_Document_Format_Html::RESOURCE_POSITION_DEFAULT, $arguments = '')
 	{
-		return Ajde_Component_Css::processStatic($this->getParser(), array('filename' => $filename, 'position' => $position));
+		return Ajde_Component_Css::processStatic($this->getParser(), array('filename' => $filename, 'position' => $position, 'arguments' => $arguments));
 	}
 	
 	/************************

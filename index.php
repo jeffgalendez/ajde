@@ -44,10 +44,9 @@
 //	--------------------
 	function shutdown()
 	{		
-		if ($error = error_get_last()) {			
+		if (($error = error_get_last()) && in_array($error['type'], array(E_ERROR, E_CORE_ERROR, E_COMPILE_ERROR, E_USER_ERROR))) {
 			$exception = new ErrorException($error['message'], 0, $error['type'], $error['file'], $error['line']);
-			$traceOn = (Config::get('debug') === true ? array(E_ERROR, E_CORE_ERROR, E_COMPILE_ERROR, E_USER_ERROR) : array());
-			if (in_array($error['type'], $traceOn)) {				
+			if (Config::get('debug') === true) {
 				echo Ajde_Exception_Handler::trace($exception);
 			} else {
 				// Use native PHP error log function, as Ajde_Exception_Log does not work

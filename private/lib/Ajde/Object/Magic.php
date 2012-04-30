@@ -70,6 +70,13 @@ abstract class Ajde_Object_Magic extends Ajde_Object
 		return empty($value);
 	}
 	
+	public function hasNotEmpty($key) {
+		if ($this->has($key)) {
+			return !$this->isEmpty($key);
+		}
+		return false;
+	}
+	
 	public function reset()
 	{
 		$this->_data = array();

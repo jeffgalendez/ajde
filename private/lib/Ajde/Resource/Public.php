@@ -2,7 +2,7 @@
 
 class Ajde_Resource_Public extends Ajde_Resource
 {
-	public function  __construct($type, $filename, $arguments = '')
+	public function __construct($type, $filename, $arguments = '')
 	{
 		$url = 'public/' . $type . '/' . $filename;
 		$this->setUrl($url);

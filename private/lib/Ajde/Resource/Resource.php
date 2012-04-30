@@ -21,6 +21,14 @@ abstract class Ajde_Resource extends Ajde_Object_Standard
 	public function getType() {
 		return $this->get('type');
 	}
+	
+	public function setPosition($position) {
+		$this->set('position', $position);
+	}
+	
+	public function getPosition() {
+		return $this->get('position');
+	}
 
 	protected function _getLinkTemplateFilename()
 	{

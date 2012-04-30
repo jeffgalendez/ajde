@@ -89,29 +89,33 @@ class Ajde_Document_Format_Html extends Ajde_Document
 
 	public function renderAllResources(array $types = array('*'))
 	{
-		$code = '';
+		$linkCode = '';
 		foreach ($this->getResources() as $resource)
 		{
 			/* @var $resource Ajde_Resource */
 			if (current($types) == '*' || in_array($resource->getType(), $types))
 			{
-				$code .= $resource->getLinkCode() . PHP_EOL;
+				$linkCode .= $resource->getLinkCode() . PHP_EOL;
 			}
 		}
-		return $code;
+		return $linkCode;
 	}
 
 	public function renderCompressedResources(array $types = array('*'))
 	{
 		// Reset compressors
 		$this->_compressors = array();
-		$code = '';
+		$linkCode = array(
+			self::RESOURCE_POSITION_TOP		=> '',
+			self::RESOURCE_POSITION_DEFAULT => '',
+			self::RESOURCE_POSITION_LAST	=> ''			
+		);
 		foreach ($this->getResources() as $resource)
 		{
 			/* @var $resource Ajde_Resource */
 			if (current($types) == '*' || in_array($resource->getType(), $types))
 			{				
-				if ($resource instanceof Ajde_Resource_Local)
+				if ($resource instanceof Ajde_Resource_Local && !$resource->hasNotEmpty('arguments'))
 				{
 					if (!isset($this->_compressors[$resource->getType()]))
 					{
@@ -124,16 +128,16 @@ class Ajde_Document_Format_Html extends Ajde_Document
 				}
 				else
 				{
-					$code .= $resource->getLinkCode() . PHP_EOL;
+					$linkCode[$resource->getPosition()] .= $resource->getLinkCode() . PHP_EOL;
 				}
 			}
 		}
 		foreach ($this->_compressors as $compressor)
 		{
 			$resource = $compressor->process();
-			$code .= $resource->getLinkCode() . PHP_EOL;
+			$linkCode[self::RESOURCE_POSITION_DEFAULT] .= $resource->getLinkCode() . PHP_EOL;
 		}
-		return $code;
+		return $linkCode[self::RESOURCE_POSITION_TOP] . $linkCode[self::RESOURCE_POSITION_DEFAULT] . $linkCode[self::RESOURCE_POSITION_LAST];
 	}
 
 	public function getResourceTypes()
@@ -151,7 +155,9 @@ class Ajde_Document_Format_Html extends Ajde_Document
 
 	public function addResource(Ajde_Resource $resource, $position = self::RESOURCE_POSITION_DEFAULT)
 	{
+		$resource->setPosition($position);
 		// Check for duplicates
+		// TODO: another option, replace current resource
 		foreach($this->_resources as $positionArray) {
 			foreach($positionArray as $item) {
 				if ((string) $item == (string) $resource) {

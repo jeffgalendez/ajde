@@ -54,6 +54,10 @@ AC.Core.Timeout = function() {
 	return {
 		
 		init: function() {
+			// Form on page?
+			if (!$('form[method="post"]').length) {
+				return;
+			}
 			var lifetime = $('html').attr('data-lifetime'); // minutes
 			var seconds = lifetime * 60;
 			var curDate = new Date();

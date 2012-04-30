@@ -22,7 +22,8 @@ class Ajde_Component_Js extends Ajde_Component_Resource
 				$this->attributes['action'],
 				issetor($this->attributes['format'], null),
 				issetor($this->attributes['base'], null),
-				issetor($this->attributes['position'], null)
+				issetor($this->attributes['position'], null),
+				issetor($this->attributes['arguments'], '')
 			);
 		} elseif (array_key_exists('filename', $this->attributes)) {
 			$this->requirePublicResource(
@@ -35,7 +36,8 @@ class Ajde_Component_Js extends Ajde_Component_Resource
 			$this->requireRemoteResource(
 				Ajde_Resource_Local::TYPE_JAVASCRIPT,
 				$this->attributes['url'],
-				issetor($this->attributes['position'], null)
+				issetor($this->attributes['position'], null),
+				issetor($this->attributes['arguments'], '')
 			);
 		}
 	}

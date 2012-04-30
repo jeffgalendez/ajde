@@ -26,14 +26,16 @@ class Ajde_Component_Css extends Ajde_Component_Resource
 					$this->attributes['action'],
 					issetor($this->attributes['format'], null),
 					issetor($this->attributes['base'], null),
-					issetor($this->attributes['position'], null)
+					issetor($this->attributes['position'], null),
+					issetor($this->attributes['arguments'], '')
 				);
 				break;
 			case 'public':
 				$this->requirePublicResource(
 					Ajde_Resource_Local::TYPE_STYLESHEET,
 					$this->attributes['filename'],
-					issetor($this->attributes['position'], null)
+					issetor($this->attributes['position'], null),
+					issetor($this->attributes['arguments'], '')
 				);
 				break;
 		}		

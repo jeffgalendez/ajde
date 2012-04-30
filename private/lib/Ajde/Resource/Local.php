@@ -4,11 +4,12 @@ class Ajde_Resource_Local extends Ajde_Resource
 {
 	private $_filename;
 	
-	public function  __construct($type, $base, $action, $format = 'html')
+	public function  __construct($type, $base, $action, $format = 'html', $arguments = '')
 	{
 		$this->setBase($base);
 		$this->setAction($action);
 		$this->setFormat($format);
+		$this->setArguments($arguments);
 		parent::__construct($type);
 	}
 
@@ -65,7 +66,11 @@ class Ajde_Resource_Local extends Ajde_Resource
 	public function getFormat() {
 		return $this->get('format');
 	}
-
+	
+	public function getArguments() {
+		return $this->get('arguments');
+	}
+	
 	protected static function exist($filename)
 	{
 		if (is_file($filename)) {

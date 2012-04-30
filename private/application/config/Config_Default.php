@@ -55,7 +55,7 @@ class Config_Default
 	
 	// Session
 	public $cookieLifetime		= 0; // in minutes, 0 = session
-	public $gcLifetime			= 10; // PHP session garbage collection timeout in minutes
+	public $gcLifetime			= 60; // PHP session garbage collection timeout in minutes
 	
 	// Performance
 	public $compressResources	= true;
