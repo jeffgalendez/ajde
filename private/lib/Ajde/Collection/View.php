@@ -38,8 +38,7 @@ class Ajde_Collection_View extends Ajde_Object_Standard
 	public function getFilterForField($fieldName) {
 		$filters = $this->getFilter();
 		if (!array_key_exists($fieldName, $filters)) {
-			// TODO:
-			throw new Ajde_Exception("Fieldname $fieldName not found in request");
+			return null;
 		}		
 		return $filters[$fieldName];
 	}
