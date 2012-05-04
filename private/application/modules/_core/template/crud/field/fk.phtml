@@ -20,6 +20,19 @@ if ($field->hasFilter()) {
 	$collection->addFilter($group);
 }
 
+if ($field->hasAdvancedFilter()) {
+	$filters = $field->getAdvancedFilter();
+	$group = new Ajde_Filter_WhereGroup();
+	foreach($filters as $filter) {
+		if ($filter instanceof Ajde_Filter_Where) {
+			$group->addFilter($filter);
+		} else {
+			$collection->addFilter($filter);
+		}		
+	}
+	$collection->addFilter($group);
+}
+
 $collection->load(); 
 
 if ($field->getValue()) {
@@ -36,6 +49,9 @@ if ($field->getValue()) {
 
 <select
 	<?php echo $field->getHtmlAttributes(); ?>
+	<?php if ($field->hasReadonly() && $field->getReadonly() === true) {
+		echo ' disabled="disabled" ';	
+	} ?>
 >
 	<?php if (!$field->getIsRequired() === true) { ?>
 		<option value=''>(none)</option>

@@ -4,6 +4,9 @@ $options = explode(',', $field->getLength()); ?>
 
 <select
 	<?php echo $field->getHtmlAttributes(); ?>
+	<?php if ($field->hasReadonly() && $field->getReadonly() === true) {
+		echo ' disabled="disabled" ';	
+	} ?>
 >
 	<?php if (!$field->getIsRequired()) { ?>
 		<option value=''>(kies <?php echo strtolower($field->getLabel()); ?>)</option>

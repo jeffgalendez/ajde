@@ -120,7 +120,7 @@ class _coreCrudController extends Ajde_Acl_Controller
 		$success = true;
 		foreach($id as $elm) {
 			$model->loadByPK($elm);
-//			$success = $success * $model->delete();
+			$success = $success * $model->delete();
 		}
 		
 		return array('operation' => 'delete', 'success' => (bool) $success);
