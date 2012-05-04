@@ -2,29 +2,6 @@
 /* @var $this Ajde_Template_Parser_Phtml_Helper */
 /* @var $field Ajde_Crud_Field_Fk */
 $field = $this->field;
-$collection = $field->getCollection();
-
-if ($field->hasFilter()) {
-	$filter = $field->getFilter();
-	$group = new Ajde_Filter_WhereGroup();
-	foreach($filter as $rule) {
-		$group->addFilter(new Ajde_Filter_Where($model->getDisplayField(), Ajde_Filter::FILTER_EQUALS, $rule, Ajde_Query::OP_OR));
-	}
-	$collection->addFilter($group);
-}
-
-if ($field->hasAdvancedFilter()) {
-	$filters = $field->getAdvancedFilter();
-	$group = new Ajde_Filter_WhereGroup();
-	foreach($filters as $filter) {
-		if ($filter instanceof Ajde_Filter_Where) {
-			$group->addFilter($filter);
-		} else {
-			$collection->addFilter($filter);
-		}		
-	}
-	$collection->addFilter($group);
-}
 
 if ($field->getValue()) {
 	if ($field->getValue() instanceof Ajde_Model) {
