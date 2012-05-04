@@ -30,14 +30,27 @@ $columnCount = 0;
 				?>
 				<th>
 					<a href="javascript:void(null);" class='order <?php echo $class; ?>' data-orderBy='<?php echo $field->getName(); ?>' data-orderDir='<?php echo $orderDir; ?>'><?php echo $field->getLabel(); ?></a>
+					<?php 
+					if ($field instanceof Ajde_Crud_Field_Enum || $field instanceof Ajde_Crud_Field_Fk) {
+						$fieldFilter = $crudView->getFilterForField($field->getName()); ?>
+						<br/>
+						<select class="filter" name="view[filter][<?php echo $field->getName(); ?>]">
+							<option value="" class="select"><?php echo __("No filter"); ?></option>
+							<?php foreach($field->getValues() as $key => $option) { ?>
+								<option value='<?php echo $key; ?>'			
+									<?php if ($key == $fieldFilter) { echo "selected='selected'"; } ?>
+									><?php echo __($option); ?></option>
+							<?php } ?>
+						</select>
+					<?php } ?>
 				</th>
 			<?php } ?>
 			<th class="buttons">
 				<span>
-					<?php echo __("Filter"); ?>:
+					<?php echo __("Search"); ?>:
 				</span>
 				<input type="text" name="view[search]" class="search" value="<?php echo $crudView->getSearch(); ?>" />
-				<a href="javascript:void(null);" class='button search'>Search</a>
+				<a href="javascript:void(null);" class='button search'>Go</a>
 			</th>
 		</tr>
 		<tr>

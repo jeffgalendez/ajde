@@ -38,7 +38,11 @@ class Ajde_Component_String extends Ajde_Component
 	{
 		if (isset($key)) {
 			// called from array_walk
-			$var = htmlspecialchars($var);
+			if (is_array($var)) {
+				array_walk($var, array("Ajde_Component_String", "escape"));
+			} else {
+				$var = htmlspecialchars($var);
+			}			
 		} else {
 			return htmlspecialchars($var);
 		}

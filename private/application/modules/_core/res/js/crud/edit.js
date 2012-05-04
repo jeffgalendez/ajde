@@ -102,7 +102,7 @@ AC.Crud.Edit = function() {
 							$parent.prepend($message.fadeIn());
 							AC.Crud.Edit.equalizeForm();
 						}
-						$.scrollTo('.validation_error:first', 800);
+						$.scrollTo('.validation_error:first', 800, {axis: 'y'});
 					} else {
 						errorHandler(i18n.applicationError);
 					}

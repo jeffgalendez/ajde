@@ -1,15 +1,8 @@
 <?php
 /* @var $this Ajde_Template_Parser_Phtml_Helper */
-/* @var $field Ajde_Crud_Field_File */
+/* @var $field Ajde_Crud_Field_Fk */
 $field = $this->field;
-
-$collectionName = ucfirst($field->getName()) . 'Collection';
-$modelName = ucfirst($field->getName()) . 'Model';
-$collection = new $collectionName;
-/* @var $model Ajde_Model */
-$model = new $modelName;
-/* @var $collection Ajde_Collection */
-$collection->orderBy($model->getDisplayField());
+$collection = $field->getCollection();
 
 if ($field->hasFilter()) {
 	$filter = $field->getFilter();
@@ -33,8 +26,6 @@ if ($field->hasAdvancedFilter()) {
 	$collection->addFilter($group);
 }
 
-$collection->load(); 
-
 if ($field->getValue()) {
 	if ($field->getValue() instanceof Ajde_Model) {
 		$pk = $field->getValue()->getPK();
@@ -56,9 +47,9 @@ if ($field->getValue()) {
 	<?php if (!$field->getIsRequired() === true) { ?>
 		<option value=''>(none)</option>
 	<?php } ?>
-	<?php foreach($collection as $option) { ?>							
-		<option value='<?php echo $option; ?>'
-			<?php if ($option == $pk) { echo "selected='selected'"; } ?>
-			><?php echo $option->get($option->getDisplayField()); ?></option>
+	<?php foreach($field->getValues() as $key => $option) { ?>							
+		<option value='<?php echo $key; ?>'
+			<?php if ($key == $pk) { echo "selected='selected'"; } ?>
+			><?php echo $option; ?></option>
 	<?php } ?>
 </select>

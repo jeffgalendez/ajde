@@ -8,7 +8,7 @@ class Ajde_Collection_View extends Ajde_Object_Standard
 	
 	public function __construct($tableName, $listOptions = array()) {
 		$this->_tableName = $tableName;
-		
+
 		$defaultOptions = array(
 			'page'			=> 1,
 			'pageSize'		=> 10,
@@ -29,11 +29,20 @@ class Ajde_Collection_View extends Ajde_Object_Standard
 	}
 	
 	public function getPage()				{ return parent::getPage(); }
-	public function getPageSize()			{ return parent::getPageSize(); }
-	public function getFilter()				{ return parent::getFilter(); }
+	public function getPageSize()			{ return parent::getPageSize(); }	
 	public function getSearch()				{ return parent::getSearch(); }
 	public function getOrderBy()			{ return parent::getOrderBy(); }
 	public function getOrderDir()			{ return parent::getOrderDir(); }
+	public function getFilter()				{ return parent::getFilter(); }
+	
+	public function getFilterForField($fieldName) {
+		$filters = $this->getFilter();
+		if (!array_key_exists($fieldName, $filters)) {
+			// TODO:
+			throw new Ajde_Exception("Fieldname $fieldName not found in request");
+		}		
+		return $filters[$fieldName];
+	}
 	
 	public function getRowCount(Ajde_Collection $collection = null)
 	{

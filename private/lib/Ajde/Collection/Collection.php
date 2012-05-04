@@ -263,7 +263,7 @@ class Ajde_Collection extends Ajde_Object_Standard implements Iterator, Countabl
 			$view = $this->getView();
 		}
 		
-		//LIMIT
+		// LIMIT
 		$this->limit($view->getPageSize(), $view->getRowStart());
 		
 		// ORDER BY
@@ -277,6 +277,15 @@ class Ajde_Collection extends Ajde_Object_Standard implements Iterator, Countabl
 		}
 		
 		// FILTER
+		if (!$view->isEmpty('filter')) {
+			foreach($view->getFilter() as $fieldName => $filterValue) {
+				if (!empty($filterValue)) {
+					$this->addFilter(new Ajde_Filter_Where($fieldName, Ajde_Filter::FILTER_EQUALS, $filterValue));
+				}
+			}
+		}
+		
+		// SEARCH
 		if (!$view->isEmpty('search')) {
 			$this->addTextFilter($view->getSearch());
 		}

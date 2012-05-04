@@ -25,6 +25,7 @@ AC.Crud.List = function() {
 			$('form.ACCrudList td.buttons a.next').live('click', AC.Crud.List.nextHandler);
 			$('form.ACCrudList td.buttons select.pageSize').live('change', AC.Crud.List.pageSizeHandler);
 			$('form.ACCrudList th a.order').live('click', AC.Crud.List.orderHandler);
+			$('form.ACCrudList th select.filter').live('change', AC.Crud.List.filterSelectHandler);
 			$('form.ACCrudList th input[name=\'view[search]\']').live('keypress', AC.Crud.List.searchBoxHandler);
 			$('form.ACCrudList th a.search').live('click', AC.Crud.List.searchButtonHandler);
 			
@@ -58,7 +59,7 @@ AC.Crud.List = function() {
 					count++;
 				}
 			}
-			if (count == $('input.id').length) {
+			if (count == $('input.id').length || count == 0) {
 				form.find('input.toggleSelect').css('opacity', 1); 
 			}
 		},
@@ -191,6 +192,11 @@ AC.Crud.List = function() {
 			var $orderDir = form.find('input[name=\'view[orderDir]\']');
 			$orderBy.val($(this).attr('data-orderBy'));			
 			$orderDir.val($(this).attr('data-orderDir'));
+			AC.Crud.List.resetPage(this);
+			AC.Crud.List.updateView(this);
+		},
+		
+		filterSelectHandler: function(e) {
 			AC.Crud.List.resetPage(this);
 			AC.Crud.List.updateView(this);
 		},

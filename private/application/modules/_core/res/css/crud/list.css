@@ -21,6 +21,14 @@ table.crudList th {
 	text-align: left;
 }
 
+table.crudList th select.filter {
+	margin-top: 10px;
+}
+
+table.crudList th select.filter option.select {
+	color: silver;
+}
+
 table.crudList td.toolbar {
 	padding-top: 8px;
 }

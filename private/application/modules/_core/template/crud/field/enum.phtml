@@ -1,6 +1,7 @@
 <?php
 $field = $this->field;
-$options = explode(',', $field->getLength()); ?>
+/* @var $field Ajde_Crud_Field_Enum */
+$options = $field->getValues(); ?>
 
 <select
 	<?php echo $field->getHtmlAttributes(); ?>
@@ -13,11 +14,11 @@ $options = explode(',', $field->getLength()); ?>
 	<?php } ?>
 	<?php foreach($options as $option) { 
 		if ($field->hasFilter()) {
-			if (!in_array(trim($option, "'"), $field->getFilter())) {
+			if (!in_array($option, $field->getFilter())) {
 				continue;
 			}
 		}
-		$option = trim($option, "'"); ?>
+		?>
 		<option value='<?php echo $option; ?>'			
 			<?php if ($option == $field->getValue()) { echo "selected='selected'"; } ?>
 			><?php echo __($option); ?></option>

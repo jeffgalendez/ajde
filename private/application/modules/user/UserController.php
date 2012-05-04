@@ -4,7 +4,8 @@ class UserController extends Ajde_User_Controller
 {
 	protected $_allowedActions = array(
 		'logon',
-		'register'
+		'register',
+		'keepalive'
 	);
 	protected $_logonRoute = 'user/logon/html';
 	
