@@ -308,6 +308,20 @@ class Ajde_Crud extends Ajde_Object_Standard
 		$model = $this->getModel();
 		return $model->getTable()->getFieldLabels();
 	}
+	
+	public function setSessionName($name)
+	{
+		parent::setSessionName($name);
+	}
+	
+	public function getSessionName()
+	{
+		if (parent::hasSessionName()) {
+			return parent::getSessionName();
+		} else {
+			return (string) $this->getModel()->getTable();
+		}
+	}
 		
 	/**
 	 * RENDERING

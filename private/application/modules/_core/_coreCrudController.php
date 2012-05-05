@@ -29,15 +29,15 @@ class _coreCrudController extends Ajde_Acl_Controller
 		$session->setModel($crud->getHash(), $crud);
 		
 		$viewSession = new Ajde_Session('AC.Crud.View');
-		$tableName = (string) $crud->getModel()->getTable();
-		if ($viewSession->has($tableName)) {
-			$crudView = $viewSession->get($tableName);
+		$sessionName = $crud->getSessionName();
+		if ($viewSession->has($sessionName)) {
+			$crudView = $viewSession->get($sessionName);
 		} else {
-			$crudView = new Ajde_Collection_View($tableName);
+			$crudView = new Ajde_Collection_View($sessionName);
 		}
 		$viewParams = Ajde::app()->getRequest()->getParam('view', array());
 		$crudView->setOptions($viewParams);
-		$viewSession->set($tableName, $crudView);
+		$viewSession->set($sessionName, $crudView);
 		
 		$crud->getCollection()->setView($crudView);
 		
