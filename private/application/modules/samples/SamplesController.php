@@ -15,13 +15,15 @@ class SamplesController extends Ajde_Acl_Controller
 	public function view()
     {
     	Ajde_Model::register($this);
-		/* @var $blog BlogCollection */
+		/* @var $samples BlogCollection */
 		// Direct object creation and chaining only from PHP 5.3!
 		// Use $blog = new BlogCollection() instead
-		$blog = BlogCollection::create()
-			->orderBy('date', Ajde_Query::ORDER_DESC)
-			->load();
-		$this->getView()->assign('blog', $blog);
+		$samples = SamplesCollection::create()
+			->orderBy('updated', Ajde_Query::ORDER_DESC);
+		if ($this->hasId()) {
+			$samples->addFilter(new Ajde_Filter_Where('id', Ajde_Filter::FILTER_EQUALS, $this->getId()));
+		}
+		$this->getView()->assign('samples', $samples);
 		Ajde_Dump::warn('This is a test warning');
 		Ajde::app()->getDocument()->setDescription("This is the samples module");
         return $this->render();
@@ -33,40 +35,9 @@ class SamplesController extends Ajde_Acl_Controller
 		return $this->render();
 	}
 	
-	function sessionTest()
-	{		
-		$t = new Foo();
-		$session = new Ajde_Session("foo");
-		$session->setModel('t', $t);
-		return 'set in session';
-	}
-	
-	function retrieve()
+	function xml()
 	{
-		$session = new Ajde_Session("foo");
-		$t = $session->getModel('t', $t);
-		return (string) $t;
-	}
-	
-	function error()
-	{
-		echo (string) new Foo();
-	}
-	
-	function payment()
-	{
+		$this->getView()->assign('test', "Hello World!");
 		return $this->render();
-	}
-}
-
-class Foo extends Bar {
-	function __construct() {
-		
-	}
-}
-
-class Bar {
-	function __toString() {
-		return 'bar';
 	}
 }

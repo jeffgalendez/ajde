@@ -1,26 +1,46 @@
 <?php
 /* @var $this Ajde_Template_Parser_Phtml_Helper */
-$this->requireCss('view.mobile', 'html', null, Ajde_Document_Format_Html::RESOURCE_POSITION_LAST, 'media="only screen and (min-width: 320px) and (max-width: 569px)"');
-//$this->requireCss('view.mobile', 'html', null, Ajde_Document_Format_Html::RESOURCE_POSITION_LAST, 'media="only screen and (min-device-width: 320px) and (max-device-width: 569px)"');
 ?>
 
-<h2>Blog</h2>
-
-<p>
-	<a href='samples/edit.html?new'>Add post</a> | 
-	<a href='samples/edit.html'>Edit posts</a>
-</p>
-
-<hr/>
-
-<?php foreach($this->blog as $entry) { ?>
+<div class="eightcol">
 	
-	<h3><?php echo $this->escape( $entry->title ); ?></h3>
+	<h2>Items</h2>
 	<p>
-		<em>Written on <?php echo $this->escape( $entry->date ); ?></em> :
+		<a class='action' href='samples/edit.html'>Edit items</a>
 	</p>
-	<p><?php echo $this->escape( $entry->content ); ?></p>
-	
 	<hr/>
-	
-<?php } ?>
+
+	<?php foreach($this->samples as $entry) {
+		/* @var $entry Ajde_Model */ ?>
+		<?php if ($entry->hasNotEmpty('image')) { ?>
+		<?php echo $this->ACImage(array(
+			'filename' => 'public/images/uploads/' . $entry->getImage(),
+			'width' => 200,
+			'height' => 200,
+			'crop' => true,
+			'class' => 'right'
+		)); ?>
+		<?php } ?>
+		<h3><?php echo $this->escape( $entry->title ); ?></h3>
+		<p>
+			<em>Updated on <?php echo $this->escape( $entry->updated ); ?></em> :
+		</p>		
+		<p>
+			<?php echo _c( $entry->content ); ?>
+		</p>
+		<p>
+			€ <?php echo money_format('%!i', $entry->getUnitprice() * (1+$entry->getVATPercentage())); ?>
+		</p>
+		<?php echo $this->includeModule('shop/cart:add/html/samples:' . $entry); ?>		
+		<div class='clearfix'></div>
+		<hr/>
+	<?php } ?>
+
+</div>
+
+<aside class="fourcol last">
+	<h2>My cart</h2>
+	<div id='widget'>
+		<?php echo $this->includeModule('shop/cart:widget/html/quickcheckout'); ?>
+	</div>
+</aside>

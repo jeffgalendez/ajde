@@ -77,13 +77,18 @@ class Config_Default
 	public $registerNamespaces	= array();
 	public $overrideClass		= array();
 
+	// Shop
+	public $transactionProviders= array('paypal' => 'PayPal', 'wedeal' => 'iDeal');
+	public $currency			= '€';
+	public $defaultVAT			= '0.19';
 	
 	// Which modules should we call on bootstrapping?
 	public $bootstrap			= array(									
 									"Ajde_Exception_Handler",
 									"Ajde_Session",
 									"Ajde_Core_ExternalLibs",
-									"Ajde_User_Autologon"
+									"Ajde_User_Autologon",
+									"Ajde_Shop_Cart_Merge"
 									);
 
 	function __construct()

@@ -4,6 +4,7 @@ class UserController extends Ajde_User_Controller
 {
 	protected $_allowedActions = array(
 		'logon',
+		'logoff',
 		'register',
 		'keepalive'
 	);
@@ -41,13 +42,13 @@ class UserController extends Ajde_User_Controller
 			}
 			$this->setAction('relogon');
 			$message = Ajde::app()->getRequest()->getParam('message', '');
-			$this->getView()->assign('message', $message);			
+			$this->getView()->assign('message', $message);
 			$this->getView()->assign('user', $user);
 			return $this->render();
 		} else {
 			$user = new UserModel();
 			$this->setAction('logon');
-			$message = Ajde::app()->getRequest()->getParam('message', '');
+			$message = Ajde::app()->getRequest()->getParam('message', 'Please login');
 			$this->getView()->assign('message', $message);
 			$this->getView()->assign('user', $user);
 			$this->getView()->assign('returnto', Ajde::app()->getRequest()->getParam('returnto', $_SERVER['REDIRECT_STATUS'] == 200 ? 'user' : false));
@@ -86,12 +87,28 @@ class UserController extends Ajde_User_Controller
 		if (($user = $this->getLoggedInUser())) {
 			$user->logout();
 		}
-		$this->redirect(Ajde_Http_Response::REDIRECT_REFFERER);
+		if (($returnto = Ajde::app()->getRequest()->getParam('returnto', false))) {
+			$this->redirect($returnto);
+		} elseif (substr_count(Ajde_Http_Request::getRefferer(), 'logoff') > 0 || !Ajde_Http_Request::getRefferer()) {
+			$this->redirect('user');	
+		} else {
+			$this->redirect(Ajde_Http_Response::REDIRECT_REFFERER);
+		}
+	}
+	
+	public function switchUser()
+	{
+		if (($user = $this->getLoggedInUser())) {
+			$user->logout();
+			$this->_user = null;
+		}
+		return $this->logonHtml();
 	}
 	
 	public function registerHtml()
 	{
 		$user = new UserModel();
+		$this->getView()->assign('returnto', Ajde::app()->getRequest()->getParam('returnto', false));
 		$this->getView()->assign('user', $user);
 		return $this->render();
 	}
@@ -99,6 +116,8 @@ class UserController extends Ajde_User_Controller
 	public function registerJson()
 	{
 		$user = new UserModel();
+		
+		$returnto		= Ajde::app()->getRequest()->getPostParam('returnto', false);
 		
 		$username		= Ajde::app()->getRequest()->getPostParam($user->usernameField);
 		$password		= Ajde::app()->getRequest()->getPostParam('password');
@@ -124,12 +143,32 @@ class UserController extends Ajde_User_Controller
 			$return = array(
 				'success' => false,
 				'message' => __("Passwords do not match")
+			);
+		} else if (empty($email)) {
+			$return = array(
+				'success' => false,
+				'message' => __("Please provide an e-mail address")
 			);	
+		} else if ($shadowUser->loadByField('email', $email)) {
+			$return = array(
+				'success' => false,
+				'message' => __("A user with this e-mail address already exist")
+			);	
+		} else if (empty($fullname)) {
+			$return = array(
+				'success' => false,
+				'message' => __("Please provide a full name")
+			);			
 		} else {
 			$user->set('email', $email);
 			$user->set('fullname', $fullname);
 			if ($user->add($username, $password)) {
-				$return = array('success' => true);
+				$user->login();
+				Ajde_Session_Flash::alert(sprintf(__('Welcome %s, you are now logged in.'), $fullname));
+				$return = array(
+					'success' => true,
+					'returnto' => $returnto
+				);
 			} else {
 				$return = array(
 					'success' => false,

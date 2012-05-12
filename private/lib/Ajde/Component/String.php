@@ -41,10 +41,10 @@ class Ajde_Component_String extends Ajde_Component
 			if (is_array($var)) {
 				array_walk($var, array("Ajde_Component_String", "escape"));
 			} else {
-				$var = htmlspecialchars($var);
+				$var = htmlspecialchars($var, ENT_QUOTES);
 			}			
 		} else {
-			return htmlspecialchars($var);
+			return htmlspecialchars($var, ENT_QUOTES);
 		}
 	}
 	

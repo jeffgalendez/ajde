@@ -14,7 +14,13 @@ abstract class Ajde_Crud_Field extends Ajde_Object_Standard
 		/* options */
 		foreach($fieldOptions as $key => $value) {
 			$this->set($key, $value);
-		}		
+		}
+		
+		$this->prepare();
+	}
+	
+	protected function prepare()
+	{
 	}
 	
 	/**
@@ -29,6 +35,7 @@ abstract class Ajde_Crud_Field extends Ajde_Object_Standard
 	public function getIsRequired()		{ return parent::getIsRequired(); }
 	public function getDefault()		{ return parent::getDefault(); }
 	public function getIsAutoIncrement(){ return parent::getIsAutoIncrement(); }
+	public function getIsAutoUpdate()	{ return parent::getIsAutoUpdate(); }
 	
 	/**
 	 * Template functions
@@ -108,7 +115,7 @@ abstract class Ajde_Crud_Field extends Ajde_Object_Standard
 	
 	public function getHtmlPK()
 	{
-		return " <img src='public/images/_core/crud/key_16.png' style='vertical-align: middle;' title='Primary key' />";
+		return " <img src='public/images/icons/16/key_login.png' style='vertical-align: middle;' title='Primary key' />";
 	}
 	
 	public function getHtmlAttributes()

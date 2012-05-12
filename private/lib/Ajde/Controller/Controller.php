@@ -24,7 +24,7 @@ class Ajde_Controller extends Ajde_Object_Standard
 		$this->setFormat(isset($format) ? $format : $defaultParts['format']);
 		
 		$route = new Ajde_Core_Route($this->getAction());
-		$route->getFormat($this->getFormat());
+		$route->setFormat($this->getFormat());
 		$this->_route = $route;
 	}
 	
@@ -163,7 +163,7 @@ class Ajde_Controller extends Ajde_Object_Standard
 		return $view->getContents();
 	}
 
-	public function redirect($route)
+	public function redirect($route = Ajde_Http_Response::REDIRECT_SELF)
 	{
 		Ajde::app()->getResponse()->setRedirect($route);
 	}
@@ -175,6 +175,16 @@ class Ajde_Controller extends Ajde_Object_Standard
 	
 	public function updateCache()
 	{
-		Ajde_Cache::getInstance()->updateHash(time());
+		// TODO:
+		throw new Ajde_Core_Exception_Deprecated();
+	}
+	
+	/**
+	 *
+	 * @param Ajde_Model|Ajde_Collection $object 
+	 */
+	public function touchCache($object = null)
+	{
+		Ajde_Cache::getInstance()->updateHash(isset($object) ? $object->hash() : time());
 	}
 }

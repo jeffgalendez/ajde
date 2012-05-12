@@ -26,7 +26,7 @@ AC.Core.Alert = function() {
 			callback = c;
 			elements.removeClass();
 			textContainer.text(text);
-			elements.fadeIn('fast');			
+			elements.slideDown('fast');			
 		},
 		
 		warning: function(text, c) {
@@ -50,4 +50,13 @@ AC.Core.Alert = function() {
 
 $(document).ready(function() {
 	AC.Core.Alert.init();
+	var a = $('html').attr('data-alert');
+	if (a !== '') {
+		setTimeout(function() {
+			AC.Core.Alert.show(a);
+			setTimeout(function() {
+				AC.Core.Alert.hide();
+			}, 5000);
+		}, 1000);
+	}
 });

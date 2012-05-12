@@ -7,8 +7,8 @@ class Ajde_Document_Format_Body extends Ajde_Document
 	public function render()
 	{		
 		Ajde::app()->getDocument()->setLayout(new Ajde_Layout('empty'));
-		Ajde::app()->getResponse()->addHeader('Content-type', 'text/html');
-		Ajde::app()->getResponse()->addHeader('Cache-control', 'no-cache');
+		$this->setContentTypeHeader();
+		$this->setCacheControlHeader();
 		return parent::render();
 	}
 	

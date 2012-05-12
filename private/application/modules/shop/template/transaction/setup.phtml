@@ -1,0 +1,65 @@
+<?php
+/* @var $this Ajde_Template_Parser_Phtml_Helper */
+?>
+
+<h2>Your details</h2>
+
+<?php echo $this->ACForm('shop/transaction:provider', null, 'transactionSetup'); ?>
+
+	<h4>Shipping details</h4>
+	<dl class='form wide'>
+		<dt>Full name</dt>
+		<dd>
+			<input type='text' name='shipment_name' value='<?php if ($this->user) { echo _e($this->user->fullname); } ?>' />
+		</dd>
+		
+		<dt>Address</dt>
+		<dd>
+			<input type='text' name='shipment_address' value='<?php if ($this->user) { echo _e($this->user->address); } ?>' />
+		</dd>
+		
+		<dt>Zipcode</dt>
+		<dd>
+			<input type='text' name='shipment_zipcode' value='<?php if ($this->user) { echo _e($this->user->zipcode); } ?>' />
+		</dd>
+		
+		<dt>City</dt>
+		<dd>
+			<input type='text' name='shipment_city' value='<?php if ($this->user) { echo _e($this->user->city); } ?>' />
+		</dd>
+		
+		<dt>Region</dt>
+		<dd>
+			<input type='text' name='shipment_region' value='<?php if ($this->user) { echo _e($this->user->region); } ?>' />
+		</dd>
+		
+		<dt>Country</dt>
+		<dd>
+			<input type='text' name='shipment_country' value='<?php if ($this->user) { echo _e($this->user->country); } ?>' />
+		</dd>
+		
+		<?php if ($this->user) { ?>
+		<dt></dt>
+		<dd>
+			<input type='checkbox' name='save_details' checked="checked" id='save_details' /><label for='save_details'>Save my details for next order</label>
+		</dd>
+		<?php } ?>		
+	</dl>
+	
+	<h4>Payment</h4>
+	<dl class='form wide'>
+		<dt>Choose your payment provider:</dt>
+		<dd>
+			<?php foreach($this->providers as $key => $provider) { ?>
+				<input type='radio' name='provider' value='<?php echo _e($key); ?>' id='<?php echo _e($key); ?>' /><label for='<?php echo _e($key); ?>'> <?php echo _e($provider); ?></label>
+			<?php } ?>
+		</dd>
+
+	</dl>
+	
+	<hr/>
+	<p>
+		<input type='submit' class='action' value='Proceed with payment' />
+	</p>
+	 
+</form>

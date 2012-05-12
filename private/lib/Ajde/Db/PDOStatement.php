@@ -1,7 +1,7 @@
 <?php
 /**
  * @source http://www.coderholic.com/php-database-query-logging-with-pdo/
- * Modified for use with Ajde_Document_Format_Processor_Html_Debugger
+ * Modified for use with Ajde_Document_Processor_Html_Debugger
  */
 /** 
 * PDOStatement decorator that logs when a PDOStatement is 

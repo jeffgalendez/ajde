@@ -4,9 +4,9 @@ if (typeof AC.Crud ==="undefined") {AC.Crud = function() {}};
 
 AC.Crud.List = function() {
 	
-	var infoHandler		= alert;
-	var warningHandler	= alert;
-	var errorHandler	= alert;
+	var infoHandler		= AC.Core.Alert.show;
+	var warningHandler	= AC.Core.Alert.warning;
+	var errorHandler	= AC.Core.Alert.error;
 	
 	return {
 		

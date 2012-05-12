@@ -1,6 +1,6 @@
 <?php
 
-class Ajde_User extends Ajde_Model
+abstract class Ajde_User extends Ajde_Model
 {	
 	protected $_autoloadParents = false;
 	protected $_displayField = 'fullname';
@@ -13,7 +13,7 @@ class Ajde_User extends Ajde_Model
 	
 	public $defaultUserGroup = self::USERGROUP_USERS;
 	
-	protected $cookieLifetime = 30;
+	protected $cookieLifetime = 30; // in days
 	
 	/**
 	 *
@@ -45,7 +45,7 @@ class Ajde_User extends Ajde_Model
 	{
 		// @see http://net.tutsplus.com/tutorials/php/understanding-hash-functions-and-keeping-passwords-safe/
 		if (CRYPT_BLOWFISH !== 1) {
-			Ajde_Dump::warn('BLOWFISH algorithm not available for hashing');
+			Ajde_Dump::warn('BLOWFISH algorithm not available for hashing, using MD5 instead');
 			// Use MD5
 			$algo = '$1';
 			$cost = '';
@@ -144,7 +144,7 @@ class Ajde_User extends Ajde_Model
 		}
 		$userSecret	= $this->get('secret');
 		$appSecret	= Config::get('secret');
-		$hash = hash("sha256", $userSecret . $appSecret . $_SERVER['REMOTE_ADDR']);
+		$hash = hash("sha256", $userSecret . $appSecret . $_SERVER['REMOTE_ADDR'] . $_SERVER['HTTP_USER_AGENT']);
 		if (empty($hash)) {
 			// TODO:
 			throw new Ajde_Exception('SHA-256 algorithm failed');
@@ -165,6 +165,7 @@ class Ajde_User extends Ajde_Model
 		}
 		if ($this->getCookieHash() === $hash) {
 			$this->login();
+			Ajde_Session_Flash::alert(sprintf(__('Welcome back %s, we automatically logged you in.'), $this->getFullname()));
 		} else {
 			return false;
 		}

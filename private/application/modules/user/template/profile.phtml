@@ -1,13 +1,11 @@
-<h2>Profile</h2>
-
-<h3>
-	<?php echo $this->clean($this->user->fullname); ?>
-</h3>
+<h2>
+	Profile: <?php echo $this->clean($this->user->fullname); ?>
+</h2>
 
 <p>
-	<?php echo $this->clean($this->user->email); ?>
+	E-mail address: <?php echo $this->clean($this->user->email); ?>
 </p>
 
 <p>
-	<a href='user/logoff.html'>Log off</a>
+	<a class='action' href='user/logoff.html'>Log off</a>
 </p>

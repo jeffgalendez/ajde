@@ -82,7 +82,10 @@ class Ajde_Collection extends Ajde_Object_Standard implements Iterator, Countabl
 	{
 		$this->_modelName = str_replace('Collection', '', get_class($this)) . 'Model';		
 		$this->_connection = Ajde_Db::getInstance()->getConnection();
-		$tableName = strtolower(str_replace('Collection', '', get_class($this)));	
+		
+		$tableNameCC = str_replace('Collection', '', get_class($this));
+		$tableName = $this->fromCamelCase($tableNameCC);
+		
 		$this->_table = Ajde_Db::getInstance()->getTable($tableName);
 		$this->_query = new Ajde_Query();
 	}
@@ -405,10 +408,18 @@ class Ajde_Collection extends Ajde_Object_Standard implements Iterator, Countabl
 	
 	public function length()
 	{
-		if (isset($this->_items)) {
-			return count($this->_items); 
-		} else {
-			return 0;
+		if (!isset($this->_items)) {
+			$this->load();
 		}
+		return count($this->_items);
+	}
+	
+	public function hash()
+	{
+		$str = '';
+		foreach($this as $item) {
+			$str .= implode($item->values());
+		}
+		return md5($str);
 	}
 }

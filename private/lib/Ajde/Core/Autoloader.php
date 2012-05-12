@@ -36,7 +36,17 @@ class Ajde_Core_Autoloader
 				require_once($filename); 
 			}		
 		}
-		$configNamespaces = Config::get('registerNamespaces');
+		
+		// Try to use the Config object, and if it fails we have to redirect to
+		// an error page to prevent calling the shutdown function with no Config
+		// instance loaded
+		try {
+			$configNamespaces = Config::get('registerNamespaces');		
+		} catch (Exception $e) {
+			error_log($e->getMessage());
+			include 'errordocument.php';
+			die();
+		}
 		self::$namespaces = array_merge($defaultNamespaces, $configNamespaces);
 		
 		// Configure autoloading

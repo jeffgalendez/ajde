@@ -2,7 +2,7 @@
 $(document).ready(function() {
 	$('#loginform').bind('result', function(event, data) {
 		if (data.success === false) {
-			$("#loginformStatus").text(data.message);
+			$("dd.status").text(data.message);
 		} else {
 			if ($("#returnto").val()) {
 				$('body').addClass('loading');
@@ -14,10 +14,10 @@ $(document).ready(function() {
 		}
 	});
 	$('#loginform').bind('error', function(event) {
-		$("#loginformStatus").text('Something went wrong');
+		$("dd.status").text(i18n.requestError);
 	});
 	$('#loginform').bind('submit', function(event) {
-		$("#loginformStatus").text("");
+		$("dd.status").text("Logging in...");
 		return true;
 	});
 });

@@ -24,7 +24,7 @@
 }
 
 .qq-upload-file {}
-.qq-upload-spinner {display:inline-block; background: url("../../../../public/images/_core/form/loading.gif"); width:15px; height:15px; vertical-align:text-bottom;}
+.qq-upload-spinner {display:inline-block; background: url("../../../../public/images/_core/loading.gif"); width:15px; height:15px; vertical-align:text-bottom;}
 .qq-upload-size,.qq-upload-cancel {font-size:11px;}
 
 .qq-upload-failed-text {display:none;}
@@ -43,5 +43,5 @@
 	background-repeat: no-repeat;
 	background-position: 3px center;
 	
-	background-image: url('../../../../public/images/_core/crud/upload_16.png');
+	background-image: url('../../../../public/images/icons/16/folder.png');
 }

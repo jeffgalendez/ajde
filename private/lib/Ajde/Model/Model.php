@@ -46,6 +46,11 @@ class Ajde_Model extends Ajde_Object_Standard
 		return null;  
 	}
 	
+	/**
+	 *
+	 * @param string $name
+	 * @return Ajde_Model
+	 */
 	public static function getModel($name)
 	{
 		$modelName = ucfirst($name) . 'Model';
@@ -54,7 +59,9 @@ class Ajde_Model extends Ajde_Object_Standard
 	
 	public function __construct()
 	{
-		$tableName = strtolower(str_replace('Model', '', get_class($this)));
+		$tableNameCC = str_replace('Model', '', get_class($this));
+		$tableName = $this->fromCamelCase($tableNameCC);
+
 		$this->_connection = Ajde_Db::getInstance()->getConnection();	
 		$this->_table = Ajde_Db::getInstance()->getTable($tableName);		
 	}
@@ -85,7 +92,9 @@ class Ajde_Model extends Ajde_Object_Standard
 
 	public function __wakeup()
 	{
-		$tableName = strtolower(str_replace('Model', '', get_class($this)));
+		$tableNameCC = str_replace('Model', '', get_class($this));
+		$tableName = $this->fromCamelCase($tableNameCC);
+		
 		$this->_connection = Ajde_Db::getInstance()->getConnection();	
 		$this->_table = Ajde_Db::getInstance()->getTable($tableName);	
 	}
@@ -210,6 +219,9 @@ class Ajde_Model extends Ajde_Object_Standard
 						$sqlSet[] = $field . ' = ?';
 						$values[] = (string) $this->get($field);
 					}
+				} elseif ($this->get($field) === 0 || $this->get($field) === '0') {
+					$sqlSet[] = $field . ' = ?';
+					$values[] = (string) $this->get($field);
 				} else {
 					// Field is required but has an empty value..
 					// (shouldn't have passed validation)
@@ -400,5 +412,11 @@ class Ajde_Model extends Ajde_Object_Standard
 	private function _getValidator()
 	{
 		return new Ajde_Model_Validator($this);
+	}
+	
+	public function hash()
+	{
+		$str = implode($this->values());
+		return md5($str);
 	}
 }

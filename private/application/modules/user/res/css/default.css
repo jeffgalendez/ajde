@@ -1,0 +1,7 @@
+dd.status, p.status {
+	display: inline-block;
+	background-color: #eee;
+	border: 1px solid silver;
+	padding: 5px;
+	margin: 0 0 20px 0;
+}

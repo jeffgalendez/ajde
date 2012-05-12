@@ -47,7 +47,7 @@ AC.Core.Timeout = function() {
 		warningHandler(i18n.timedout);
 		alert(i18n.timedout);
 		setTimeout(function() {
-			window.document.location.reload(true);
+			//window.document.location.reload(true);
 		}, 10000);		
 	};
 	

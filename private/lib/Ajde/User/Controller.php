@@ -12,16 +12,7 @@ abstract class Ajde_User_Controller extends Ajde_Controller
 	
 	public function beforeInvoke()
 	{
-		foreach($this->_registerUserModels as $model) {
-			Ajde_Model::register($model);
-		}
-		// Add timeout warning to layout
-		if ($this->_getUser() !== false) {
-			Ajde_Event::register('Ajde_Layout', 'beforeGetContents', 'requireTimeoutWarning');
-		}
-		// TODO: possible undesired behaviour when called by Ajde_Acl_Controller,
-		// when that controller is invoked with a allowed action like 'login'
-		if (in_array($this->getAction(), $this->_allowedActions) || $this->_getUser() !== false) {
+		if ($this->hasAccess()) {
 			return true;
 		} else {
 			Ajde::app()->getRequest()->set('message', __('Please log on to view this page'));
@@ -29,20 +20,34 @@ abstract class Ajde_User_Controller extends Ajde_Controller
 		}
 	}
 	
+	protected function hasAccess()
+	{			
+		// TODO: possible undesired behaviour when called by Ajde_Acl_Controller,
+		// when that controller is invoked with a allowed action like 'logon'
+		return (in_array($this->getAction(), $this->_allowedActions) || $this->getLoggedInUser() !== false);
+	}
+	
+	protected function addTimeoutWarning()
+	{
+		// Add timeout warning to layout
+		if ($this->getLoggedInUser() !== false) {
+			Ajde_Event::register('Ajde_Layout', 'beforeGetContents', 'requireTimeoutWarning');
+		}
+	}
+	
 	/**
+	 *
 	 * @return UserModel
 	 */
-	private function _getUser()
+	protected function getLoggedInUser()
 	{
 		if (!isset($this->_user)) {
+			foreach($this->_registerUserModels as $model) {
+				Ajde_Model::register($model);
+			}	
 			$user = new UserModel();
 			$this->_user = $user->getLoggedIn();
 		}
 		return $this->_user;
-	}
-	
-	protected function getLoggedInUser()
-	{
-		return $this->_getUser();
 	}	
 }

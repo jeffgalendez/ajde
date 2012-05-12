@@ -14,7 +14,7 @@ class Ajde_Lang extends Ajde_Object_Singleton
     	return $instance === null ? $instance = new self : $instance;
 	}
 		
-	public function __construct()
+	protected function __construct()
 	{
 		$this->setLang($this->detect());
 	}

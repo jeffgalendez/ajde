@@ -1,7 +1,11 @@
 <h2><?php echo __('Register'); ?></h2>
 
 <?php echo $this->ACAjaxForm('user/register', 'registerform'); ?>
-	<dl>
+	<input type="hidden" name="returnto" id="returnto" value="<?php echo $this->returnto; ?>" />
+	<dl class='form wide'>
+		<dt>&nbsp;</dt>
+		<dd class="status"><?php echo __('Please fill in your details') ?></dd>
+		
 		<dt><?php echo __(ucfirst($this->user->usernameField)); ?></dt>
 		<dd>
 			<input type="text" name="<?php echo $this->user->usernameField; ?>" placeholder="" required />
@@ -26,9 +30,7 @@
 		<dd>
 			<input type="fullname" name="fullname" />
 		</dd>
-		
-		<dd id="registerformStatus"></dd>
-		
+			
 		<dd>
 			<input type="submit" value="<?php echo __('Register'); ?>" />
 		</dd>	

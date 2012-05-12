@@ -91,7 +91,7 @@ class Ajde_Resource_Local extends Ajde_Resource
 			if (self::exist($noFormatResource)) {
 				$filename = $noFormatResource;
 			}
-		}
+		}		
 		return $filename;
 	}
 

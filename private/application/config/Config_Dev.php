@@ -7,6 +7,7 @@ class Config_Dev extends Config_Application {
 	public $debug 				= true;
 	public $useCache			= false;
 	public $documentProcessors	= array(
+									"css" => array("Less"),
 									"html" => array(
 										"Debugger",
 										/*
@@ -16,7 +17,7 @@ class Config_Dev extends Config_Application {
 										 * @see https://code.google.com/p/ajde/wiki/Exception90023
 										 * 
 										 */
-										// "Beautifier"										
+										//"Beautifier"										
 									)
 								  );	
 

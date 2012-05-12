@@ -51,6 +51,10 @@ class Config_Application extends Config_Default
 	//public $registerNamespaces;
 	//public $overrideClass;
 	
+	//public $transactionProviders;
+	//public $currency;
+	//public $defaultVAT;
+	
 	//public $bootstrap;
 	
 }

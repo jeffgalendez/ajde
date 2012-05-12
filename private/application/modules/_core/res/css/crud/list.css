@@ -2,6 +2,7 @@ table.crudList {
     border-collapse: collapse;
     border-top: 1px solid silver;
 	background-color: silver;
+	width: 100%;
 }
 
 table.crudList tr {
@@ -19,7 +20,12 @@ table.crudList th {
 	padding: 10px 10px 10px 5px;
 	background-color: #f1f1f1;
 	text-align: left;
+	border-right: 1px solid #ddd;
 }
+
+	table.crudList th:last-child {
+		border: none;
+	}
 
 table.crudList th select.filter {
 	margin-top: 10px;
@@ -31,6 +37,7 @@ table.crudList th select.filter option.select {
 
 table.crudList td.toolbar {
 	padding-top: 8px;
+	height: 24px;
 }
 
 table.crudList td.toolbar .button.multiple {
@@ -45,11 +52,16 @@ table.crudList td {
 	padding: 11px 5px 8px 5px;
     text-overflow: ellipsis;
     overflow: hidden;
-    vertical-align: top;
-	background-color: white;
+    vertical-align: top;	
 	white-space: nowrap;
 	max-width: 350px;
+	background-color: white;
+	border-right: 1px solid #ddd;
 }
+
+	table.crudList td:last-child, table.crudList tr.toolbar td {
+		border-right: none;
+	}
 
 	table.crudList td.linkedModel {
 		text-decoration: underline;

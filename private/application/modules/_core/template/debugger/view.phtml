@@ -61,7 +61,11 @@ $expand = false;
 								$vars = $this->request->_data;
 								if (!function_exists('safeVars')) {
 									function safeVars(&$item, $key) {
-										$item = htmlspecialchars($item);
+										if (is_array($item)) {
+											array_walk($item, "safeVars");
+										} else {
+											$item = htmlspecialchars($item);
+										}
 									}
 								}
 								array_walk($vars, "safeVars");

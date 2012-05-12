@@ -19,7 +19,8 @@
 		'published' => array(
 			'type' => 'boolean',
 			'help' => 'Post is visible or not'
-		)
+		),
+		'title' => array()
 	);
 	$list = array(
 		'buttons' => array(
@@ -30,21 +31,21 @@
 				'class' => 'view'
 			)
 		),
-		'show' => array('title', 'date', 'published', 'user', 'type')
+		'show' => array('title', 'updated', 'image', 'published', 'type')
 	);	
 	$options = array(
 		'fields'	=> $fields,
 		'list'		=> $list
 	);
 	
-	$crud = $this->ACCrudList('blog', $options);
+	$crud = $this->ACCrudList('samples', $options);
 	
 	if (Ajde::app()->getRequest()->has('new')) {
 		$user = UserModel::getLoggedIn();
 		$crud->setOption('fields.user.value', $user->getPK());		
 	}
 	
-	$crud->getCollection()->orderBy('date');
+	$crud->getCollection()->orderBy('updated');
 	
 	echo $crud->output();
 ?>

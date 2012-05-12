@@ -21,7 +21,7 @@ class Ajde_Db extends Ajde_Object_Singleton
     	return $instance === null ? $instance = new self : $instance;
 	}
 		
-	public function __construct()
+	protected function __construct()
 	{
 		$adapterName = 'Ajde_Db_Adapter_' . ucfirst(Config::get('dbAdapter'));
 		$dsn = Config::get('dbDsn');

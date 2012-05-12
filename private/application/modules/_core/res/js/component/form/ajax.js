@@ -33,7 +33,10 @@ AC.Form.Ajax = function() {
 				$('body').removeClass('loading');
 				$(form).trigger('error', [jqXHR, message, exception]);
 			};
-			var dataType = 'json';
+			var dataType = 'html';
+			if ($(form).attr('data-format') == 'json') {
+				dataType = 'json';
+			}
 			$('body').addClass('loading');
 			$(form).trigger('before');
 			$.ajax({

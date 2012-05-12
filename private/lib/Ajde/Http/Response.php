@@ -4,6 +4,7 @@ class Ajde_Http_Response extends Ajde_Object_Standard
 {
 	const REDIRECT_HOMEPAGE = 1;
 	const REDIRECT_REFFERER = 2;
+	const REDIRECT_SELF		= 3;
 
 	const RESPONSE_TYPE_NOT_MODIFIED = 304;
 	const RESPONSE_TYPE_UNAUTHORIZED = 401;
@@ -83,19 +84,19 @@ class Ajde_Http_Response extends Ajde_Object_Standard
 		}
 	}
 
-	function setRedirect($url = null)
+	function setRedirect($url = self::REDIRECT_SELF)
 	{
 		if ($url === true || $url === self::REDIRECT_HOMEPAGE) {
 			$this->addHeader("Location", 'http://' . Config::get('site_root'));
 		} elseif ($url === self::REDIRECT_REFFERER) {
 			$this->addHeader("Location", Ajde_Http_Request::getRefferer());
+		} elseif ($url === self::REDIRECT_SELF || empty($url)) {
+			$route = (string) Ajde::app()->getRoute();
+			$this->addHeader("Location", 'http://' . Config::get('site_root') . $route);
 		} elseif (substr($url, 0, 7) == "http://") {
 			$this->addHeader("Location", $url);
 		} elseif ($url) {
 			$this->addHeader("Location", 'http://' . Config::get('site_root') . $url);
-		} else {
-			$self = $_SERVER["PHP_SELF"].($_SERVER["QUERY_STRING"] ? "?" : "").$_SERVER["QUERY_STRING"];
-			$this->addHeader("Location", 'http://' . $self);
 		}
 	}
 
@@ -117,10 +118,8 @@ class Ajde_Http_Response extends Ajde_Object_Standard
 
 	function send()
 	{
-		if ($this->has("headers"))
-		{
-			foreach($this->get("headers") as $name => $value)
-			{
+		if ($this->has("headers")) {
+			foreach($this->get("headers") as $name => $value) {
 				header("$name: $value");
 			}
 		}

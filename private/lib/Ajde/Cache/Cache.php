@@ -20,7 +20,7 @@ class Ajde_Cache extends Ajde_Object_Singleton
 		return $instance === null ? $instance = new self : $instance;
 	}
 	
-	public function __construct()
+	protected function __construct()
 	{
 		$this->_enabled = Config::get('useCache');
 	}
@@ -83,6 +83,9 @@ class Ajde_Cache extends Ajde_Object_Singleton
 
 	public function getLastModified()
 	{
+		if (empty($this->_lastModified)) {
+			return time();
+		}
 		return max($this->_lastModified);
 	}
 

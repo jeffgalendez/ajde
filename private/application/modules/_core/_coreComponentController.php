@@ -49,10 +49,11 @@ class _coreComponentController extends Ajde_Controller
 		}
 		
 		// CSRF
-		$formToken = Ajde::app()->getRequest()->getFormToken();
+		Ajde::app()->getDocument()->getLayout()->requireTimeoutWarning();
+		$formToken = Ajde::app()->getRequest()->getFormToken();		
 		$this->getView()->assign('formToken', $formToken);
 		
-		$this->getView()->assign('formAction', $this->getFormAction());
+		$this->getView()->assign('formAction', $this->getFormAction());		
 		$this->getView()->assign('formId', $this->getFormId());
 		$this->getView()->assign('extraClass', $this->getExtraClass());
 		$this->getView()->assign('innerXml', $this->getInnerXml());
@@ -62,6 +63,7 @@ class _coreComponentController extends Ajde_Controller
 	public function formAjaxDefault()
 	{
 		$this->setAction('form/ajax');
+		$this->getView()->assign('formFormat', $this->getFormFormat());
 		return $this->formDefault();
 	}
 
@@ -76,7 +78,6 @@ class _coreComponentController extends Ajde_Controller
 		$this->getView()->assign('name', $this->getName());
 		$this->getView()->assign('optionsId', $optionsId);
 		$this->getView()->assign('optionsMultiple', issetor($options['multiple'], false));
-		//$this->getView()->assign('extensions', issetor($options['extensions'], array()));
 		$this->getView()->assign('inputId', $this->getInputId());
 		$this->getView()->assign('extraClass', $this->getExtraClass());
 		return $this->render();

@@ -12,8 +12,7 @@ abstract class Ajde_Db_Adapter_Abstract
 		try {
 			$connection = new Ajde_Db_PDO($dsn, $user, $password, $options);
 		} catch (Exception $e) {
-			// Disable trace on this exception to prevent exposure of sensitive
-			// data
+			// Disable trace on this exception to prevent exposure of sensitive data
 			// TODO: exception
 			throw new Ajde_Exception('Could not connect to database', 0, false);
 		}

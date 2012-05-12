@@ -63,22 +63,37 @@ class Ajde_Core_Route extends Ajde_Object_Standard
 	}
 	
 	public function getModule($default = null) {
+		if (isset($default)) {
+			throw new Ajde_Core_Exception_Deprecated();
+		}
 		return $this->get("module", $default);
 	}
 
 	public function getController($default = null) {
+		if (isset($default)) {
+			throw new Ajde_Core_Exception_Deprecated();
+		}
 		return $this->get("controller", $default);
 	}
 	
 	public function getAction($default = null) {
+		if (isset($default)) {
+			throw new Ajde_Core_Exception_Deprecated();
+		}
 		return $this->get("action", $default);
 	}
 
 	public function getFormat($default = null) {
+		if (isset($default)) {
+			throw new Ajde_Core_Exception_Deprecated();
+		}
 		return $this->get("format", $default);
 	}
 	
 	public function getLang($default = null) {
+		if (isset($default)) {
+			throw new Ajde_Core_Exception_Deprecated();
+		}
 		return $this->get("lang", $default);
 	}
 	

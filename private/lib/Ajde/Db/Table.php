@@ -25,25 +25,28 @@ class Ajde_Db_Table extends Ajde_Object_Standard
 	{
 		$structure = Ajde_Db::getInstance()->getAdapter()->getTableStructure($this->_name);
 		foreach($structure as $field) {
-			$fieldName = $field['Field'];
-			$fieldType = $field['Type'];
-			$fieldParsedType = Ajde_Db::getInstance()->getAdapter()->getFieldType($fieldType);
-			$fieldIsRequired = $field['Null'] === 'NO';
-			$fieldIsPK = $field['Key'] === 'PRI';
-			$fieldDefault = $field['Default'];
-			$fieldIsAutoIncrement = $field['Extra'] === 'auto_increment';
-			$fieldLabel= !empty($field['Comment']) ? $field['Comment'] : $field['Field'];
+			$fieldName				= $field['Field'];
+			$fieldType				= $field['Type'];
+			$fieldParsedType		= Ajde_Db::getInstance()->getAdapter()->getFieldType($fieldType);			
+			$fieldDefault			= $field['Default'];			
+			$fieldLabel				= !empty($field['Comment']) ? $field['Comment'] : $field['Field'];
+			
+			$fieldIsRequired		= $field['Null'] === 'NO';
+			$fieldIsPK				= $field['Key'] === 'PRI';
+			$fieldIsAutoIncrement	= $field['Extra'] === 'auto_increment';
+			$fieldIsAutoUpdate		= $field['Extra'] === 'on update CURRENT_TIMESTAMP'; 
 			
 			$this->_fields[$fieldName] = array(
 				'name' => $fieldName,
 				'dbtype' => $fieldType,
 				'type' => $fieldParsedType['type'],
 				'length' => $fieldParsedType['length'],
-				'isRequired' => $fieldIsRequired,
-				'isPK' => $fieldIsPK,
 				'default' => $fieldDefault,
+				'label' => $fieldLabel,
+				'isRequired' => $fieldIsRequired,
+				'isPK' => $fieldIsPK,				
 				'isAutoIncrement' => $fieldIsAutoIncrement,
-				'label' => $fieldLabel
+				'isAutoUpdate' => $fieldIsAutoUpdate				
 			);
 		}
 	}

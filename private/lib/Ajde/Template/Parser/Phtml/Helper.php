@@ -106,6 +106,17 @@ class Ajde_Template_Parser_Phtml_Helper extends Ajde_Object_Standard
 	 ************************/
 	
 	/**
+	 *
+	 * @param string $name
+	 * @param string $version
+	 * @return void 
+	 */
+	public function requireGWebFont($family, $weight = array(400), $subset = array('latin'))
+	{
+		return Ajde_Component_Css::processStatic($this->getParser(), array('fontFamily' => $family, 'fontWeight' => $weight, 'fontSubset' => $subset));
+	}
+	
+	/**
 	 * 
 	 * @param string $action
 	 * @param string $format
@@ -188,9 +199,9 @@ class Ajde_Template_Parser_Phtml_Helper extends Ajde_Object_Standard
 	 * @param mixed $id
 	 * @return string
 	 */
-	public function ACAjaxForm($route, $id = null, $class = null)
+	public function ACAjaxForm($route, $id = null, $class = null, $format = 'json')
 	{
-		return Ajde_Component_Form::processStatic($this->getParser(), array('route' => $route, 'ajax' => true, 'id' => $id, 'class' => $class));
+		return Ajde_Component_Form::processStatic($this->getParser(), array('route' => $route, 'ajax' => true, 'id' => $id, 'class' => $class, 'format' => $format));
 	}
 	
 	/**

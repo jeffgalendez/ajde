@@ -9,6 +9,20 @@ class _coreCrudController extends Ajde_Acl_Controller
 	 * Ajde_Component_Crud
 	 ************************/
 	
+	public function beforeInvoke() {
+		$crud = $this->getCrudInstance();
+		if (!$crud && Ajde::app()->getRequest()->has('crudId')) {
+			Ajde_Model::registerAll();
+			$session = new Ajde_Session('AC.Crud');			
+			$crud = $session->getModel(Ajde::app()->getRequest()->getParam('crudId'));
+		}
+		if ($crud) {
+			/* @var $crud Ajde_Crud */
+			$this->setAclParam($crud->getSessionName());
+		}
+		return parent::beforeInvoke();
+	}
+	
 	public function listHtml()
 	{
 		$cache = Ajde_Cache::getInstance();
@@ -24,6 +38,9 @@ class _coreCrudController extends Ajde_Acl_Controller
 				
 		$crud = $this->getCrudInstance();
 		/* @var $crud Ajde_Crud */
+		if (!$crud) {
+			Ajde::app()->getResponse()->redirectNotFound();
+		}		
 				
 		$session = new Ajde_Session('AC.Crud');
 		$session->setModel($crud->getHash(), $crud);
@@ -48,11 +65,15 @@ class _coreCrudController extends Ajde_Acl_Controller
 	}
 	
 	public function editDefault()
-	{
-		/* @var $crud Ajde_Crud */
+	{		
 		$this->setAction('edit');
 		
 		$crud = $this->getCrudInstance();
+		/* @var $crud Ajde_Crud */
+		if (!$crud) {
+			Ajde::app()->getResponse()->redirectNotFound();
+		}
+		
 		$editOptions = $crud->getOptions('edit');
 		if ($crud->getOperation() === 'list') {
 			if (!empty($editOptions) &&
@@ -109,7 +130,7 @@ class _coreCrudController extends Ajde_Acl_Controller
 	
 	public function delete($crudId, $id)
 	{
-		$session = new Ajde_Session('AC.Crud');
+		$session = new Ajde_Session('AC.Crud');		
 		$crud = $session->getModel($crudId);
 		$model = $crud->getModel();
 		

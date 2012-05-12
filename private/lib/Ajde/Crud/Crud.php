@@ -14,7 +14,7 @@ class Ajde_Crud extends Ajde_Object_Standard
 		if ($model instanceof Ajde_Model) {
 			$this->_model = $model;
 		} else {
-			$modelName = ucfirst($model) . 'Model';
+			$modelName = $this->toCamelCase($model, true) . 'Model';
 			$this->_model = new $modelName();
 		}
 		$this->setOptions($options);
@@ -261,18 +261,16 @@ class Ajde_Crud extends Ajde_Object_Standard
 				
 				$fieldClass = Ajde_Core_ExternalLibs::getClassname("Ajde_Crud_Field_" . ucfirst($fieldOptions['type']));				
 				$field = new $fieldClass($this, $fieldOptions);
-				
+							
 				if ($this->getOperation() === 'edit') {
-					if (empty($fieldOptions['value'])) {
-						if (!empty($fieldOptions['default']) && $this->isNew()) {
-							$field->setValue($fieldOptions['default']);
-						} elseif (!$this->isNew()) {
+					if (!$field->hasValue() || $field->hasEmpty('value')) {
+						if ($this->isNew() && $field->hasNotEmpty('default')) {
+							$field->setValue($field->getDefault());
+						} elseif (!$this->isNew()) {							
 							$field->setValue($item->get($field->getName()));
 						} else {
 							$field->setValue(false);
 						}
-					} else {
-						$field->setValue($fieldOptions['value']);
 					}
 				}
 				
@@ -283,6 +281,12 @@ class Ajde_Crud extends Ajde_Object_Standard
 		return $this->_fields;
 	}
 	
+	/**
+	 *
+	 * @param string $fieldName
+	 * @return Ajde_Crud_Field
+	 * @throws Ajde_Exception 
+	 */
 	public function getField($fieldName)
 	{
 		if (!isset($this->_fields)) {

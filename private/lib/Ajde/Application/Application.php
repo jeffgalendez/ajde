@@ -67,7 +67,7 @@ class Ajde_Application extends Ajde_Object_Singleton
 	public function run()
 	{
 		// For debugger
-		$timer = $this->addTimer('Application');
+		$timer = $this->addTimer('<i>Application</i>');
 		
 		// Create fresh response
 		$response = new Ajde_Http_Response();
@@ -96,13 +96,6 @@ class Ajde_Application extends Ajde_Object_Singleton
 		// Invoke controller action
 		$actionResult = $controller->invoke();
 		$document->setBody($actionResult);
-
-		if (!$document->hasLayout())
-		{
-			// Load default layout into document
-			$layout = new Ajde_Layout(Config::get("layout"));
-			$document->setLayout($layout);
-		}
 
 		// Get document contents
 		$contents = $document->render();

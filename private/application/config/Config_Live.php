@@ -7,9 +7,8 @@ class Config_Live extends Config_Application {
 	public $debug 				= false;
 	public $useCache			= true;
 	public $documentProcessors	= array(
-									"html" => array(
-										"Compressor"
-									)
+									"css"	=> array("Less"),
+									"html"	=> array("Compressor")
 								  );	
 	function __construct() {
 		parent::__construct();

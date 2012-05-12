@@ -6,11 +6,11 @@ i18n = function() {
 		formError : "Error in form",
 		deleting : "Deleting...",
 		confirmDelete : "Are you sure you want to delete this?",
-		timedOut : "Timed out, please try again.",
+		timedOut : "Request timed out, please try again.",
 		loading : "Loading...",
 		saving: "Saving...",
 		timeoutWarning: "The current page is about to time out",
 		timeoutCountdown: "The current page is about to time out, please click here within %s seconds to prevent this",
-		timedout: "Session timed out"
+		timedout: "Session timed out, please refresh the page."
 	}
 }();

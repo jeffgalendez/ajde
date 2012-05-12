@@ -4,11 +4,13 @@ class MainController extends Ajde_Controller
 {
 	function view()
 	{
+		Ajde::app()->getDocument()->setTitle("Project homepage");
 		return $this->render();
 	}
 	
 	function code404()
 	{
+		Ajde::app()->getDocument()->setTitle("404 Not Found");
 		return $this->render();
 	}
 	
