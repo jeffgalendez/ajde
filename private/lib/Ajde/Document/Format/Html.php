@@ -8,8 +8,9 @@ class Ajde_Document_Format_Html extends Ajde_Document
 	const RESOURCE_POSITION_LAST = 3;
 	
 	// TODO: implement a way to override
-	protected $_cacheControl = 'private'; // 'no-cache';
+	protected $_cacheControl = self::CACHE_CONTROL_NOCACHE;
 	protected $_contentType = 'text/html';
+	protected $_maxAge = 0; // access
 	
 	protected $_resources = array(
 		self::RESOURCE_POSITION_FIRST => array(),
@@ -31,8 +32,6 @@ class Ajde_Document_Format_Html extends Ajde_Document
 
 	public function render()
 	{
-		$this->setContentTypeHeader();
-		$this->setCacheControlHeader();
 		$this->registerDocumentProcessor('html');		
 		return parent::render();
 	}

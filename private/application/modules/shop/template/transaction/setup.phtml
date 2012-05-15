@@ -2,64 +2,78 @@
 /* @var $this Ajde_Template_Parser_Phtml_Helper */
 ?>
 
-<h2>Your details</h2>
+<h2>Shipping details</h2>
 
-<?php echo $this->ACForm('shop/transaction:provider', null, 'transactionSetup'); ?>
+<?php echo $this->ACAjaxForm('shop/transaction:setup', null, 'transactionSetup'); ?>
 
-	<h4>Shipping details</h4>
+	<h4>Your name and address</h4>
 	<dl class='form wide'>
+		<dt>&nbsp;</dt>
+		<dd class="status"><?php echo __('Please fill in your details') ?></dd>
+		
 		<dt>Full name</dt>
 		<dd>
-			<input type='text' name='shipment_name' value='<?php if ($this->user) { echo _e($this->user->fullname); } ?>' />
+			<input type='text' name='name' required value='<?php echo _e($this->name); ?>' />
 		</dd>
+		
+		<dt>E-mail address</dt>
+		<dd>
+			<input type='text' name='email' required value='<?php echo _e($this->email); ?>' />
+		</dd>
+		
+		<dt>&nbsp;</dt>
+		<dd><hr/></dd>		
 		
 		<dt>Address</dt>
 		<dd>
-			<input type='text' name='shipment_address' value='<?php if ($this->user) { echo _e($this->user->address); } ?>' />
+			<input type='text' name='shipment_address' required value='<?php echo _e($this->address); ?>' />
 		</dd>
 		
 		<dt>Zipcode</dt>
 		<dd>
-			<input type='text' name='shipment_zipcode' value='<?php if ($this->user) { echo _e($this->user->zipcode); } ?>' />
+			<input type='text' name='shipment_zipcode' required value='<?php echo _e($this->zipcode); ?>' />
 		</dd>
 		
 		<dt>City</dt>
 		<dd>
-			<input type='text' name='shipment_city' value='<?php if ($this->user) { echo _e($this->user->city); } ?>' />
+			<input type='text' name='shipment_city' required value='<?php echo _e($this->city); ?>' />
 		</dd>
 		
 		<dt>Region</dt>
 		<dd>
-			<input type='text' name='shipment_region' value='<?php if ($this->user) { echo _e($this->user->region); } ?>' />
+			<input type='text' name='shipment_region' value='<?php echo _e($this->region); ?>' /> (optional)
 		</dd>
 		
 		<dt>Country</dt>
 		<dd>
-			<input type='text' name='shipment_country' value='<?php if ($this->user) { echo _e($this->user->country); } ?>' />
+			<?php include 'countries.phtml'; ?>
+			<?php countryList($this->country, 'shipment_country', array('Netherlands')); ?>
 		</dd>
 		
 		<?php if ($this->user) { ?>
 		<dt></dt>
 		<dd>
-			<input type='checkbox' name='save_details' checked="checked" id='save_details' /><label for='save_details'>Save my details for next order</label>
+			<input type='checkbox' name='save_details' checked="checked" id='save_details' /><label for='save_details'>Save shipping details for next order</label>
 		</dd>
 		<?php } ?>		
-	</dl>
-	
-	<h4>Payment</h4>
-	<dl class='form wide'>
-		<dt>Choose your payment provider:</dt>
+		
+		<dt>&nbsp;</dt>
+		<dd><hr/></dd>		
+		
+		<dt>Comment</dt>
 		<dd>
-			<?php foreach($this->providers as $key => $provider) { ?>
-				<input type='radio' name='provider' value='<?php echo _e($key); ?>' id='<?php echo _e($key); ?>' /><label for='<?php echo _e($key); ?>'> <?php echo _e($provider); ?></label>
-			<?php } ?>
+			<textarea name='comment' rows="7" cols="50"><?php echo _e($this->comment); ?></textarea><br/>
+			 (optional)
 		</dd>
-
 	</dl>
 	
-	<hr/>
-	<p>
-		<input type='submit' class='action' value='Proceed with payment' />
-	</p>
+	<div id='shipment'>
+		<?php echo $this->includeModule('shop/transaction:shipment'); ?>
+	</div>
+		
+	<div class='toolbar'>
+		<input type='submit' class='action' value='Proceed to payment' />
+		<a href='shop/transaction:view'>Transaction overview</a>
+	</div>
 	 
 </form>

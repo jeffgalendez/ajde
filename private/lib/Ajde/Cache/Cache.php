@@ -111,15 +111,25 @@ class Ajde_Cache extends Ajde_Object_Singleton
 	public function saveResponse()
 	{
 		$response = Ajde::app()->getResponse();
-		if ($this->ETagMatch() && $this->isEnabled()) {			
-			$response->setResponseType(Ajde_Http_Response::RESPONSE_TYPE_NOT_MODIFIED);
-			$response->addHeader('Cache-Control', Ajde::app()->getDocument()->getCacheControl());
-			$response->addHeader('Content-Length', '0');
+		$document = Ajde::app()->getDocument();
+		
+		// Expires and Cache-Control
+		if ($document->getCacheControl() == Ajde_Document::CACHE_CONTROL_NOCACHE) {
+			$response->addHeader('Expires', gmdate('D, d M Y H:i:s \G\M\T', time()));
+			$response->addHeader('Cache-Control', $document->getCacheControl() . ', max-age=0');
+		} else {
+			$response->addHeader('Expires', gmdate('D, d M Y H:i:s \G\M\T', time() + $document->getMaxAge()));
+			$response->addHeader('Cache-Control', $document->getCacheControl() . ', max-age=' . $document->getMaxAge());
+		}
+		
+		// Content
+		if ($this->ETagMatch() && $this->isEnabled()) {	
+			$response->setResponseType(Ajde_Http_Response::RESPONSE_TYPE_NOT_MODIFIED);			
 			$response->setData(false);
 		} else {
 			$response->addHeader('Last-Modified', gmdate('D, d M Y H:i:s', $this->getLastModified()) . ' GMT');
 			$response->addHeader('Etag', $this->getHash());
-			$response->addHeader('Cache-Control', Ajde::app()->getDocument()->getCacheControl());
+			$response->addHeader('Content-Type', $document->getContentType());
 			$response->setData($this->hasContents() ? $this->getContents() : false);
 		}
 	}

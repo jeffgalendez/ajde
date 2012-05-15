@@ -10,10 +10,12 @@ SAMPLES.Blog.Edit = function() {
 			$('form.ACCrudList td.buttons a.button.view').live('click', SAMPLES.Blog.Edit.viewHandler);			
 		},
 		
-		viewHandler: function(e) {
+		viewHandler: function(e) {			
 			e.stopPropagation();
 			e.preventDefault();
-			alert('Redirect to view article');
+			var row = $(this).parents('tr');
+			var id = row.find('input[type=checkbox]').attr('value');
+			window.location.href = 'samples/view/' + id + '.html'			
 			return false;
 		}
 		

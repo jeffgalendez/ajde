@@ -144,6 +144,7 @@ AC.Crud.List = function() {
 								});
 							}
 						}
+						AC.Core.Alert.flash(response.message);
 						form.find('td.toolbar .button.multiple').removeClass('show');
 					}
 				}, 'json').error(function(jqXHR, message, exception) {

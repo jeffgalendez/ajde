@@ -1,0 +1,91 @@
+<?php
+/* @var $this Ajde_Template_Parser_Phtml_Helper */
+?>
+
+<h2>Transaction</h2>
+
+<?php if ($this->transaction->hasLoaded() === false) { ?>
+	
+	<h4>Transaction not found</h4>
+	<p><a href='shop'>Back to shop</a></p>
+
+<?php } else { ?>
+
+	<h4>Details</h4>
+	<dl>
+		<dt>Full name</dt>
+		<dd><?php echo _e($this->transaction->name); ?></dd>
+
+		<dt>E-mail address</dt>
+		<dd><?php echo _e($this->transaction->email); ?></dd>
+
+		<dt>&nbsp;</dt>
+		<dd><hr/></dd>		
+
+		<dt>Address</dt>
+		<dd><?php echo _e($this->transaction->shipment_address); ?></dd>
+
+		<dt>Zipcode</dt>
+		<dd><?php echo _e($this->transaction->shipment_zipcode); ?></dd>
+
+		<dt>City</dt>
+		<dd><?php echo _e($this->transaction->shipment_city); ?></dd>
+
+		<dt>Region</dt>
+		<dd><?php echo _e($this->transaction->shipment_region); ?></dd>
+
+		<dt>Country</dt>
+		<dd><?php echo _e($this->transaction->shipment_country); ?></dd>
+
+		<dt>&nbsp;</dt>
+		<dd><hr/></dd>		
+
+		<dt>Comment</dt>
+		<dd><?php echo _e($this->transaction->comment); ?></dd>
+
+		<dt>&nbsp;</dt>
+		<dd><hr/></dd>
+
+		<dt>Products</dt>
+		<dd class='summary'><?php echo _c($this->transaction->shipment_description); ?></dd>
+		
+		<dt>&nbsp;</dt>
+		<dd><hr/></dd>
+
+		<dt>Shipment method</dt>
+		<dd><?php echo _e($this->transaction->shipment_method); ?></dd>
+		
+		<dt>&nbsp;</dt>
+		<dd><hr/></dd>
+
+		<dt>Status</dt>
+		<dd>
+			<?php switch($this->transaction->payment_status) {
+				case 'pending':
+					echo 'Not paid';
+					break;
+				case 'requested':
+					echo 'Payment in progress';
+					break;
+				case 'refused':
+					echo 'Payment refused';
+					break;
+				case 'cancelled':
+					echo 'Cancelled';
+					break;
+				case 'completed':
+					echo 'Paid';
+					break;
+			} ?>
+		</dd>
+	</dl>
+
+	<div class='clearfix'></div>
+
+	<?php if ($this->source == 'session') { ?>
+	<div class='toolbar'>
+		<a href='shop/transaction:setup' class='action'>Continue with transaction</a>
+		<a href='shop/transaction:cancel'>Cancel transaction</a>
+	</div>
+	<?php } ?>
+<?php } ?>

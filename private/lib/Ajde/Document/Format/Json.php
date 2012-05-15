@@ -2,14 +2,13 @@
 
 class Ajde_Document_Format_Json extends Ajde_Document
 {
-	protected $_cacheControl = 'no-cache';
+	protected $_cacheControl = self::CACHE_CONTROL_NOCACHE;
 	protected $_contentType = 'application/json';
+	protected $_maxAge = 0; // access
 
 	public function render()
 	{
-		Ajde::app()->getDocument()->setLayout(new Ajde_Layout('empty'));
-		Ajde::app()->getResponse()->addHeader('Content-Type', $this->_contentType);
-		Ajde::app()->getResponse()->addHeader('Cache-Control', $this->_cacheControl);
+		Ajde::app()->getDocument()->setLayout(new Ajde_Layout('empty'));		
 		return parent::render();
 	}
 	

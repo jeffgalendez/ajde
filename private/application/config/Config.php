@@ -25,12 +25,10 @@ class Config {
 		static $instance = array();
 		if (!isset($instance[$stage])) {
 			$className = "Config_".ucfirst($stage);
-			if (class_exists($className))
-			{
+			require_once $className . '.php';
+			if (class_exists($className)) {
 				$instance[$stage] = new $className();
-			}
-			else
-			{
+			} else {
 				$exceptionClass = class_exists('Ajde_Core_Autoloader_Exception') ? 'Ajde_Core_Autoloader_Exception' : 'Exception';
 				throw new $exceptionClass("Unable to load $className", 90005);
 			}

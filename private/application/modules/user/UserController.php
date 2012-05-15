@@ -148,7 +148,12 @@ class UserController extends Ajde_User_Controller
 			$return = array(
 				'success' => false,
 				'message' => __("Please provide an e-mail address")
-			);	
+			);
+		} else if (Ajde_Component_String::validEmail($email) === false) {
+			$return = array(			
+				'success' => false,
+				'message' => __('Please provide a valid e-mail address')
+			);
 		} else if ($shadowUser->loadByField('email', $email)) {
 			$return = array(
 				'success' => false,

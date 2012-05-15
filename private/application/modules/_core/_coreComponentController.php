@@ -162,7 +162,7 @@ class _coreComponentController extends Ajde_Controller
 		// TODO: add crop/resize option
 		$image->crop($image->getHeight(), $image->getWidth());
 		
-		Ajde::app()->getResponse()->addHeader('Content-Type', $image->getMimeType());
+		Ajde::app()->getDocument()->setContentType($image->getMimeType());
 		$output = $image->getImage();
 		return $output;
 	}

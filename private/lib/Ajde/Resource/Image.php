@@ -20,7 +20,7 @@ class Ajde_Resource_Image extends Ajde_Resource
 	
 	public function getLinkUrl()
 	{
-		$url = '_core/component:image.data?id=' . urlencode($this->getFingerprint());
+		$url = '_core/component:image/' . urlencode($this->getFingerprint()) . '.data';
 
 		if (Config::get('debug') === true)
 		{

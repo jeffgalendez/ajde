@@ -120,7 +120,7 @@ class Ajde_Resource_Local extends Ajde_Resource
 		//$session->set($hash, $this);
 		
 		//$url = '_core/component:resourceLocal/' . $this->getType() . '/' . $hash . '/';
-		$url = '_core/component:resourceLocal/' . $this->getType() . '/' . urlencode($this->getFingerprint()) . '/';
+		$url = '_core/component:resourceLocal/' . urlencode($this->getFingerprint()) . '.' . $this->getType();
 
 		if (Config::get('debug') === true)
 		{

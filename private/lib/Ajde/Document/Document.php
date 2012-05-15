@@ -2,8 +2,13 @@
 
 abstract class Ajde_Document extends Ajde_Object_Standard
 {
-	protected $_cacheControl = 'public';
+	const CACHE_CONTROL_PUBLIC = 'public';
+	const CACHE_CONTROL_PRIVATE = 'private';
+	const CACHE_CONTROL_NOCACHE = 'no-cache';
+	
+	protected $_cacheControl = self::CACHE_CONTROL_PUBLIC;
 	protected $_contentType = 'text/html';
+	protected $_maxAge = 604800; // 1 week
 	
 	public function  __construct()
 	{
@@ -107,12 +112,7 @@ abstract class Ajde_Document extends Ajde_Object_Standard
 		} else {
 			return $projectDescription;
 		}
-	}
-	
-	public function setContentType($mimeType)
-	{
-		$this->_contentType = $mimeType;
-	}
+	}	
 	
 	public function render()
 	{
@@ -122,6 +122,31 @@ abstract class Ajde_Document extends Ajde_Object_Standard
 	public function getCacheControl()
 	{
 		return $this->_cacheControl;
+	}
+	
+	public function setCacheControl($cacheControl)
+	{
+		$this->_cacheControl = $cacheControl;
+	}
+	
+	public function getContentType()
+	{
+		return $this->_contentType;
+	}
+	
+	public function setContentType($mimeType)
+	{
+		$this->_contentType = $mimeType;
+	}
+	
+	public function getMaxAge()
+	{
+		return (int) $this->_maxAge;
+	}
+	
+	public function setMaxAge($days)
+	{
+		$this->_maxAge = (60*60*24 * (int) $days);
 	}
 
 	/**
@@ -134,22 +159,24 @@ abstract class Ajde_Document extends Ajde_Object_Standard
 	
 	// Render helpers
 	
+	/**
+	 *
+	 * @deprecated
+	 * @throws Ajde_Core_Exception_Deprecated 
+	 */
 	protected function setContentTypeHeader($contentType = null)
 	{
-		Ajde::app()->getResponse()->addHeader('Content-Type', issetor($contentType, $this->_contentType));
+		throw new Ajde_Core_Exception_Deprecated();
 	}
 	
+	/**
+	 *
+	 * @deprecated
+	 * @throws Ajde_Core_Exception_Deprecated 
+	 */
 	protected function setCacheControlHeader($cacheControl = null)
 	{
-		Ajde::app()->getResponse()->addHeader('Cache-Control', issetor($cacheControl, $this->_cacheControl));
-	}
-		
-	protected function removeSetCookieHeader()
-	{
-		header('Set-Cookie:');		
-		if (version_compare(PHP_VERSION, '5.3.0') >= 0) {
-			header_remove('Set-Cookie');
-		}
+		throw new Ajde_Core_Exception_Deprecated();
 	}
 	
 	public static function registerDocumentProcessor($format, $registerOn = 'layout')

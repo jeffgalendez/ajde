@@ -23,18 +23,14 @@ class Ajde_Core_Autoloader
 		// Dir prepend
 		self::$dirPrepend = $dirPrepend;
 		
+		// Zend requires include path to be set to the LIB directory
+		// Include config dir here to speed up requiring the config classes
+		set_include_path(get_include_path() . PATH_SEPARATOR . LIB_DIR);
+		
 		// Get namespaces from Config
 		$defaultNamespaces = array('Ajde', 'AjdeX', 'Zend', 'HTMLPurifier');
-		if (!self::exists('Config')) {
-			// Two intermediate variables 
-			// @see http://stackoverflow.com/questions/2354609/strict-standards-only-variables-should-be-passed-by-reference
-			$configDefault = glob(CONFIG_DIR . 'Config_Default.php');
-			$configApplication = glob(CONFIG_DIR . 'Config_Application.php');
-			require_once array_shift($configDefault);
-			require_once array_shift($configApplication);
-			foreach (glob(CONFIG_DIR . '*.php') as $filename) {
-				require_once($filename); 
-			}		
+		if (!self::exists('Config')) {			
+			require_once CONFIG_DIR . 'Config.php';
 		}
 		
 		// Try to use the Config object, and if it fails we have to redirect to

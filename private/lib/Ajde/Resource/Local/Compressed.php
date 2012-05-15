@@ -41,7 +41,7 @@ class Ajde_Resource_Local_Compressed extends Ajde_Resource
 		//$session->set($hash, $this);
 		
 		//$url = '_core/component:resourceCompressed/' . $this->getType() . '/' . $hash . '/';
-		$url = '_core/component:resourceCompressed/' . $this->getType() . '/' . urlencode($this->getFingerprint()) . '/';
+		$url = '_core/component:resourceCompressed/' . urlencode($this->getFingerprint()) . '.' . $this->getType();
 		
 		if (Config::get('debug') === true)
 		{

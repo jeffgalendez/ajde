@@ -144,7 +144,11 @@ class _coreCrudController extends Ajde_Acl_Controller
 			$success = $success * $model->delete();
 		}
 		
-		return array('operation' => 'delete', 'success' => (bool) $success);
+		return array(
+			'operation' => 'delete',
+			'success' => (bool) $success,
+			'message' => Ajde_Component_String::makePlural(count($id), 'record') . ' deleted'
+			);
 	}
 	
 	public function save($crudId, $id)
@@ -178,6 +182,9 @@ class _coreCrudController extends Ajde_Acl_Controller
 		if ($success === true) {
 			// Destroy reference to crud instance
 			$session->destroy($crudId);
+			
+			// Set flash alert
+			Ajde_Session_Flash::alert('Record ' . ($operation == 'insert' ? 'added' : 'saved'));
 		}
 		return array('operation' => $operation, 'id' => $model->getPK(), 'success' => $success);
 	}

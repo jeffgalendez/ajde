@@ -5,6 +5,8 @@
  * http://code.google.com/p/ajde/
  */
 
+define('AJDE', true);
+
 /*********************
  * ERROR REPORTING
  *********************/
@@ -58,7 +60,7 @@
 	register_shutdown_function('shutdown');
 
 /*********************
- * INCLUDE PATHS
+ * AUTOLOADER
  *********************/
 
 //	--------------------
@@ -76,11 +78,6 @@
 	define('LANG_DIR', 			APP_DIR.'lang/');
 	define('CACHE_DIR', 		VAR_DIR.'cache/');
 	define('LOG_DIR', 			VAR_DIR.'log/');
-
-//	--------------------
-//	Zend requires include path to be set to the LIB directory
-//	--------------------
-	set_include_path(get_include_path() . PATH_SEPARATOR . LIB_DIR);
 
 //	--------------------
 //	Configure the autoloader

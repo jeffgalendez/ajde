@@ -23,7 +23,7 @@ class Ajde_Http_Request extends Ajde_Object_Standard
 	public static function fromGlobal()
 	{
 		$instance = new self();
-		if (!empty($_POST) && self::requirePostToken()) {
+		if (!empty($_POST) && self::requirePostToken() && !self::_isWhitelisted()) {
 			
 			// Measures against CSRF attacks
 			$session = new Ajde_Session('AC.Form');
@@ -124,6 +124,17 @@ class Ajde_Http_Request extends Ajde_Object_Standard
 	private static function _tokenHash($token)
 	{
 		return md5($token . $_SERVER['REMOTE_ADDR'] . $_SERVER['HTTP_USER_AGENT'] . Config::get('secret'));
+	}
+	
+	private static function _isWhitelisted()
+	{
+		$route = issetor($_GET['_route'], false);
+		foreach(Config::get('postWhitelistRoutes') as $whitelist) {
+			if (stripos($route, $whitelist) === 0) {
+				return true;
+			}
+		}
+		return false;
 	}
 	
 	private static function _getTokenDictionary(&$session = null)
@@ -291,7 +302,7 @@ class Ajde_Http_Request extends Ajde_Object_Standard
 	{
 		if (!isset($this->_route))
 		{
-			$routeKey = '_route';			
+			$routeKey = '_route';
 			if (!$this->has($routeKey)) {
 				$this->set($routeKey, false);
 			}

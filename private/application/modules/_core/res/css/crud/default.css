@@ -54,17 +54,17 @@ button.button {
 .button.delete	{ border: 1px solid #e94615; }
 .button.save	{ border: 1px solid #6fbe15; }
 
-.button.save	{ background-image: url('../../../../public/images/icons/16/check_2.png'); }
-.button.apply	{ background-image: url('../../../../public/images/icons/16/save_diskette_floppy_disk.png'); }
-.button.new		{ background-image: url('../../../../public/images/icons/16/plus.png'); }
-.button.edit	{ background-image: url('../../../../public/images/icons/16/pencil_edit.png'); }
-.button.cancel	{ background-image: url('../../../../public/images/icons/16/stop_2.png'); }
-.button.delete	{ background-image: url('../../../../public/images/icons/16/close_delete_2.png'); }
-.button.prev	{ background-image: url('../../../../public/images/_core/crud/prev_16.png'); }
-.button.next	{ background-image: url('../../../../public/images/_core/crud/next_21.png'); }
-.button.search	{ background-image: url('../../../../public/images/icons/16/search_lense.png'); }
-.button.view	{ background-image: url('../../../../public/images/icons/16/computer_monitor.png'); }
-.button.next.icon-right	{ background-image: url('../../../../public/images/_core/crud/next_21.png'); }
+.button.save	{ background-image: url('../../public/images/icons/16/check_2.png'); }
+.button.apply	{ background-image: url('../../public/images/icons/16/save_diskette_floppy_disk.png'); }
+.button.new		{ background-image: url('../../public/images/icons/16/plus.png'); }
+.button.edit	{ background-image: url('../../public/images/icons/16/pencil_edit.png'); }
+.button.cancel	{ background-image: url('../../public/images/icons/16/stop_2.png'); }
+.button.delete	{ background-image: url('../../public/images/icons/16/close_delete_2.png'); }
+.button.prev	{ background-image: url('../../public/images/_core/crud/prev_16.png'); }
+.button.next	{ background-image: url('../../public/images/_core/crud/next_21.png'); }
+.button.search	{ background-image: url('../../public/images/icons/16/search_lense.png'); }
+.button.view	{ background-image: url('../../public/images/icons/16/computer_monitor.png'); }
+.button.next.icon-right	{ background-image: url('../../public/images/_core/crud/next_21.png'); }
 
 .button[disabled], .button.disabled {
 	border: 1px solid silver !important;

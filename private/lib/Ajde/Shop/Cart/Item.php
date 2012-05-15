@@ -52,12 +52,12 @@ abstract class Ajde_Shop_Cart_Item extends Ajde_Model
 	
 	public function getQty()
 	{
-		return parent::getQty();
+		return (int) parent::getQty();
 	}
 	
 	public function addQty($qty)
 	{
-		$this->setQty((int) $this->getQty() + (int) $qty);
+		$this->setQty($this->getQty() + (int) $qty);
 	}
 	
 	public function setEntityById($entityName, $id)
@@ -145,6 +145,11 @@ abstract class Ajde_Shop_Cart_Item extends Ajde_Model
 	public function getVATAmount()
 	{
 		return $this->getVATPercentage() * $this->getSubTotal();
+	}
+	
+	public function getFormattedVATAmount()
+	{
+		return Config::get('currency') . ' ' . $this->_format($this->getVATAmount());
 	}
 		
 	public function getSubTotal()

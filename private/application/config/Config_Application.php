@@ -1,15 +1,17 @@
 <?php
+require_once 'Config_Simple.php';
+require_once 'Config_Advanced.php';
 
-class Config_Application extends Config_Default
+class Config_Application extends Config_Advanced
 {	
 	// Site parameters
-	public $ident				= "project";
-	public $sitename 			= "Project name";
-	public $description			= "Project description";	
-	public $author				= "Author name";
+	public $ident				= 'project';
+	public $sitename 			= 'Project name';
+	public $description			= 'Project description';	
+	public $author				= 'Author name';
 	public $version 			= array(
-									"number" => "0.1",
-									"name" => "alpha"
+									'number' => '0.1',
+									'name' => 'alpha'
 									);
 									
 									
@@ -29,6 +31,7 @@ class Config_Application extends Config_Default
 	//public $autoEscapeString;
 	//public $autoCleanHtml;
 	//public $requirePostToken;
+	//public $postWhitelistRoutes;
 	public $secret				= 'randomstring';
 	//public $cookieDomain;
 	//public $cookieSecure;
@@ -53,8 +56,14 @@ class Config_Application extends Config_Default
 	
 	//public $transactionProviders;
 	//public $currency;
+	//public $currencyCode;
 	//public $defaultVAT;
 	
 	//public $bootstrap;
+	
+	public function getParentClass()
+	{
+		return strtolower(str_replace('Config_', '', get_parent_class('Config_Application')));
+	}
 	
 }

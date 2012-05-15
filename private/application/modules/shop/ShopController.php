@@ -13,6 +13,7 @@ class ShopController extends Ajde_Acl_Controller
 		if ($this->_allowGuestTransaction === true) {
 			$this->_allowedActions[] = $this->getAction();
 		}
+		Ajde_Cache::getInstance()->disable();
 		return parent::beforeInvoke();
 	}
 	
@@ -29,6 +30,16 @@ class ShopController extends Ajde_Acl_Controller
 	public function checkout()
 	{
 		Ajde_Model::register($this);
+		
+		// Get existing transaction
+		$transaction = new TransactionModel();
+		$session = new Ajde_Session('AC.Shop');				
+		if ($session->has('currentTransaction') && $transaction->loadByPK($session->get('currentTransaction'))) {
+			$this->getView()->assign('transactionInProgress', true);
+		} else {
+			$this->getView()->assign('transactionInProgress', false);
+		}
+		
 		$cart = new CartModel();
 		$cart->loadCurrent();
 		

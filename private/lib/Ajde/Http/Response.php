@@ -84,7 +84,7 @@ class Ajde_Http_Response extends Ajde_Object_Standard
 		}
 	}
 
-	function setRedirect($url = self::REDIRECT_SELF)
+	public function setRedirect($url = self::REDIRECT_SELF)
 	{
 		if ($url === true || $url === self::REDIRECT_HOMEPAGE) {
 			$this->addHeader("Location", 'http://' . Config::get('site_root'));
@@ -100,23 +100,31 @@ class Ajde_Http_Response extends Ajde_Object_Standard
 		}
 	}
 
-	function addHeader($name, $value)
+	public function addHeader($name, $value)
 	{
 		$headers = array();
-		if ($this->has('headers'))
-		{
+		if ($this->has('headers')) {
 			$headers = $this->get('headers');
 		}
 		$headers[$name] = $value;
 		$this->set("headers", $headers);
 	}
+	
+	public function removeHeader($name)
+	{
+		// TODO: also remove from $this->_data['headers']
+		header("$name:");		
+		if (version_compare(PHP_VERSION, '5.3.0') >= 0) {
+			header_remove($name);
+		}
+	}
 
-	function setData($data)
+	public function setData($data)
 	{
 		$this->set("data", $data);
 	}
 
-	function send()
+	public function send()
 	{
 		if ($this->has("headers")) {
 			foreach($this->get("headers") as $name => $value) {
@@ -128,5 +136,4 @@ class Ajde_Http_Response extends Ajde_Object_Standard
 			echo $this->getData();
 		}
 	}
-
 }

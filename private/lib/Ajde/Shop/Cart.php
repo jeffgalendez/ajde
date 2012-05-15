@@ -7,6 +7,8 @@ abstract class Ajde_Shop_Cart extends Ajde_Model
 	protected $_cartItemModel = null;
 	protected $_cartItemCollection = null;
 	
+	private $_items;
+	
 	/**
 	 *
 	 * @return UserModel 
@@ -76,6 +78,8 @@ abstract class Ajde_Shop_Cart extends Ajde_Model
 			$cartItem->setQty($qty);
 			$cartItem->insert();
 		}
+		
+		$this->_items = null;
 	}
 	
 	/**
@@ -97,13 +101,67 @@ abstract class Ajde_Shop_Cart extends Ajde_Model
 	 */
 	public function getItems()
 	{
-		$cartItems = $this->_getItemCollection();
-		return $cartItems;
+		if (!isset($this->_items)) {
+			$this->_items = $this->_getItemCollection();
+		}
+		return $this->_items;
 	}
 	
 	public function hasItems()
 	{
 		return $this->getItems()->length();
+	}
+	
+	public function emptyItems()
+	{
+		$cartItems = $this->getItems();
+		
+		$success = true;
+		foreach($cartItems as $item) {
+			/* @var $item Ajde_Shop_Cart_Item */
+			$success = $success * $item->delete();
+		}
+		
+		return (bool) $success;
+	}
+	
+	public function countItems()
+	{
+		return $this->getItems()->count();
+	}
+	
+	public function countQty()
+	{
+		return $this->getItems()->countQty();
+	}
+	
+	public function getHtmlSummaryTable()
+	{
+		$items = $this->getItems();
+		$table = '<table><thead>';
+		$table .= '<tr>';
+			$table .= '<th>Quantity</th>';
+			$table .= '<th>Description</th>';
+			$table .= '<th>VAT</th>';
+			$table .= '<th>Total</th>';
+		$table .= '</tr></thead><tbody>';
+		foreach($items as $item) {
+			/* @var $item Ajde_Shop_Cart_Item */
+			$table .= '<tr>';
+				$table .= '<td>' . $item->getQty() . '</td>';
+				$table .= '<td>' . $item->getDescription() . '</td>';
+				$table .= '<td>' . $item->getFormattedVATAmount() . '</td>';
+				$table .= '<td>' . $item->getFormattedTotal() . '</td>';
+			$table .= '</tr>';
+		}
+		$table .= '</tbody><tfoot><tr>';
+			$table .= '<td>' . $this->countQty() . '</td>';
+			$table .= '<td>Total</td>';
+			$table .= '<td>' . $items->getFormattedVATAmount() . '</td>';
+			$table .= '<td>' . $items->getFormattedTotal() . '</td>';
+		$table .= '</tr></tfoot>';
+		$table .= '</table>';
+		return $table;
 	}
 	
 	/**
