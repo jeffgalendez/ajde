@@ -13,7 +13,7 @@ $(document).ready(function() {
 		}, 'fast');
 		
 		var url = 'shop/transaction:shipment/body';
-
+		
 		$.get(url, data, function(response) {
 			$div.html(response);
 			$div.stop().css({opacity: 1});

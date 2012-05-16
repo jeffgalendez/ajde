@@ -58,6 +58,10 @@ class ShopTransactionController extends ShopController
 			$country	= $user->country;
 			$comment	= '';
 		} else {
+			// Insert intermediate transaction to save cart and allow user to
+			// see shipping options when country is choosen
+			$this->setupJson(true);
+			
 			$name		= '';
 			$email		= '';
 			$address	= '';
@@ -88,6 +92,10 @@ class ShopTransactionController extends ShopController
 		
 		$session = new Ajde_Session('AC.Shop');
 		if ($session->has('currentTransaction') && $transaction->loadByPK($session->get('currentTransaction'))) {
+			if (Ajde::app()->getRequest()->has('country')) {
+				$transaction->shipment_country = Ajde::app()->getRequest()->getParam('country');
+				$transaction->save();
+			}
 			$shipment = new ShippingModel($transaction);
 			$method = $transaction->shipment_method;
 			if (empty($method) || !$shipment->isAvailable($method)) {
@@ -96,18 +104,23 @@ class ShopTransactionController extends ShopController
 		} else {
 			$shipment = false;
 			$method = false;
+			$transaction = false;
 		}
 		
 		$this->getView()->assign('method', $method);
 		$this->getView()->assign('shipment', $shipment);
+		$this->getView()->assign('transaction', $transaction);
 		return $this->render();
 	}
 	
-	public function setupJson($fromUser = false)
+	public function setupJson($source = false)
 	{
 		$request		= Ajde::app()->getRequest();
 		
-		if ($fromUser === false) {
+		// Init vars
+		$name = null; $email = null; $address = null; $zipcode = null; $city = null; $region = null; $country = null; $shipmentMethod = null; $comment = null;
+		
+		if ($source === false) {
 			// Read request			
 			$name			= $request->getPostParam('name', false);
 			$email			= $request->getPostParam('email', false);		
@@ -118,21 +131,21 @@ class ShopTransactionController extends ShopController
 			$country		= $request->getPostParam('shipment_country', false);
 			$shipmentMethod	= $request->getPostParam('shipment_method', false);
 			$comment		= $request->getPostParam('comment', false);
-		} else {
+		} else if ($source instanceof Ajde_User) {
 			// Read user
-			$name			= $fromUser->fullname;
-			$email			= $fromUser->email;			
-			$address		= $fromUser->address;
-			$zipcode		= $fromUser->zipcode;			
-			$city			= $fromUser->city;
-			$region			= $fromUser->region;
-			$country		= $fromUser->country;
+			$name			= $source->fullname;
+			$email			= $source->email;			
+			$address		= $source->address;
+			$zipcode		= $source->zipcode;			
+			$city			= $source->city;
+			$region			= $source->region;
+			$country		= $source->country;
 			$shipmentMethod	= false;
 			$comment		= false;
 		}
 		
 		// Return when fields are not complete
-		if ($fromUser === false) {
+		if ($source === false) {
 			if (
 					empty($name) ||
 					empty($email) ||
@@ -312,6 +325,21 @@ class ShopTransactionController extends ShopController
 		$this->getView()->assign('transaction', $transaction);		
 		return $this->render();
 	}
+	
+	public function resetPayment()
+	{
+		Ajde_Model::register($this);
+		$transaction = new TransactionModel();		
+		$session = new Ajde_Session('AC.Shop');
+		if ($session->has('currentTransaction') && $transaction->loadByPK($session->get('currentTransaction'))) {
+			$transaction->payment_provider = null;
+			$transaction->payment_status = 'pending';
+			$transaction->secret_archive = $transaction->secret_archive . $transaction->secret . PHP_EOL;
+			$transaction->secret = $transaction->generateSecret();
+			$transaction->save();
+		}
+		$this->redirect('shop/transaction:payment');
+	}
 		
 	public function paymentJson()
 	{
@@ -330,43 +358,65 @@ class ShopTransactionController extends ShopController
 		$transaction = new TransactionModel();
 		$session = new Ajde_Session('AC.Shop');
 		if ($session->has('currentTransaction') && $transaction->loadByPK($session->get('currentTransaction'))) {			
+			if ($transaction->payment_status !== 'pending') {
+				return array(
+					'success' => false,
+					'message' => __('Payment already initiated, please refresh this page')
+				);
+			}
 		} else {			
 			return array(
 				'success' => false,
-				'message' => __('Payment already processing')
+				'message' => __('No current transaction found')
+			);
+		}		
+		
+		$transaction->payment_provider = $provider;		
+		
+		$provider = $transaction->getProvider();		
+		$redirectUrl = $provider->getRedirectUrl();
+		
+		if ($redirectUrl !== false) {
+			
+			$transaction->payment_status = 'requested';
+			$transaction->save();
+
+			$cart = new CartModel();
+			$cart->loadCurrent();
+			$cart->emptyItems();
+
+			if ($provider->usePostProxy()) {
+				$this->setAction('postproxy');
+				$proxy = $this->getView();
+				$proxy->assign('provider', $provider);
+				return array(
+					'success' => true,
+					'postproxy' => $proxy->render()
+				);
+			}
+		
+			return array(
+				'success' => true,
+				'redirect' => $redirectUrl
 			);
 		}
 		
-		$transaction->payment_provider = $provider;
-		$transaction->payment_status = 'requested';
-		$transaction->save();
-		
-		$provider = $transaction->getProvider();
-		
-		$session = new Ajde_Session('AC.Shop');
-		$session->destroy();
-		
-		$cart = new CartModel();
-		$cart->loadCurrent();
-		$cart->emptyItems();
-		
-		if ($provider->usePostProxy()) {
-			$this->setAction('postproxy');
-			$proxy = $this->getView();
-			$proxy->assign('provider', $provider);
-			return array(
-				'success' => true,
-				'postproxy' => $proxy->render()
-			);			
-		}
-		
 		return array(
-			'success' => true
+			'success' => false,
+			'message' => 'Could not contact the payment provider, please try again'
 		);
 	}
 	
 	public function complete()
-	{
+	{		
+		$session = new Ajde_Session('AC.Shop');
+		$session->destroy();
+		
+		return $this->render();
+	}
+	
+	public function refused()
+	{	
 		return $this->render();
 	}
 	
@@ -374,6 +424,18 @@ class ShopTransactionController extends ShopController
 	{
 		$providerName = $this->getId();
 		$provider = Ajde_Shop_Transaction_Provider::getProvider($providerName);
-		$provider->updatePayment();
+		if ($provider->updatePayment()) {
+			$this->redirect('shop/transaction:complete');
+		} else {
+			$this->redirect('shop/transaction:refused');
+		}
+	}
+	
+	public function startNew()
+	{
+		$session = new Ajde_Session('AC.Shop');
+		$session->destroy();
+		
+		return $this->redirect('shop/cart');
 	}
 }

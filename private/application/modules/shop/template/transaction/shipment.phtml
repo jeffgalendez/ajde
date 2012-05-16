@@ -4,7 +4,7 @@
 
 <h4>Shipment</h4>
 
-<?php if ($this->shipment === false) { ?>
+<?php if ($this->transaction === false || ($this->transaction !== false && empty($this->transaction->shipment_country))) { ?>
 
 	<p>Shipment options will be available after you choose a country...</p>
 

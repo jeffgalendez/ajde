@@ -90,10 +90,14 @@ class Config_Advanced
 	public $shopSandboxPayment	= true;
 	
 		// PayPal
-		public $shopPaypalAccount	= 'hongaa_1333971770_biz@gmail.com';
+		public $shopPaypalAccount			= 'info@example.com';
 		
 		// Wedeal
-		public $merchantId			= '';
+		public $shopWedealUsername			= 'user';
+		public $shopWedealPassword			= 'pass';
+		public $shopWedealCallbackUsername	= 'user';
+		public $shopWedealCallbackPassword	= 'pass';
+		
 	
 	// Which modules should we call on bootstrapping?
 	public $bootstrap			= array(									

@@ -11,13 +11,17 @@ $(document).ready(function() {
 			$('dd.status').text(data.message);
 			AC.Core.Alert.hide();
 		} else {
-			if (data.postproxy) {
-				$("dd.status").text('Redirecting you to the payment provider...');		
+			if (data.postproxy || data.redirect) {
 				AC.Core.Alert.show('Stand by, redirecting you to the payment provider...');
+			}
+			
+			if (data.postproxy) {			
 				$('#postproxy').html(data.postproxy);
 				$('#postproxy form:eq(0)').submit();
+			} else if (data.redirect) {				
+				window.location.href = data.redirect;
 			} else {
-				alert('nothing to do...');
+				AC.Core.Alert.error('Something went wrong...');
 			}
 		}
 	});

@@ -67,7 +67,7 @@ class Ajde_Http_Request extends Ajde_Object_Standard
 		foreach($global as $key => $value)
 		{
 			$instance->set($key, $value);
-		}
+		}		
 		$instance->_postData = $_POST;
 		if (!empty($instance->_postData)) {
 			Ajde_Cache::getInstance()->disable();
@@ -306,7 +306,7 @@ class Ajde_Http_Request extends Ajde_Object_Standard
 			if (!$this->has($routeKey)) {
 				$this->set($routeKey, false);
 			}
-			$this->_route = new Ajde_Core_Route($this->get($routeKey));
+			$this->_route = new Ajde_Core_Route($this->getRaw($routeKey));
 			foreach ($this->_route->values() as $part => $value) {
 				$this->set($part, $value);
 			}

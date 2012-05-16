@@ -34,17 +34,14 @@ class ShopController extends Ajde_Acl_Controller
 		// Get existing transaction
 		$transaction = new TransactionModel();
 		$session = new Ajde_Session('AC.Shop');				
-		if ($session->has('currentTransaction') && $transaction->loadByPK($session->get('currentTransaction'))) {
-			$this->getView()->assign('transactionInProgress', true);
-		} else {
-			$this->getView()->assign('transactionInProgress', false);
-		}
-		
+		$session->has('currentTransaction') && $transaction->loadByPK($session->get('currentTransaction'));
+				
 		$cart = new CartModel();
 		$cart->loadCurrent();
 		
 		$this->getView()->assign('cart', $cart);
 		$this->getView()->assign('user', $this->getLoggedInUser());
+		$this->getView()->assign('transaction', $transaction);
 		
 		return $this->render();
 	}

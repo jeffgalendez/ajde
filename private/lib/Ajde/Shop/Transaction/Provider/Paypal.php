@@ -15,7 +15,8 @@ class Ajde_Shop_Transaction_Provider_Paypal extends Ajde_Shop_Transaction_Provid
 	}
 	
 	public function getRedirectUrl() {
-		return $this->isSandbox() ? 'https://www.sandbox.paypal.com/cgi-bin/webscr' : 'https://www.paypal.com/cgi-bin/webscr';
+		$url = $this->isSandbox() ? 'https://www.sandbox.paypal.com/cgi-bin/webscr' : 'https://www.paypal.com/cgi-bin/webscr';
+		return $this->ping($url) ? $url : false;
 	}
 	
 	public function getRedirectParams() {
@@ -73,7 +74,14 @@ class Ajde_Shop_Transaction_Provider_Paypal extends Ajde_Shop_Transaction_Provid
 		$txn_id = $_POST['txn_id'];
 		$receiver_email = $_POST['receiver_email'];
 		$payer_email = $_POST['payer_email'];
-				
+
+		Ajde_Model::register('shop');
+		$secret = $_POST['custom'];
+		$transaction = new TransactionModel();
+		if (!$transaction->loadByField('secret', $secret)) {			
+			Ajde_Log::log('Could not find transaction for PayPal payment with txn id ' . $txn_id . ' and transaction secret ' . $secret);
+		}
+		
 		if (!$fp) {
 			// HTTP ERROR
 		} else {
@@ -82,25 +90,18 @@ class Ajde_Shop_Transaction_Provider_Paypal extends Ajde_Shop_Transaction_Provid
 				$res = fgets ($fp, 1024);
 				if (strcmp ($res, "VERIFIED") == 0) {
 					// check the payment_status is Completed
-					if ($payment_status == 'Completed') {								
-						
-						Ajde_Model::register('shop');
-						$secret = $_POST['custom'];
-						$transaction = new TransactionModel();
-						if ($transaction->loadByField('secret', $secret)) {
-							$details =	'AMOUNT: '		. $payment_amount		. PHP_EOL .
-										'CURRENCY: '	. $payment_currency		. PHP_EOL .
-										'PAYER_EMAIL: '	. $payer_email			. PHP_EOL .
-										'RECEIVER_EMAIL: '	. $receiver_email	. PHP_EOL .
-										'TXN_ID: '		. $txn_id				. PHP_EOL;										
-							$transaction->payment_details = $details;
-							$transaction->payment_status = 'completed';
-							$transaction->save();
-						} else {
-							Ajde_Log::log('Could not find transaction for PayPal payment with txn id ' . $txn_id . ' and transaction secret ' . $secret);
-						}
-						
+					if ($payment_status == 'Completed') {					
+						$details =	'AMOUNT: '			. $payment_amount		. PHP_EOL .
+									'CURRENCY: '		. $payment_currency		. PHP_EOL .
+									'PAYER_EMAIL: '		. $payer_email			. PHP_EOL .
+									'RECEIVER_EMAIL: '	. $receiver_email		. PHP_EOL .
+									'TXN_ID: '			. $txn_id				. PHP_EOL;										
+						$transaction->payment_details = $details;
+						$transaction->payment_status = 'completed';
+						$transaction->save();						
 					} else {
+						$transaction->payment_status = 'refused';
+						$transaction->save();		
 						Ajde_Log::log('Status is not Completed but ' . $payment_status . ' for PayPal payment with txn id ' . $txn_id . ' and transaction secret ' . $secret);
 					}
 					// check that txn_id has not been previously processed
@@ -109,6 +110,8 @@ class Ajde_Shop_Transaction_Provider_Paypal extends Ajde_Shop_Transaction_Provid
 					// process payment
 				} else if (strcmp ($res, "INVALID") == 0) {
 					// log for manual investigation
+					$transaction->payment_status = 'refused';
+					$transaction->save();
 					Ajde_Log::log('Validation failed for PayPal payment with txn id ' . $txn_id);
 				}
 			}

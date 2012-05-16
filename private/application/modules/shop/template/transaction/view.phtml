@@ -1,10 +1,13 @@
 <?php
 /* @var $this Ajde_Template_Parser_Phtml_Helper */
+
+/* @var $transaction Ajde_Shop_Transaction */
+$transaction = $this->transaction;
 ?>
 
 <h2>Transaction</h2>
 
-<?php if ($this->transaction->hasLoaded() === false) { ?>
+<?php if ($transaction->hasLoaded() === false) { ?>
 	
 	<h4>Transaction not found</h4>
 	<p><a href='shop'>Back to shop</a></p>
@@ -14,53 +17,53 @@
 	<h4>Details</h4>
 	<dl>
 		<dt>Full name</dt>
-		<dd><?php echo _e($this->transaction->name); ?></dd>
+		<dd><?php echo _e($transaction->name); ?></dd>
 
 		<dt>E-mail address</dt>
-		<dd><?php echo _e($this->transaction->email); ?></dd>
+		<dd><?php echo _e($transaction->email); ?></dd>
 
 		<dt>&nbsp;</dt>
 		<dd><hr/></dd>		
 
 		<dt>Address</dt>
-		<dd><?php echo _e($this->transaction->shipment_address); ?></dd>
+		<dd><?php echo _e($transaction->shipment_address); ?></dd>
 
 		<dt>Zipcode</dt>
-		<dd><?php echo _e($this->transaction->shipment_zipcode); ?></dd>
+		<dd><?php echo _e($transaction->shipment_zipcode); ?></dd>
 
 		<dt>City</dt>
-		<dd><?php echo _e($this->transaction->shipment_city); ?></dd>
+		<dd><?php echo _e($transaction->shipment_city); ?></dd>
 
 		<dt>Region</dt>
-		<dd><?php echo _e($this->transaction->shipment_region); ?></dd>
+		<dd><?php echo _e($transaction->shipment_region); ?></dd>
 
 		<dt>Country</dt>
-		<dd><?php echo _e($this->transaction->shipment_country); ?></dd>
+		<dd><?php echo _e($transaction->shipment_country); ?></dd>
 
 		<dt>&nbsp;</dt>
 		<dd><hr/></dd>		
 
 		<dt>Comment</dt>
-		<dd><?php echo _e($this->transaction->comment); ?></dd>
+		<dd><?php echo _e($transaction->comment); ?></dd>
 
 		<dt>&nbsp;</dt>
 		<dd><hr/></dd>
 
 		<dt>Products</dt>
-		<dd class='summary'><?php echo _c($this->transaction->shipment_description); ?></dd>
+		<dd class='summary'><?php echo _c($transaction->shipment_description); ?></dd>
 		
 		<dt>&nbsp;</dt>
 		<dd><hr/></dd>
 
 		<dt>Shipment method</dt>
-		<dd><?php echo _e($this->transaction->shipment_method); ?></dd>
+		<dd><?php echo _e($transaction->shipment_method); ?></dd>
 		
 		<dt>&nbsp;</dt>
 		<dd><hr/></dd>
 
 		<dt>Status</dt>
 		<dd>
-			<?php switch($this->transaction->payment_status) {
+			<?php switch($transaction->payment_status) {
 				case 'pending':
 					echo 'Not paid';
 					break;
@@ -82,10 +85,17 @@
 
 	<div class='clearfix'></div>
 
-	<?php if ($this->source == 'session') { ?>
+	<?php if ($this->source == 'session' && $transaction->payment_status == 'pending') { ?>
 	<div class='toolbar'>
 		<a href='shop/transaction:setup' class='action'>Continue with transaction</a>
 		<a href='shop/transaction:cancel'>Cancel transaction</a>
 	</div>
+	<?php } elseif ($this->source == 'session' && $transaction->payment_status == 'refused') { ?>
+	<div class='toolbar'>
+		<a href='shop/transaction:payment' class='action'>Reset payment and try again</a>
+		<a href='shop/transaction:cancel'>Cancel transaction</a>
+	</div>
 	<?php } ?>
+	
+	
 <?php } ?>

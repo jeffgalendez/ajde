@@ -11,6 +11,10 @@ $(document).ready(function() {
 		if (data.success === false) {
 			$('dd.status').addClass('error');
 			$('dd.status').text(data.message);
+			if (typeof redirect === 'function') {
+				redirect();
+				redirect = true;
+			}
 		} else {
 			if (redirect === true) {
 				window.location.href = 'shop/transaction:payment';
@@ -31,8 +35,9 @@ $(document).ready(function() {
 	});
 	
 	$('select[name=\'shipment_country\']').on('change', function(e) {
+		var self = this;
 		redirect = function() {
-			$('#shipment').trigger('refresh');
+			$('#shipment').trigger('refresh', {country: $(self).val()});
 		};
 		$('form.transactionSetup').submit();		
 	});

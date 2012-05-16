@@ -52,5 +52,16 @@ implements Ajde_Shop_Transaction_Provider_Interface
 	{
 		return Config::get('shopSandboxPayment');
 	}
+	
+	protected function ping($url, $port = 80, $timeout = 6)
+	{
+		$host = parse_url($url, PHP_URL_HOST);
+		$fsock = fsockopen($host, $port, $errno, $errstr, $timeout);
+		if (!$fsock) {
+			Ajde_Log::log('Ping for ' . $host . ':' . $port . ' (timeout=' . $timeout . ') failed');
+			return false;
+		} else {
+			return true;
+		}
+	}
 }
-
