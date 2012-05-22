@@ -2,8 +2,8 @@
 
 abstract class Ajde_Crud_Field extends Ajde_Object_Standard
 {
-	private $_crud;
-	private $_type;
+	protected $_crud;
+	protected $_type;
 	
 	public function __construct(Ajde_Crud $crud, $fieldOptions) {
 		$explode = explode('_', get_class($this));
@@ -29,13 +29,20 @@ abstract class Ajde_Crud_Field extends Ajde_Object_Standard
 	
 	public function getName()			{ return parent::getName(); }
 	public function getDbType()			{ return parent::getDbType(); }
-	public function getValue()			{ return parent::getValue(); }
 	public function getLabel()			{ return parent::getLabel(); }
 	public function getLength()			{ return parent::getLength(); }
 	public function getIsRequired()		{ return parent::getIsRequired(); }
 	public function getDefault()		{ return parent::getDefault(); }
 	public function getIsAutoIncrement(){ return parent::getIsAutoIncrement(); }
 	public function getIsAutoUpdate()	{ return parent::getIsAutoUpdate(); }
+	
+	public function getValue()			{
+		if (parent::hasValue()) {
+			return parent::getValue();
+		} else {
+			return false;
+		}		
+	}
 	
 	/**
 	 * Template functions
@@ -56,17 +63,17 @@ abstract class Ajde_Crud_Field extends Ajde_Object_Standard
 		return $template->render();
 	}
 	
-	private function _getFieldTemplate()
+	protected function _getFieldTemplate()
 	{
 		return $this->_getTemplate('field');
 	}
 	
-	private function _getInputTemplate()
+	protected function _getInputTemplate()
 	{
 		return $this->_getTemplate('field/' . $this->_type);
 	}
 	
-	private function _getTemplate($action)
+	protected function _getTemplate($action)
 	{
 		$template = null;
 		if (Ajde_Template::exist(MODULE_DIR . '_core/', 'crud/' . $action) !== false) {
@@ -86,19 +93,19 @@ abstract class Ajde_Crud_Field extends Ajde_Object_Standard
 		}		
 	}
 		
-	private function _hasCustomTemplate($action)
+	protected function _hasCustomTemplate($action)
 	{
 		$base = $this->_getCustomTemplateBase();
 		$action = $this->_getCustomTemplateAction($action);
 		return Ajde_Template::exist($base, $action) !== false;
 	}
 	
-	private function _getCustomTemplateBase()
+	protected function _getCustomTemplateBase()
 	{
 		return MODULE_DIR . $this->_crud->getCustomTemplateModule() . '/';
 	}
 	
-	private function _getCustomTemplateAction($action)
+	protected function _getCustomTemplateAction($action)
 	{
 		return 'crud/' . (string) $this->_crud->getModel()->getTable() . '/' . $action;
 	}

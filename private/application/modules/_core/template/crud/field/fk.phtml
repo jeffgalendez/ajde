@@ -16,17 +16,17 @@ if ($field->getValue()) {
 ?>
 
 <select
-	<?php echo $field->getHtmlAttributes(); ?>
-	<?php if ($field->hasReadonly() && $field->getReadonly() === true) {
-		echo ' disabled="disabled" ';	
-	} ?>
+	<?php echo $field->getHtmlAttributes(); ?>	
 >
 	<?php if (!$field->getIsRequired() === true) { ?>
 		<option value=''>(none)</option>
 	<?php } ?>
 	<?php foreach($field->getValues() as $key => $option) { ?>							
 		<option value='<?php echo $key; ?>'
-			<?php if ($key == $pk) { echo "selected='selected'"; } ?>
+			<?php 
+			if ($key == $pk) { echo "selected='selected'"; }
+			elseif ($field->hasReadonly() && $field->getReadonly() === true) { echo ' disabled="disabled" '; }
+			?>
 			><?php echo $option; ?></option>
 	<?php } ?>
 </select>

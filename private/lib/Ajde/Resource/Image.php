@@ -20,7 +20,9 @@ class Ajde_Resource_Image extends Ajde_Resource
 	
 	public function getLinkUrl()
 	{
-		$url = '_core/component:image/' . urlencode($this->getFingerprint()) . '.data';
+		// Double url encoding because of mod_rewrite url decoding bug
+		// @see http://www.php.net/manual/en/reserved.variables.php#84025
+		$url = '_core/component:image/' . urlencode(urlencode($this->getFingerprint())) . '.data';
 
 		if (Config::get('debug') === true)
 		{

@@ -16,6 +16,8 @@ class Ajde_Crud_Field_Date extends Ajde_Crud_Field
 	{
 		if ( ($this->getIsAutoUpdate())) {
 			$this->set('value', null);
+		} else {
+			$this->set('value', $value);
 		}
 	}
 	
