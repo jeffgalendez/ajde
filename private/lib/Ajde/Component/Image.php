@@ -34,7 +34,7 @@ class Ajde_Component_Image extends Ajde_Component
 					
 			return $controller->invoke();
 			break;
-		case 'html':			
+		case 'html':
 			$image = new Ajde_Resource_Image($this->attributes['filename']);
 			$image->setWidth($this->attributes['width']);
 			$image->setHeight($this->attributes['height']);
@@ -43,7 +43,6 @@ class Ajde_Component_Image extends Ajde_Component
 			$controller = Ajde_Controller::fromRoute(new Ajde_Core_Route('_core/component:image'));
 			$controller->setImage($image);			
 			$controller->setExtraClass(issetor($this->attributes['class'], ''));
-					
 			return $controller->invoke();
 			break;
 		case 'image':

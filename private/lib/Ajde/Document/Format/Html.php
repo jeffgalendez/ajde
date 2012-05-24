@@ -3,6 +3,7 @@
 class Ajde_Document_Format_Html extends Ajde_Document
 {
 	const RESOURCE_POSITION_TOP = 0;
+	
 	const RESOURCE_POSITION_FIRST = 1;
 	const RESOURCE_POSITION_DEFAULT = 2;
 	const RESOURCE_POSITION_LAST = 3;
@@ -96,7 +97,7 @@ class Ajde_Document_Format_Html extends Ajde_Document
 		// Reset compressors
 		$this->_compressors = array();
 		$linkCode = array(
-			self::RESOURCE_POSITION_TOP		=> '',
+			self::RESOURCE_POSITION_FIRST	=> '',
 			self::RESOURCE_POSITION_DEFAULT => '',
 			self::RESOURCE_POSITION_LAST	=> ''			
 		);
@@ -127,7 +128,7 @@ class Ajde_Document_Format_Html extends Ajde_Document
 			$resource = $compressor->process();
 			$linkCode[self::RESOURCE_POSITION_DEFAULT] .= $resource->getLinkCode() . PHP_EOL;
 		}
-		return $linkCode[self::RESOURCE_POSITION_TOP] . $linkCode[self::RESOURCE_POSITION_DEFAULT] . $linkCode[self::RESOURCE_POSITION_LAST];
+		return $linkCode[self::RESOURCE_POSITION_FIRST] . $linkCode[self::RESOURCE_POSITION_DEFAULT] . $linkCode[self::RESOURCE_POSITION_LAST];
 	}
 
 	public function getResourceTypes()
@@ -145,7 +146,11 @@ class Ajde_Document_Format_Html extends Ajde_Document
 
 	public function addResource(Ajde_Resource $resource, $position = self::RESOURCE_POSITION_DEFAULT)
 	{
-		$resource->setPosition($position);
+		if ($position == self::RESOURCE_POSITION_TOP) {
+			$resource->setPosition(self::RESOURCE_POSITION_FIRST);
+		} else {
+			$resource->setPosition($position);
+		}		
 		// Check for duplicates
 		// TODO: another option, replace current resource
 		foreach($this->_resources as $positionArray) {

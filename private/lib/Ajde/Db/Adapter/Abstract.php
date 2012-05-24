@@ -14,6 +14,7 @@ abstract class Ajde_Db_Adapter_Abstract
 		} catch (Exception $e) {
 			// Disable trace on this exception to prevent exposure of sensitive data
 			// TODO: exception
+			Ajde_Exception_Log::logException($e);
 			throw new Ajde_Exception('Could not connect to database', 0, false);
 		}
 		$this->_connection = $connection;

@@ -51,7 +51,6 @@ class Ajde_Component_String extends Ajde_Component
 	public static function clean($var)
 	{		
 		$clean = strip_tags($var, self::$_allowedTags);
-		$clean = str_replace('<a href="http', '<a target=\'_blank\'  href="http', $clean);
 		return $clean;
 	}
 	

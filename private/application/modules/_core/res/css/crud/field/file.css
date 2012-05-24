@@ -56,6 +56,13 @@ div.browser > a.active {
 	outline: 2px solid #c6ed9a;
 }
 
+div.browser > a span.filename {
+	text-overflow: ellipsis;
+	max-width: 220px;
+	display: inline-block;
+	overflow: hidden;
+}
+
 div.browser > a span.preview {
 	display: none;
 	position: absolute;

@@ -2,7 +2,16 @@
 
 abstract class Ajde_Crud_Field extends Ajde_Object_Standard
 {
+	/**
+	 *
+	 * @var Ajde_Crud
+	 */
 	protected $_crud;
+	
+	/**
+	 *
+	 * @var string
+	 */
 	protected $_type;
 	
 	public function __construct(Ajde_Crud $crud, $fieldOptions) {

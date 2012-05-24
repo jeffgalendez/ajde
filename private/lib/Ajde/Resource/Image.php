@@ -44,7 +44,9 @@ class Ajde_Resource_Image extends Ajde_Resource
 	
 	public function getFingerprint()
 	{
-		$array = array('s' => $this->_source, 'w' => $this->getWidth(), 'h' => $this->getHeight(), 'c' => $this->getCrop());
+		$w = $this->hasWidth() ? $this->getWidth() : null;
+		$h = $this->hasHeight() ? $this->getHeight() : null;
+		$array = array('s' => $this->_source, 'w' => $w, 'h' => $h, 'c' => $this->getCrop());
 		return $this->encodeFingerprint($array);
 	}
 	

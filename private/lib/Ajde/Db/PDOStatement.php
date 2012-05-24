@@ -38,6 +38,7 @@ class Ajde_Db_PDOStatement extends PDOStatement {
 		//}  
 		} catch (Exception $e) {
 			if (Config::get('debug') === true) {
+				dump($this->queryString);
 				throw $e;
 			} else {
 				Ajde_Exception_Log::logException($e);

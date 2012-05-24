@@ -67,8 +67,7 @@ class Ajde_Controller extends Ajde_Object_Standard
 	 * @return Ajde_Controller
 	 */
 	public static function fromRoute(Ajde_Core_Route $route)
-	{
-		
+	{		
 		if ($controller = $route->getController()) {
 			$moduleController = ucfirst($route->getModule()) . ucfirst($controller) . 'Controller';
 		} else {
@@ -153,7 +152,17 @@ class Ajde_Controller extends Ajde_Object_Standard
 	 */
 	public function render()
 	{
-		return $this->getView()->getContents();
+		$return = true;
+		if (method_exists($this, 'beforeRender')) {
+			$return = $this->beforeRender();
+			if ($return !== true && $return !== false) {
+				// TODO:
+				throw new Ajde_Exception(sprintf("beforeRender() must return either TRUE or FALSE"));
+			}
+		}
+		if ($return === true) {
+			return $this->getView()->getContents();
+		}		
 	}
 	
 	public function loadTemplate()

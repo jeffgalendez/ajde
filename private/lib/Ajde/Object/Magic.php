@@ -46,6 +46,11 @@ abstract class Ajde_Object_Magic extends Ajde_Object
 	{
 		$this->_data[$key] = $value;
 	}
+	
+	public function remove($key)
+	{
+		unset($this->_data[$key]);
+	}
 
 	public function get($key)
 	{

@@ -58,7 +58,7 @@ class Ajde_Layout extends Ajde_Template
 	}
 	
 	public function requireTimeoutWarning()
-	{		
+	{
 		$this->requireJs('core.timeout');
 	}	
 }

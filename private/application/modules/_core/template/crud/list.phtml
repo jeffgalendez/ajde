@@ -1,4 +1,5 @@
 <?php
+/* @var $this Ajde_Template_Parser_Phtml_Helper */
 /* @var $crud Ajde_Crud */
 $crud = $this->crud;
 $listOptions = $crud->getOptions('list');
@@ -29,7 +30,7 @@ $columnCount = 0;
 					$class = 'asc';
 				}
 				?>
-				<th>
+				<th <?php if ($crud->getOption('list.main', false) == $field->getName()) { echo 'class=\'main\''; } ?>>
 					<a href="javascript:void(null);" class='order <?php echo $class; ?>' data-orderBy='<?php echo $field->getName(); ?>' data-orderDir='<?php echo $orderDir; ?>'><?php echo $field->getLabel(); ?></a>
 					<?php 
 					if ($field instanceof Ajde_Crud_Field_Enum || $field instanceof Ajde_Crud_Field_Fk) {
@@ -48,10 +49,7 @@ $columnCount = 0;
 			<?php } ?>
 			<th class="buttons">
 				<?php if ($crud->getOption('list.search', true)) { ?>
-					<span>
-						<?php echo __("Search"); ?>:
-					</span>
-					<input type="text" name="view[search]" class="search" value="<?php echo $crudView->getSearch(); ?>" />
+					<input type="search" name="view[search]" class="search" value="<?php echo $crudView->getSearch(); ?>" placeholder="<?php echo __("Search"); ?>"/>
 					<a href="javascript:void(null);" class='button search'>Go</a>
 				<?php } ?>
 			</th>
@@ -72,15 +70,28 @@ $columnCount = 0;
 	<?php foreach($items = $crud->getItems() as $model) {
 		/* @var $model Ajde_Model */
 		?>
-		<tr>
+		<tr id="row-<?php echo $model->getPK(); ?>">
 			<td><input type="checkbox" class="id" name="id[]" value="<?php echo $model->getPK(); ?>" /></td>
 			<?php foreach($model->values() as $fieldName => $value) {
 				$field = $crud->getField($fieldName);
 
 				if (isset($listOptions['show']) && (!in_array($fieldName, $listOptions['show']))) { continue; } ?>
 				<?php
+				// Sort
+				if ($crud->getField($fieldName) instanceof Ajde_Crud_Field_Sort) {
+					$this->requireJsPublic('_core/crud/jquery.tablednd.js', Ajde_Document_Format_Html::RESOURCE_POSITION_FIRST);
+					if ($crudView->getOrderBy() == $fieldName) { ?>						
+						<td class='sort' data-field='<?php echo $fieldName; ?>'>
+							<span><img src='public/images/_core/crud/up_16.png'>&middot;&middot;&middot;<img src='public/images/_core/crud/down_16.png'></span>
+						</td>
+					<?php } else { ?>
+						<td class='sortDisabled'>
+							not sorted
+						</td>
+					<?php } ?>
+				<?php
 				// Display function
-				if ($field->hasFunction()) {
+				} elseif ($field->hasFunction()) {
 					$displayFunction = $field->getFunction();
 					?>
 					<td><?php echo _e($model->{$displayFunction}()); ?></td>
@@ -114,7 +125,7 @@ $columnCount = 0;
 				<?php
 				// Text value
 				} else { ?>
-					<td title="<?php echo $this->escape($value); ?>">
+					<td title="<?php echo $this->escape($value); ?>" <?php if ($crud->getOption('list.main', false) == $field->getName()) { echo 'class=\'main\''; } ?>>
 						<?php echo substr($this->escape($value), 0, 100); ?>
 						<?php if (strlen($this->escape($value)) > 100) { ?>
 							...

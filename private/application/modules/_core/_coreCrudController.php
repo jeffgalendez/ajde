@@ -50,7 +50,7 @@ class _coreCrudController extends Ajde_Acl_Controller
 		if ($viewSession->has($sessionName)) {
 			$crudView = $viewSession->get($sessionName);
 		} else {
-			$crudView = new Ajde_Collection_View($sessionName);
+			$crudView = new Ajde_Collection_View($sessionName, $crud->getOption('list.view', array()));
 		}
 		$viewParams = Ajde::app()->getRequest()->getParam('view', array());
 		$crudView->setOptions($viewParams);
@@ -122,6 +122,9 @@ class _coreCrudController extends Ajde_Acl_Controller
 			case 'save':
 				return $this->save($crudId, $id);
 				break;
+			case 'sort':
+				return $this->sort($crudId, $id);
+				break;
 			default:
 				return array('operation' => $operation, 'success' => false);
 				break;
@@ -149,6 +152,60 @@ class _coreCrudController extends Ajde_Acl_Controller
 			'success' => (bool) $success,
 			'message' => Ajde_Component_String::makePlural(count($id), 'record') . ' deleted'
 			);
+	}
+	
+	public function sort($crudId, $id)
+	{
+		$session = new Ajde_Session('AC.Crud');
+		/* @var $crud Ajde_Crud */
+		$crud = $session->getModel($crudId);
+		$model = $crud->getModel();
+		
+		// Extra careful handling of parameters, as we are baking crude SQL here
+		
+		// Get and validate sort field
+		$sortField = Ajde::app()->getRequest()->getPostParam('field');
+		$field = $crud->getField($sortField); // throws exception when not found
+		
+		if (!is_array($id)) {
+			$id = array($id);
+		}
+		
+		// Make sure ids is a array of integers
+		$ids = array();
+		foreach($id as $elm) {
+			$ids[] = (int) $elm;
+		}
+		
+		// Get lowest current sort values
+		$idString = implode(', ', $ids);
+		$sql = "SELECT MIN(" . $sortField . ") AS min FROM " . (string) $model->getTable() . " WHERE " . $model->getTable()->getPK() . " IN (" . $idString . ")";
+		
+		$statement = $model->getConnection()->prepare($sql);
+		$statement->execute();
+		$result = $statement->fetch(PDO::FETCH_ASSOC);	
+		if ($result === false || empty($result)) {
+			$sortValue = 0;
+		} else {
+			$sortValue = $result['min'];
+		}
+		
+		$success = true;
+		foreach($ids as $id) {
+			$model->loadByPK($id);
+			$model->set($sortField, $sortValue);		
+			$success = $success * $model->save();
+			$sortValue++;
+			if ($field->has('sort_children')) {
+				// TODO: implement parent recursive sorting
+			}
+		}
+		
+		return array(
+			'operation' => 'sort',
+			'success' => (bool) $success,
+			'message' => 'Records sorted'
+		);
 	}
 	
 	public function save($crudId, $id)

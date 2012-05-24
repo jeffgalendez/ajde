@@ -196,7 +196,11 @@ class Ajde_Model extends Ajde_Object_Standard
 			return true;
 		}
 	}
-	
+		
+	/**
+	 *
+	 * @return boolean 
+	 */
 	public function save()
 	{
 		if (method_exists($this, 'beforeSave')) {

@@ -18,7 +18,7 @@ class Config {
 
 	/**
 	 * 
-	 * @return Config_Base
+	 * @return Config_Application
 	 */
 	public static function getInstance($stage = null) {
 		$stage = self::_getStage($stage);

@@ -8,6 +8,8 @@ AC.Crud.List = function() {
 	var warningHandler	= AC.Core.Alert.warning;
 	var errorHandler	= AC.Core.Alert.error;
 	
+	var searchTimer;
+	
 	return {
 		
 		init: function() {
@@ -27,11 +29,25 @@ AC.Crud.List = function() {
 			$('form.ACCrudList th a.order').live('click', AC.Crud.List.orderHandler);
 			$('form.ACCrudList th select.filter').live('change', AC.Crud.List.filterSelectHandler);
 			$('form.ACCrudList th input[name=\'view[search]\']').live('keypress', AC.Crud.List.searchBoxHandler);
+			$('form.ACCrudList th input[name=\'view[search]\']').live('search', AC.Crud.List.searchBoxHandler);
 			$('form.ACCrudList th a.search').live('click', AC.Crud.List.searchButtonHandler);
 			
 			$('form.ACCrudList').bind('result', function(events, data) {
 				//console.log(data);
-			});			
+			});
+			
+			AC.Crud.List.initMove();
+		},
+		
+		initMove: function() {
+			if ($('form.ACCrudList tbody td.sort').length) {
+				$('form.ACCrudList table tbody').tableDnD({
+					onDrop: AC.Crud.List.onSortHandler,
+					serializeParamName: 'id',
+					serializeRegexp: /[^\-]*$/,
+					dragHandle: '.sort'
+				});
+			}
 		},
 		
 		trHandler: function(e) {
@@ -154,6 +170,36 @@ AC.Crud.List = function() {
 			}
 		},
 		
+		onSortHandler: function(table, row) {	
+			var form = $(table).parents('form');
+			
+			form.find('input.operation').val('sort');
+			
+			var options = {
+				operation	: 'sort',
+				crudId		: form.attr('id')
+			};
+			var url = form.attr('action') + "?" + $.param(options);
+			var data = $(table).tableDnDSerialize();
+			
+			console.log(data);
+			
+			// Add CSRF token
+			data = data + '&_token=' + form.find('input[name=\'_token\']').val();
+			
+			// Add sort fieldname
+			data = data + '&field=' + form.find('td.sort:eq(0)').attr('data-field');
+			
+			$.post(url, data, function(response) {
+				if (response.operation === 'sort' && response.success === true) {					
+					AC.Core.Alert.flash(response.message);
+				}
+			}, 'json').error(function(jqXHR, message, exception) {
+				$('body').removeClass('loading');
+				errorHandler(i18n.requestError + ' (' + exception + ')');
+			});
+		},
+		
 		deleteHandler: function(e) {
 			e.stopPropagation();
 			var self = this;
@@ -203,16 +249,24 @@ AC.Crud.List = function() {
 		},
 		
 		searchBoxHandler: function(e) {
-			if (e.which == 13) {
+			var self = this;			
+			if (e.type == 'search' && !$(this).val()) {				
+				AC.Crud.List.searchButtonHandler.call(this, e, focus);
+			} else if (e.which && e.which == 13) {
 				e.preventDefault();
-				AC.Crud.List.resetPage(this);
-				AC.Crud.List.updateView(this);
+				AC.Crud.List.searchButtonHandler.call(this, e, focus);
+			} else {
+				clearTimeout(searchTimer);
+				searchTimer = setTimeout(function() {
+					AC.Crud.List.searchButtonHandler.call(self, e, focus);
+				}, 1000);	
 			}
 		},
 		
-		searchButtonHandler: function(e) {	
+		searchButtonHandler: function(e, c) {
+			clearTimeout(searchTimer);
 			AC.Crud.List.resetPage(this);
-			AC.Crud.List.updateView(this);
+			AC.Crud.List.updateView(this, c);
 		},
 		
 		resetPage: function(node) {
@@ -221,7 +275,7 @@ AC.Crud.List = function() {
 			$page.val(1);	
 		},
 		
-		updateView: function(node) {
+		updateView: function(node, c) {
 			var form = $(node).parents('form');
 			var data = form.serializeArray();
 			
@@ -245,6 +299,10 @@ AC.Crud.List = function() {
 			$.get(url, data, function(response) {
 				form.html($(response).filter('form').html());
 				form.find('tbody').css({opacity: 1});
+				AC.Crud.List.initMove();
+				if (typeof c == 'function') {
+					c();
+				}
 			}, 'html').error(function(jqXHR, message, exception) {
 				$('body').removeClass('loading');
 				errorHandler(i18n.requestError + ' (' + exception + ')');

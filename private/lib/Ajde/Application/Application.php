@@ -57,6 +57,7 @@ class Ajde_Application extends Ajde_Object_Singleton
 		$this->_timerLevel--;
 		$this->_timers[$key]['end'] = $end = microtime(true);
 		$this->_timers[$key]['total'] = round(($end - $this->_timers[$key]['start']) * 1000, 0);
+		return $this->_timers[$key]['total'];
 	}
 	
 	public function getTimers()
@@ -67,46 +68,66 @@ class Ajde_Application extends Ajde_Object_Singleton
 	public function run()
 	{
 		// For debugger
-		$timer = $this->addTimer('<i>Application</i>');
+		$this->addTimer('<i>Application</i>');
 		
 		// Create fresh response
-		$response = new Ajde_Http_Response();
-		$this->setResponse($response);
+		$timer = $this->addTimer('Create response');
+			$response = new Ajde_Http_Response();
+			$this->setResponse($response);
+		$this->endTimer($timer);
 
 		// Bootstrap init
-		$bootstrap = new Ajde_Core_Bootstrap();
-		$bootstrap->run();
+		$timer = $this->addTimer('Run bootstrap cue');
+			$bootstrap = new Ajde_Core_Bootstrap();
+			$bootstrap->run();
+		$this->endTimer($timer);
 
 		// Get request
-		$request = Ajde_Http_Request::fromGlobal();
-		$this->setRequest($request);
+		$timer = $this->addTimer('Read in global request');
+			$request = Ajde_Http_Request::fromGlobal();
+			$this->setRequest($request);
+		$this->endTimer($timer);
 
 		// Get route
-		$route = $request->initRoute();
-		$this->setRoute($route);
+		$timer = $this->addTimer('Initialize route');
+			$route = $request->initRoute();
+			$this->setRoute($route);
+		$this->endTimer($timer);
 
 		// Load document
-		$document = Ajde_Document::fromRoute($route);
-		$this->setDocument($document);
+		$timer = $this->addTimer('Create document');
+			$document = Ajde_Document::fromRoute($route);
+			$this->setDocument($document);
+		$this->endTimer($timer);
 		
 		// Load controller
-		$controller = Ajde_Controller::fromRoute($route);
-		$this->setController($controller);
+		$timer = $this->addTimer('Load controller');
+			$controller = Ajde_Controller::fromRoute($route);
+			$this->setController($controller);
+		$this->endTimer($timer);
 
 		// Invoke controller action
-		$actionResult = $controller->invoke();
-		$document->setBody($actionResult);
+		$timer = $this->addTimer('Invoke controller');
+			$actionResult = $controller->invoke();
+			$document->setBody($actionResult);
+		$this->endTimer($timer);
 
 		// Get document contents
-		$contents = $document->render();
-
+		$timer = $this->addTimer('Render document');
+			$contents = $document->render();
+		$this->endTimer($timer);
+		
 		// Let the cache handle the contents and have it saved to the response
-		$cache = Ajde_Cache::getInstance();
-		$cache->setContents($contents);
-		$cache->saveResponse();
+		$timer = $this->addTimer('Save to response');
+			$cache = Ajde_Cache::getInstance();
+			$cache->setContents($contents);
+			$cache->saveResponse();
+		$this->endTimer($timer);
 
 		// Output the buffer
-		$response->send();
+		$timer = $this->addTimer('Output buffer');
+			$response->send();
+		$this->endTimer($timer);
 	}
 
 	public static function routingError(Ajde_Exception $exception)
