@@ -213,6 +213,7 @@ class Ajde_Collection extends Ajde_Object_Standard implements Iterator, Countabl
 	}
 	
 	// Chainable collection methods
+	
 	public function addFilter(Ajde_Filter $filter)
 	{
 		$this->_filters[] = $filter;
@@ -230,6 +231,14 @@ class Ajde_Collection extends Ajde_Object_Standard implements Iterator, Countabl
 		$this->getQuery()->limit((int) $count, (int) $start);
 		return $this;
 	}
+	
+	public function filter($field, $value, $comparison = Ajde_Filter::FILTER_EQUALS, $operator = Ajde_Query::OP_AND)
+	{
+		$this->addFilter(new Ajde_Filter_Where($field, $comparison, $value, $operator));
+		return $this;
+	}
+	
+	// View functions
 	
 	public function setView(Ajde_Collection_View $view)
 	{

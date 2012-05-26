@@ -86,7 +86,7 @@ class Config_Advanced
 	public $transactionProviders= array('creditcard', 'paypal', 'wedeal');
 	public $currency			= '€';
 	public $currencyCode		= 'EUR';
-	public $defaultVAT			= '0.19';
+	public $defaultVAT			= 0.19;
 	public $shopSandboxPayment	= true;
 	
 		// PayPal
