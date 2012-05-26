@@ -56,7 +56,7 @@ class Ajde_Core_Route extends Ajde_Object_Standard
 			$route .= $this->getController() . ':';
 		}
 		$route .= $this->getAction() . '/' . $this->getFormat();
-		if ($this->has('id')) {
+		if ($this->hasNotEmpty('id')) {
 			$route .= '/' . $this->getId();
 		}
 		return $route;

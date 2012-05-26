@@ -38,6 +38,10 @@ class Ajde_Model extends Ajde_Object_Standard
 	{
 		// Register getModel($name) function on Ajde_Controller
 		if ($method === 'getModel') {
+			self::register($controller);
+			if (!isset($arguments[0])) {
+				$arguments[0] = $controller->getModule();
+			}			
 			return self::getModel($arguments[0]);
 		}
 		// TODO: if last triggered in event cueue, throw exception

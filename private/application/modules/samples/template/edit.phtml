@@ -20,7 +20,10 @@
 			'type' => 'boolean',
 			'help' => 'Post is visible or not'
 		),
-		'title' => array()
+		'title' => array(),
+		'sort' => array(
+			'type' => 'sort'
+		)
 	);
 	$list = array(
 		'buttons' => array(
@@ -31,7 +34,11 @@
 				'class' => 'view'
 			)
 		),
-		'show' => array('title', 'updated', 'image', 'published', 'type')
+		'main' => 'title',
+		'show' => array('title', 'updated', 'image', 'published', 'type', 'sort'),
+		'view' => array(
+			'orderBy' => 'sort'
+		)
 	);	
 	$options = array(
 		'fields'	=> $fields,
@@ -44,8 +51,6 @@
 		$user = UserModel::getLoggedIn();
 		$crud->setOption('fields.user.value', $user->getPK());		
 	}
-	
-	$crud->getCollection()->orderBy('updated');
 	
 	echo $crud->output();
 ?>

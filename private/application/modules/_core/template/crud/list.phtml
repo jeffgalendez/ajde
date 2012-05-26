@@ -93,8 +93,10 @@ $columnCount = 0;
 				// Display function
 				} elseif ($field->hasFunction()) {
 					$displayFunction = $field->getFunction();
-					?>
-					<td><?php echo _e($model->{$displayFunction}()); ?></td>
+					$funcValue = $model->{$displayFunction}(); ?>
+					<td title="<?php echo $this->escape($funcValue); ?>" <?php if ($crud->getOption('list.main', false) == $field->getName()) { echo 'class=\'main\''; } ?>>
+						<?php echo _e($funcValue); ?>
+					</td>
 				<?php
 				// Linked Model
 				} elseif ($value instanceof Ajde_Model && $value->hasLoaded()) { ?>

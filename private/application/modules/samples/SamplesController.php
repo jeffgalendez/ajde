@@ -19,7 +19,7 @@ class SamplesController extends Ajde_Acl_Controller
 		// Direct object creation and chaining only from PHP 5.3!
 		// Use $blog = new BlogCollection() instead
 		$samples = SamplesCollection::create()
-			->orderBy('updated', Ajde_Query::ORDER_DESC);
+			->orderBy('sort', Ajde_Query::ORDER_ASC);
 		if ($this->hasId()) {
 			$samples->addFilter(new Ajde_Filter_Where('id', Ajde_Filter::FILTER_EQUALS, $this->getId()));
 		}

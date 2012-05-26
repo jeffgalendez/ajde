@@ -8,6 +8,7 @@ class Ajde_Document_Format_Json extends Ajde_Document
 
 	public function render()
 	{
+		Ajde_Cache::getInstance()->disable();
 		Ajde::app()->getDocument()->setLayout(new Ajde_Layout('empty'));		
 		return parent::render();
 	}

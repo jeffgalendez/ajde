@@ -232,7 +232,7 @@ class _coreCrudController extends Ajde_Acl_Controller
 			$model->loadByPK($id);
 		}
 		$model->populate($post);
-		if (!$model->validate()) {
+		if (!$model->validate($crud->getOptions('fields'))) {
 			return array('operation' => $operation, 'success' => false, 'errors' => $model->getValidationErrors());
 		}
 		$success = $model->{$operation}();
