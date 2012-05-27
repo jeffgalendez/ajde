@@ -19,7 +19,7 @@ class ShopController extends Ajde_Acl_Controller
 	
 	public function view()
 	{
-		return $this->render();
+		return $this->redirect('samples');
 	}
 	
 	public function cart()

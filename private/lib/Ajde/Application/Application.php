@@ -125,9 +125,7 @@ class Ajde_Application extends Ajde_Object_Singleton
 		$this->endTimer($timer);
 
 		// Output the buffer
-		$timer = $this->addTimer('Output buffer');
-			$response->send();
-		$this->endTimer($timer);
+		$response->send();
 	}
 
 	public static function routingError(Ajde_Exception $exception)
